@@ -3,7 +3,7 @@
     "rules": "database.rules.json"
   },
   "hosting": {
-    "public": "dist",
+    "public": "dist/smieszne-obrazki",
     "ignore": [
       "firebase.json",
       "**/.*",

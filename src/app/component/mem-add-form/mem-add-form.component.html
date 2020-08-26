@@ -2,79 +2,137 @@
 <p>Na początek wybierz rodzaj treści: </p>
 
 <div class="box-holder">
-    <div class="box">
-        <span>obrazek</span>
+    <div 
+        class="box"
+        [class.selected]="_itemType == 'image'"
+        #addImageBox>
+        <div class="box-image">
+            <fa-icon [icon]="iconImage"></fa-icon>
+        </div>
+        <div class="box-title">
+            Obrazek
+        </div>
     </div>
-    <div class="box">
-        <span>film</span>
+    <div 
+        class="box"
+        [class.selected]="_itemType == 'movie'"
+        #addMovieBox>
+        <div class="box-image">
+            <fa-icon [icon]="iconMovie"></fa-icon>
+        </div>
+        <div class="box-title">
+            Film
+        </div>
     </div>
-    <div class="box">
-        <span>mem</span>
+    <div 
+        class="box"
+        [class.selected]="_itemType == 'mem'"
+        #addMemBox>
+        <div class="box-image">
+            <fa-icon [icon]="iconMem"></fa-icon>
+        </div>
+        <div class="box-title">
+            Mem
+        </div>
     </div>
 </div>
 
-<form #f="ngForm" (ngSubmit)="test(f)">
+<form 
+    #f="ngForm" 
+    (ngSubmit)="test(f)" 
+    *ngIf="_itemType != null">
+    <!-- display for all ItemType -->
     <div class="form-group form-row">
-        <label 
-            for="title" 
-            class="col-4 col-form-label"
-            >Title
-        </label>
         <div class="col">
             <input
                 ngModel 
                 required
+                placeholder="Wpisz tytuł swojego dzieła"
+                autocomplete="off"
                 id="title" 
                 name="title" 
                 type="text" 
                 class="form-control">
         </div>
     </div>
-    <hr>
+    <!-- display for all ItemType -->
     <div class="form-group form-row">
-        <label 
-            for="category" 
-            class="col-4 col-form-label"
-            >category
-        </label>
+        <div class="col">
+            <select 
+                ngModel
+                required
+                name="category" 
+                id="category"
+                class="form-control">
+                <option 
+                    value="" 
+                    selected 
+                    disabled 
+                    hidden
+                    >Wybierz categorie
+                </option>
+                <option value="y">Y</option>
+                <option value="y">X</option>
+            </select>    
+        </div>
+    </div>
+    <!-- display only for ItemType.movie -->
+    <div class="form-group form-row" *ngIf="_itemType == 'movie'">
+        <div class="col">
+            <select 
+                ngModel
+                required
+                name="movie-category" 
+                id="movie-category"
+                class="form-control">
+                <option 
+                    value="" 
+                    selected 
+                    disabled 
+                    hidden
+                    >Wybierz categorie filmu
+                </option>
+                <option value="y">Y</option>
+                <option value="y">X</option>
+            </select>    
+        </div>
+    </div>
+    <!-- display only for ItemType.movie -->
+    <div class="form-group form-row" *ngIf="_itemType == 'movie'">
         <div class="col">
             <input 
                 ngModel
                 required
+                placeholder="Opis filmu"
+                autocomplete="off"
                 type="text" 
-                name="category" 
-                id="category" 
+                name="movie-description" 
+                id="movie-description" 
                 class="form-control">
         </div>
     </div>
-    <hr>
+    <!-- display only for all ItemType -->
     <div class="form-group form-row">
-        <label 
-            for="tags" 
-            class="col-4 col-form-label"
-            >tags
-        </label>
         <div class="col">
             <input
                 ngModel 
                 required
+                placeholder="Tagi"
+                autocomplete="off"
                 type="text" 
                 name="tags" 
                 id="tags" 
                 class="form-control">
         </div>
     </div>
-    <hr>
-    <div class="form-group form-row">
-        <label 
-            for="image" 
-            class="col-4 col-form-label"
-            >image
-        </label>
+    <!-- display only for ItemType.image or ItemType.movie -->
+    <div class="form-group form-row" *ngIf="_itemType == 'image' || _itemType == 'movie'">
         <div class="col">
             <input 
                 ngModel
                 required
+                placeholder="Link do Twojego dzieła"
+                autocomplete="off"
                 type="text" 
                 name="image" 
                 id="image" 

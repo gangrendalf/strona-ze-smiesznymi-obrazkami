@@ -9,11 +9,12 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment.prod';
 import { MemCardComponent } from './component/mem-card/mem-card.component';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { DatabaseService } from './service/database.service';
 import { NavigationComponent } from './component/navigation/navigation.component';
 import { MemsSetComponent } from './component/mems-set/mems-set.component';
 import { MemAddFormComponent } from './component/mem-add-form/mem-add-form.component';
 import { PaginatorComponent } from './component/paginator/paginator.component';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { PaginatorComponent } from './component/paginator/paginator.component';
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    FormsModule
+    FormsModule,
+    FontAwesomeModule
   ],
   providers: [
     AngularFirestore

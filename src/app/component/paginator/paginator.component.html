@@ -1,10 +1,11 @@
 <div #wrapper>
     <ng-container *ngFor="let pageNumber of _displayPages">
         <button 
-            class="btn btn-sm btn-outline-secondary"
+            class="btn btn-sm btn-outline-secondary mr-2"
             routerLink="page"
             [queryParams]="{ id: pageNumber }"
             routerLinkActive="active"
+            [class.active]="pageNumber == _lastPage && _lastPageActive"
             >{{ pageNumber }} 
         </button>
     </ng-container>

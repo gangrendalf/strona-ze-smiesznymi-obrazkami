@@ -29,7 +29,6 @@ export class PageService {
   public async init(){
     await this.calculateMaxPageNumber();    
 
-
     this.route.queryParamMap
       .subscribe(params => {
         if(params.has('id')){

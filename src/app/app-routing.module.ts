@@ -5,10 +5,10 @@ import { MemsSetComponent } from './component/mems-set/mems-set.component';
 
 
 const routes: Routes = [
-  { path: 'add/mem', component: MemAddFormComponent },
-  { path: 'main-page', component: MemsSetComponent },
+  { path: '', component: MemsSetComponent},
   { path: 'page', component: MemsSetComponent },
-  { path: '**', redirectTo: 'main-page'}
+  { path: 'add', component: MemAddFormComponent },
+  { path: '**', redirectTo: ''}
 ];
 
 @NgModule({

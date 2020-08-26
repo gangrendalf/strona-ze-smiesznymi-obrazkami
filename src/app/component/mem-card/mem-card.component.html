@@ -1,0 +1,29 @@
+<div class="card mt-5 mb-5" *ngIf="(memData | async) as mem">
+    <div class="card-header">
+        {{ mem.author.nick }}
+    </div>
+    <div class="card-body">
+        <div class="card-subtitle">
+            {{ mem.title }}
+        </div>
+        <div class="card-text">
+            {{ mem.category }}
+        </div>
+        <div class="card-img d-flex justify-content-center">
+            <a routerLink="main-page">
+                <img src="{{ mem.image }}" alt="random image">
+            </a>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex">
+            <div>
+                <span>+ {{ mem.upvotes }}</span>
+                <span>- {{ mem.downvotes }}</span>
+            </div>
+            <div>
+                fav
+            </div>
+        </div>
+    </div>
+</div>

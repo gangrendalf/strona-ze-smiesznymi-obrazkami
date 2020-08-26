@@ -1,0 +1,85 @@
+<p>Dodaj swój własny śmieszny obrazek w kilku prostych krokach:</p>
+<p>Na początek wybierz rodzaj treści: </p>
+
+<div class="box-holder">
+    <div class="box">
+        <span>obrazek</span>
+    </div>
+    <div class="box">
+        <span>film</span>
+    </div>
+    <div class="box">
+        <span>mem</span>
+    </div>
+</div>
+
+<form #f="ngForm" (ngSubmit)="test(f)">
+    <div class="form-group form-row">
+        <label 
+            for="title" 
+            class="col-4 col-form-label"
+            >Title
+        </label>
+        <div class="col">
+            <input
+                ngModel 
+                required
+                id="title" 
+                name="title" 
+                type="text" 
+                class="form-control">
+        </div>
+    </div>
+    <hr>
+    <div class="form-group form-row">
+        <label 
+            for="category" 
+            class="col-4 col-form-label"
+            >category
+        </label>
+        <div class="col">
+            <input 
+                ngModel
+                required
+                type="text" 
+                name="category" 
+                id="category" 
+                class="form-control">
+        </div>
+    </div>
+    <hr>
+    <div class="form-group form-row">
+        <label 
+            for="tags" 
+            class="col-4 col-form-label"
+            >tags
+        </label>
+        <div class="col">
+            <input
+                ngModel 
+                required
+                type="text" 
+                name="tags" 
+                id="tags" 
+                class="form-control">
+        </div>
+    </div>
+    <hr>
+    <div class="form-group form-row">
+        <label 
+            for="image" 
+            class="col-4 col-form-label"
+            >image
+        </label>
+        <div class="col">
+            <input 
+                ngModel
+                required
+                type="text" 
+                name="image" 
+                id="image" 
+                class="form-control">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-outline-secondary">Add</button>
+</form>

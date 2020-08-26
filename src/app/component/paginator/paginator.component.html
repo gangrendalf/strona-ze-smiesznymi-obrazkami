@@ -1,0 +1,11 @@
+<div #wrapper>
+    <ng-container *ngFor="let pageNumber of _displayPages">
+        <button 
+            class="btn btn-sm btn-outline-secondary"
+            routerLink="page"
+            [queryParams]="{ id: pageNumber }"
+            routerLinkActive="active"
+            >{{ pageNumber }} 
+        </button>
+    </ng-container>
+</div>

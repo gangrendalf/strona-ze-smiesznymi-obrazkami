@@ -1,8 +1,8 @@
-import { User } from './user';
+import { IUser } from './user';
 
-export interface Mem {
+export interface IItem {
     title: string,
-    author: User,
+    author: IUser,
     category: string,
     tags: string[],
     upvotes: number,

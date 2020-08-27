@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { map, take } from 'rxjs/operators';
-import { Mem } from '../model/mem';
-import { Category } from '../model/category';
+import { IItem } from '../model/item';
+import { ICategory } from '../model/category';
+import { IItemInfo } from '../model/item-info';
 
 @Injectable({
   providedIn: 'root'
@@ -11,48 +12,65 @@ export class DatabaseService {
 
   constructor(private af: AngularFirestore) { }
 
-  public getMemCount(): Promise<number> {
-    let res: AngularFirestoreCollection = this.af.collection('mem');
-    return res.valueChanges().pipe(
+  public getItemsCount(): Promise<number> {
+    let collRef: AngularFirestoreCollection<IItemInfo> = this.af.collection('item-info');
+
+    return collRef.valueChanges().pipe(
         take(1),
         map(r => r.length)
       ).toPromise();
   }
 
-  public getMemsIds(): Promise<string[]>{
-    return this.af.collection('mem', q => q.orderBy('creationDate')).snapshotChanges()
+  public getItemsIds(): Promise<string[]>{
+    let collRef: AngularFirestoreCollection<IItemInfo> = this.af.collection('item-info', q => q.orderBy('creationDate')); 
+
+    return collRef.valueChanges()
       .pipe(
         take(1),
-        map( res => res.map(x => x.payload.doc.id) )
+        map( items => items.map(item => item.itemId) )
       )
       .toPromise();
   }
 
-  public getMem(id: string): Promise<Mem>{
-    let res = this.af.doc<Mem>('mem/' + id);
+  public getItem(id: string): Promise<IItem>{
+    let docRef = this.af.doc<IItem>('item/' + id);
 
-    return res.valueChanges()
+    return docRef.valueChanges()
       .pipe(
         take(1)
         )
       .toPromise();
   }
 
-  public setMem(mem: Mem){    
-    this.af.collection('mem').add(mem);
+  public setItemAndItemInfo(mem: IItem){ 
+    let collRef: AngularFirestoreCollection<IItem> = this.af.collection('item');   
+    
+    collRef.add(mem)
+      .then(res => {
+        let collRef: AngularFirestoreCollection<IItemInfo> = this.af.collection('item-info');
+        let data: IItemInfo = {
+          itemId: res.id,
+          categoryId: 'testCategoryId',
+          creationDate: mem.creationDate
+        };
+
+        collRef.add(data);
+      });
   }
 
-  public getCategories(): Promise<Category[]>{
-    let res = this.af.collection<Category>('category', query => query.orderBy('name'));
+  public getCategories(): Promise<ICategory[]>{
+    let collRef = this.af.collection<ICategory>('category', query => query.orderBy('name'));
     
-    return res.valueChanges()
+    return collRef.valueChanges()
       .pipe(
         take(1)
       )
       .toPromise();
   }
 
-  public setCategory(category: Category){
-    this.af.collection<Category>('category').add(category);
+  public setCategory(category: ICategory){
+    let collRed = this.af.collection<ICategory>('category');
+
+    collRed.add(category);
   }
 }

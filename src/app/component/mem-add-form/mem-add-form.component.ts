@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, NgForm } from '@angular/forms';
 import { DatabaseService } from 'src/app/service/database.service';
-import { Mem } from 'src/app/model/mem';
+import { IItem } from 'src/app/model/item';
 import { testUser } from 'src/app/model/user';
 import { IconDefinition, faSmile, faFileVideo, faFileImage } from '@fortawesome/free-solid-svg-icons';
 
@@ -31,7 +31,7 @@ export class MemAddFormComponent implements OnInit {
   }
 
   test(f: NgForm){
-    let mem: Mem = {
+    let mem: IItem = {
       title: f.value.title,
       category: f.value.category,
       tags: [f.value.tags],
@@ -43,7 +43,7 @@ export class MemAddFormComponent implements OnInit {
       creationDate: new Date().getTime()
     }
 
-    this.dbs.setMem(mem)
+    this.dbs.setItemAndItemInfo(mem)
   }
 
 }

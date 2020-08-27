@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "../src/app/component/paginator/paginator.component.sass"
+    ],
+    "names": [],
+    "file": "paginator.component.css"
+}

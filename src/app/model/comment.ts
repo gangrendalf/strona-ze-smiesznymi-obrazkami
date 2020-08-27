@@ -1,9 +1,9 @@
-import { User } from './user';
+import { IUser } from './user';
 
-export interface Comment {
-    author: User,
+export interface IComment {
+    author: IUser,
     date: number,
     upvote: number,
     downvote: number,
-    response: Comment[]
+    response: IComment[]
 }

@@ -44,14 +44,14 @@ export class PageService {
   }
 
   async calculateMaxPageNumber() {
-    let memCount: number = await this.dbs.getMemCount();
+    let memCount: number = await this.dbs.getItemsCount();
 
     this._maxPageNumber = Math.ceil(memCount / this._memsPerPage);
     this._maxPageNumber$.next(this._maxPageNumber);
   }
 
   async calculateMemSet(){
-    let ids: string[] = await this.dbs.getMemsIds();
+    let ids: string[] = await this.dbs.getItemsIds();
 
     if(ids.length < 1){
       console.error('PageService: function calcuateMemSet() got empty IDs array.');

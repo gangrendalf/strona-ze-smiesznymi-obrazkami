@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/service/auth.service';
 import { IUserLoginData } from 'src/app/model/user-login-data';
-import { ReplaySubject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +10,7 @@ import { ReplaySubject } from 'rxjs';
   styleUrls: ['./login.component.sass']
 })
 export class LoginComponent {
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   login(f: NgForm) {
     let data: IUserLoginData = {
@@ -20,5 +20,4 @@ export class LoginComponent {
 
     this.auth.login(data);
   }
-
 }

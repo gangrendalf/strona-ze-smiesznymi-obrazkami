@@ -7,6 +7,7 @@ import { IUserLoginData } from '../model/user-login-data';
 import { ReplaySubject, Observable } from 'rxjs';
 import { IAuthState } from '../model/auth-state';
 import { map } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +16,16 @@ export class AuthService {
   private _authState$: ReplaySubject<IAuthState> = new ReplaySubject(1);
   public authState$: Observable<IAuthState> = this._authState$.asObservable();
 
-  constructor(private auth: AngularFireAuth, private dbs: DatabaseService) { 
+  constructor(
+    private auth: AngularFireAuth, 
+    private dbs: DatabaseService,
+    private router: Router,
+    private route: ActivatedRoute) { 
     this.auth.authState
       .pipe(
         map(user => user ? user.uid : null)
       )
-      .subscribe(uid => 
+      .subscribe(uid =>
         this.getUserDetail(uid)
       );
   }
@@ -49,14 +54,12 @@ export class AuthService {
   public login(data: IUserLoginData){
     this.auth.auth
       .signInWithEmailAndPassword(data.email, data.password)
-      .then(res => {
-        let uid: string = res.user.uid;
-        this.getUserDetail(uid);
-      });
+      // .then(() => this.redirectToOrigin());
   }
 
   public logout(){
-    this.auth.auth.signOut();
+    this.auth.auth.signOut()
+      // .then(() => this.redirectToOrigin());
   }
 
   private async getUserDetail(uid: string){
@@ -69,5 +72,17 @@ export class AuthService {
     };
 
     this._authState$.next({isLogged: isLogged, user: userData});
+    //yeah... 
+    this.redirectToOrigin();
+  }
+
+  private async redirectToOrigin(){
+    let isRedirected: boolean = this.route.snapshot.queryParamMap.has('redirectedFrom');
+    let redirectTo: string = '/';
+
+    if(isRedirected)
+      redirectTo += this.route.snapshot.queryParamMap.get('redirectedFrom');
+
+    await this.router.navigateByUrl(redirectTo);
   }
 }

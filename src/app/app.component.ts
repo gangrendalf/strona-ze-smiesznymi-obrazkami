@@ -1,19 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { DatabaseService } from './service/database.service';
-import { PageService } from './service/page.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent implements OnInit {
+
+export class AppComponent {
   title = 'smieszne-obrazki';
 
   constructor() {}
-
-  async ngOnInit(){
-  }
-
-
 }

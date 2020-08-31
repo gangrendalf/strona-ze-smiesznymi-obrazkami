@@ -20,6 +20,8 @@ import { RegistrationPageComponent } from './component/registration-page/registr
 import { LoginComponent } from './component/login/login.component';
 import { UserMenuComponent } from './component/user-menu/user-menu.component';
 import { UserNotificationComponent } from './component/user-notification/user-notification.component';
+import { MoviesSetComponent } from './component/movies-set/movies-set.component';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { UserNotificationComponent } from './component/user-notification/user-no
     RegistrationPageComponent,
     LoginComponent,
     UserMenuComponent,
-    UserNotificationComponent
+    UserNotificationComponent,
+    MoviesSetComponent
   ],
   imports: [
     BrowserModule,
@@ -44,8 +47,7 @@ import { UserNotificationComponent } from './component/user-notification/user-no
     FontAwesomeModule
   ],
   providers: [
-    AngularFirestore,
-    
+    AngularFirestore
   ],
   bootstrap: [AppComponent]
 })

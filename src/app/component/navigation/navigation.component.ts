@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { AuthService } from 'src/app/service/auth.service';
+import { IAuthState } from 'src/app/model/auth-state';
 
 @Component({
   selector: 'navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.sass']
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent {
 
-  constructor() { }
+  private _authState: IAuthState = { isLogged: false };
 
-  ngOnInit() {
+  constructor(public auth: AuthService) {
+    this.auth.authState$.subscribe(state => this._authState = state );
   }
 
 }

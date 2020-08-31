@@ -1,4 +1,5 @@
 export interface IUser {
+    uid: string,
     nick: string,
     birthdate: number,
     email: string,
@@ -11,6 +12,7 @@ export interface IUser {
 }
 
 export const testUser: IUser = {
+        uid: "123",
         nick: "Anonymus",
         addedComments: 0,
         addedMems: 0,

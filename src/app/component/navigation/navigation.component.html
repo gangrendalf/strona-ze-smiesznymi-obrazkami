@@ -32,20 +32,30 @@
                     >Top
                 </a>
             </li>
-            <li class="list-group-item ml-5">
-                <a
-                    class="btn btn-sm btn-outline-secondary"
-                    routerLink="add/mem"
-                    >Logowanie
-                </a>
-            </li>
-            <li class="list-group-item ml-n4">
-                <a 
-                    class="btn btn-sm btn-outline-secondary"
-                    routerLink="add/mem"
-                    >Rejestracja
-                </a>
-            </li>
+            <ng-container *ngIf="!_authState.isLogged">
+                <li class="list-group-item ml-5">
+                    <a
+                        class="btn btn-sm btn-outline-secondary"
+                        routerLink="login"
+                        >Logowanie
+                    </a>
+                </li>
+                <li class="list-group-item ml-n4">
+                    <a 
+                        class="btn btn-sm btn-outline-secondary"
+                        routerLink="register"
+                        >Rejestracja
+                    </a>
+                </li>
+            </ng-container>
+            <ng-container *ngIf="_authState.isLogged">
+                <li class="list-group-item ml-5">
+                   <user-notification></user-notification>
+                </li>
+                <li class="list-group-item ml-n4">
+                    <user-menu></user-menu>
+                </li>
+            </ng-container>
         </ul>
     </div>
 </div>

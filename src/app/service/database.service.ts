@@ -4,6 +4,7 @@ import { map, take } from 'rxjs/operators';
 import { IItem } from '../model/item';
 import { ICategory } from '../model/category';
 import { IItemInfo } from '../model/item-info';
+import { IUser } from '../model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -58,7 +59,7 @@ export class DatabaseService {
       });
   }
 
-  public getCategories(): Promise<ICategory[]>{
+  public getCategory(): Promise<ICategory[]>{
     let collRef = this.af.collection<ICategory>('category', query => query.orderBy('name'));
     
     return collRef.valueChanges()
@@ -72,5 +73,21 @@ export class DatabaseService {
     let collRed = this.af.collection<ICategory>('category');
 
     collRed.add(category);
+  }
+
+  public getUser(id: string): Promise<IUser> {
+    let docRef: AngularFirestoreDocument<IUser> = this.af.doc('user/' + id);
+
+    return  docRef.valueChanges()
+      .pipe(
+        take(1)
+      )
+      .toPromise();
+  }
+
+  public setUser(data: IUser){
+    let collRef: AngularFirestoreDocument<IUser> = this.af.doc('user/' + data.uid);
+
+    collRef.set(data);
   }
 }

@@ -1,0 +1,45 @@
+@import 'src/_variables.sass'
+
+ul
+    max-width: 100%
+    display: flex
+    flex-direction: row
+    align-items: center
+
+li
+    width: auto
+    padding: 12px 5px
+    text-align: center
+
+li button
+    display: block
+    width: 100%
+
+@media ( min-width: 400px )
+    li
+        padding: 12px 10px
+
+@media ( min-width: 480px )
+    ul li:first-child
+        margin-right: auto
+
+@media ( min-width: $breakpoint-md )
+    ul
+        display: flex
+        flex-direction: row
+        align-items: center
+        justify-content: center 
+        max-width: 100%
+        height: $navigation-height
+
+    ul li:first-child
+        min-width: 50px
+        margin-right: auto
+    
+    li
+        min-width: 100px
+        padding: 12px 2px
+
+    li button
+        display: block
+        width: 100%

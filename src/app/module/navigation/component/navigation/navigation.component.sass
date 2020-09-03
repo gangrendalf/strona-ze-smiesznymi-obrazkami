@@ -1,0 +1,66 @@
+@import 'src/_variables.sass'
+
+.navigation-bar
+    position: fixed
+    top: 0
+    width: 100vw
+    height: $navigation-height--small
+    padding: 0 12px
+    background-color: $navigation-background-color
+    z-index: 100
+
+.column-content-center
+    height: $navigation-height--small
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+
+#menu-container-toggler
+    max-width: 62px
+
+.menu-container
+    display: none
+    position: fixed
+    top: $navigation-height--small
+    left: 0
+    width: 100vw
+    height: calc( 100vh - 60px )
+    background-color: transparentize($navigation-background-color, .2)
+
+.menu-container--shown
+    display: block
+
+.menu-container--small
+    width: 100%
+    display: flex
+    flex-direction: column
+    align-items: center
+
+//extra small screen 
+@media ( min-width: 350px )
+    .navigation-bar
+        height: calc( $navigation-height--small + 10px )
+        
+    .column-content-center
+        height: calc( $navigation-height--small + 10px )
+        flex-direction: row
+
+@media ( min-width: $breakpoint-md )
+    .navigation-bar
+        height: $navigation-height
+
+    #menu-container-toggler
+        display: none
+
+    .menu-container
+        display: block
+        position: static
+        height: $navigation-height
+
+    .column-content-center
+        height: $navigation-height
+
+
+        
+    

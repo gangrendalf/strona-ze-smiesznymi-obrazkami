@@ -1,0 +1,18 @@
+@import 'src/_variables.sass'
+
+.sub-navigation-bar
+    position: absolute
+    top: $navigation-height
+    width: 100vw
+    height: $navigation-height
+    padding: 0 12px
+    background-color: #212
+    z-index: 99
+    overflow-x: scroll
+    overflow-y: hidden   
+
+@media ( min-width: 370px )
+    .sub-navigation-bar
+        overflow-x: visible
+        overflow-y: visible       
+

@@ -1,0 +1,31 @@
+<nav class="navigation-bar">
+    <div class="row align-items-center no-gutters">
+        <div class="col-2 column-content-center">
+            SzŚo!
+        </div>
+        <div class="col-3 col-md-7 column-content-center ">
+            <button
+                #menuContainerToggler
+                id="menu-container-toggler"
+                class="btn btn-block btn-outline-primary"
+                type="button">
+                <fa-icon [icon]="_barsIcon"></fa-icon>
+            </button>
+            <div
+                #menuContainer 
+                class="menu-container">
+                <div class="d-flex d-md-none menu-container--small">
+                    <buttons-add></buttons-add>
+                    <buttons-category></buttons-category>
+                    <search-bar></search-bar>
+                </div>
+                <div class="d-none d-md-block menu-container--large">
+                    <buttons-links></buttons-links>
+                </div>
+            </div>
+        </div>
+        <div class="col-7 col-md-3 column-content-center">
+            <buttons-user></buttons-user>
+        </div>
+    </div>
+</nav>

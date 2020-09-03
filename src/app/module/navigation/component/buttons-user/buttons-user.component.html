@@ -1,0 +1,20 @@
+<ng-container *ngIf="!_authState.isLogged">
+    <button
+        routerLink="/register"
+        routerLinkActive="active"
+        class="btn btn-sm btn-primary"
+        type="button"
+        >Rejestracja
+    </button>
+    <button
+        routerLink="/login"
+        routerLinkActive="active"
+        class="btn btn-sm btn-outline-primary"
+        type="button"
+        >Logowanie
+    </button>
+</ng-container>
+<ng-container *ngIf="_authState.isLogged">
+    <user-notification></user-notification>
+    <user-menu></user-menu>
+</ng-container>

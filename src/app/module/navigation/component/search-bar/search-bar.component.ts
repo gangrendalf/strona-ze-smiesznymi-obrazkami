@@ -21,8 +21,15 @@ export class SearchBarComponent implements AfterViewInit {
     this.searchContainerToggler.nativeElement.addEventListener('click', () => {
       this.searchContainer.nativeElement.classList.toggle('search-container--shown');
       
-      this.searchContainer.nativeElement.classList.contains('search-container--shown') ? disableScroll() : enableScroll();
-      this.searchContainer.nativeElement.classList.contains('search-container--shown') ? this._searchIcon = faTimes : this._searchIcon = faSearch;
+      if(this.searchContainer.nativeElement.classList.contains('search-container--shown')){
+        this._searchIcon = faTimes;
+        this.searchContainerToggler.nativeElement.parentElement.classList.add('search-container-toggler--right-top');
+        disableScroll();
+      } else {
+        this._searchIcon = faSearch;
+        this.searchContainerToggler.nativeElement.parentElement.classList.remove('search-container-toggler--right-top');
+        enableScroll();
+      }
     });
   }
 }

@@ -1,9 +1,12 @@
 <nav class="navigation-bar">
-    <div class="row align-items-center no-gutters">
-        <div class="col-2 column-content-center">
+    <div class="row no-gutters align-items-center">
+        <div class="col-2 col-md-1">
             SzŚo!
         </div>
-        <div class="col-3 col-md-7 column-content-center ">
+        <div class="col-2 col-md-1 d-none d-md-flex">
+            <buttons-add></buttons-add>
+        </div>
+        <div class="col-2 col-md-1 d-md-none d-flex">
             <button
                 #menuContainerToggler
                 id="menu-container-toggler"
@@ -11,21 +14,22 @@
                 type="button">
                 <fa-icon [icon]="_barsIcon"></fa-icon>
             </button>
-            <div
-                #menuContainer 
-                class="menu-container">
-                <div class="d-flex d-md-none menu-container--small">
-                    <buttons-add></buttons-add>
-                    <buttons-category></buttons-category>
-                    <search-bar></search-bar>
-                </div>
-                <div class="d-none d-md-block menu-container--large">
-                    <buttons-links></buttons-links>
-                </div>
+        </div>
+        <div class="col-1 col-md-12">
+            <div #menuContainer class="menu-container">
+                <buttons-add class="d-md-none"></buttons-add>
+                <buttons-category></buttons-category>
+                <search-bar></search-bar>
             </div>
         </div>
-        <div class="col-7 col-md-3 column-content-center">
+        <div class="col-7 col-md-4">
             <buttons-user></buttons-user>
         </div>
+        <!-- second row on mobile, first on desktop -->
+        <div class="col-12 col-md-6">
+            <buttons-links></buttons-links>
+        </div>
     </div>
+
+
 </nav>

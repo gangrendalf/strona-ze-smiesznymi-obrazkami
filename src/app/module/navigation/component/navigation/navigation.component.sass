@@ -4,19 +4,21 @@
     position: fixed
     top: 0
     width: 100vw
-    height: $navigation-height--small
+    height: $navigation-height--small + $sub-navigation-height--small 
     padding: 0 12px
     background-color: $navigation-background-color
     z-index: 100
 
-.column-content-center
-    height: $navigation-height--small
-    display: flex
-    flex-direction: column
+.row > div
     justify-content: center
     align-items: center
 
+div[class*="col-"]
+    height: $navigation-height--small
+    display: flex
+
 #menu-container-toggler
+    min-width: 44px
     max-width: 62px
 
 .menu-container
@@ -28,38 +30,74 @@
     height: calc( 100vh - 60px )
     background-color: transparentize($navigation-background-color, .2)
 
-.menu-container--shown
-    display: block
+.menu-container buttons-add
+    padding-top: 48px
 
-.menu-container--small
-    width: 100%
+.menu-container buttons-add, .menu-container buttons-category, .menu-container search-bar 
+    min-width: 200px
+    margin-top: 4px
+
+.menu-container--shown
     display: flex
     flex-direction: column
+    justify-content: flex-start
     align-items: center
+    z-index: 110
 
-//extra small screen 
-@media ( min-width: 350px )
-    .navigation-bar
-        height: calc( $navigation-height--small + 10px )
-        
-    .column-content-center
-        height: calc( $navigation-height--small + 10px )
-        flex-direction: row
+.row div:nth-child(1)
+    order: 1
+
+.row div:nth-child(2)
+    order: 2
+
+.row div:nth-child(3)
+    order: 3
+
+.row div:nth-child(4)
+    order: 4
+
+.row div:nth-child(5)
+    order: 5
+    justify-self: right
+
+.row div:nth-child(6)
+    order: 6
 
 @media ( min-width: $breakpoint-md )
     .navigation-bar
-        height: $navigation-height
+        height: $navigation-height + $sub-navigation-height
 
-    #menu-container-toggler
-        display: none
+    buttons-add
+        min-width: 87px
 
     .menu-container
-        display: block
+        display: flex
         position: static
-        height: $navigation-height
+        height: $sub-navigation-height
 
-    .column-content-center
-        height: $navigation-height
+    .menu-container search-bar
+        margin-left: auto
+
+    .menu-container--shown
+        flex-direction: row
+
+    .row div:nth-child(1)
+        order: 1
+
+    .row div:nth-child(2)
+        order: 2
+
+    .row div:nth-child(3)
+        order: 3
+
+    .row div:nth-child(4)
+        order: 6
+
+    .row div:nth-child(5)
+        order: 5
+
+    .row div:nth-child(6)
+        order: 4
 
 
         

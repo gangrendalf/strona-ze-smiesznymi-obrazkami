@@ -9,7 +9,7 @@ import { disableScroll, enableScroll } from 'src/app/module/shared/functions'
 })
 export class NavigationComponent implements AfterViewInit {
   @ViewChild('menuContainerToggler', {static: true}) menuContainerToggler: ElementRef<HTMLButtonElement>;
-  @ViewChild('menuContainer', {static: true}) menuContainer: ElementRef<HTMLDivElement>;
+  @ViewChild('menuContainer', {static: true}) menuContainer: ElementRef;
 
   private _barsIcon: IconDefinition = faBars;
 

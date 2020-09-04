@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationComponent } from 'src/app/module/navigation/component/navigation/navigation.component';
-import { SubNavigationComponent } from 'src/app/module/navigation/component/sub-navigation/sub-navigation.component';
 import { UserNotificationComponent } from 'src/app/module/navigation/component/user-notification/user-notification.component';
 import { UserMenuComponent } from 'src/app/module/navigation/component/user-menu/user-menu.component';
 import { SharedModule } from '../shared/shared.module';
@@ -17,7 +16,6 @@ import { SearchBarComponent } from './component/search-bar/search-bar.component'
 @NgModule({
   declarations: [
     NavigationComponent,
-    SubNavigationComponent,
     UserNotificationComponent,
     UserMenuComponent,
     CategoryComponent,
@@ -33,7 +31,6 @@ import { SearchBarComponent } from './component/search-bar/search-bar.component'
   ],
   exports: [
     NavigationComponent,
-    SubNavigationComponent
   ]
 })
 export class NavigationModule { }

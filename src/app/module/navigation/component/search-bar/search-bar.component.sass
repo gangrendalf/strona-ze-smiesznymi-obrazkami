@@ -5,12 +5,12 @@
 
 .search-container
     display: none
-    position: absolute
-    z-index: 90
-    top: 0
+    position: fixed
+    top: $navigation-height--small 
     left: 0
     width: 100vw
     height: 100vh
+    z-index: 90
     background-color: $sub-navigation-background-color
 
 .search-container--shown
@@ -19,6 +19,25 @@
 .search-container-toggler   
     position: relative
     z-index: 100
+
+.search-container-toggler button
+    display: block
+    width: 100%
+
+.search-container-toggler--right-top
+    position: absolute
+    top: 0
+    right: 0
+    margin: 4px 0px
+    width: 200px
+
+@media ( min-width: $breakpoint-md )
+    button
+        display: inline-block
+        width: 150px
+
+    .search-container
+        top: $navigation-height
 
 
 

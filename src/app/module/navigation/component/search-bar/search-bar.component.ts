@@ -9,6 +9,7 @@ import { disableScroll, enableScroll } from 'src/app/module/shared/functions'
   styleUrls: ['./search-bar.component.sass']
 })
 export class SearchBarComponent implements AfterViewInit {
+  private _togglerIcon: IconDefinition = faSearch;
   private _searchIcon: IconDefinition = faSearch;
 
   @ViewChild('searchContainerToggler', {static: true}) searchContainerToggler: ElementRef<HTMLButtonElement>;
@@ -22,11 +23,11 @@ export class SearchBarComponent implements AfterViewInit {
       this.searchContainer.nativeElement.classList.toggle('search-container--shown');
       
       if(this.searchContainer.nativeElement.classList.contains('search-container--shown')){
-        this._searchIcon = faTimes;
+        this._togglerIcon = faTimes;
         this.searchContainerToggler.nativeElement.parentElement.classList.add('search-container-toggler--right-top');
         disableScroll();
       } else {
-        this._searchIcon = faSearch;
+        this._togglerIcon = faSearch;
         this.searchContainerToggler.nativeElement.parentElement.classList.remove('search-container-toggler--right-top');
         enableScroll();
       }

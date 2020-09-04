@@ -3,13 +3,89 @@
         #searchContainerToggler
         class="btn btn-outline-info"
         type="button"
-        > <fa-icon [icon]="_searchIcon"></fa-icon> Szukaj
+        > <fa-icon [icon]="_togglerIcon"></fa-icon> Szukaj
     </button>
 </div>
 <div 
     #searchContainer 
     class="search-container">
+    <form style="padding: 48px 24px;">
+        <div class="form-row">
+            <div class="form-group input">
+                <input 
+                    class="form-control"
+                    type="text" 
+                    name="searchItem" 
+                    id="searchItem">
+            </div>
+            <button 
+                style="max-height: 38px; margin-left: 8px;"
+                class="btn btn-primary"
+                type="submit"
+                > <fa-icon [icon]="_searchIcon"></fa-icon>
+            </button>
+        </div>
+        <div class="form-row">
+            <div class="form-check form-check-inline">
+                <input 
+                    checked
+                    type="radio" 
+                    name="searchScope" 
+                    id="searchAll" 
+                    value="all" 
+                    class="form-check-input">
+                <label
+                    class="form-check-label" 
+                    for="searchAll"
+                    >Wszędzie
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input 
+                    type="radio" 
+                    name="searchScope" 
+                    id="searchMem" 
+                    value="mem" 
+                    class="form-check-input">
+                <label
+                    class="form-check-label" 
+                    for="searchMem"
+                    >Memy
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input 
+                    type="radio" 
+                    name="searchScope" 
+                    id="searchUser" 
+                    value="user" 
+                    class="form-check-input">
+                <label
+                    class="form-check-label" 
+                    for="searchUser"
+                    >Użytkownicy
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input 
+                    type="radio" 
+                    name="searchScope" 
+                    id="searchTag" 
+                    value="tag" 
+                    class="form-check-input">
+                <label
+                    class="form-check-label" 
+                    for="searchTag"
+                    >Tagi
+                </label>
+            </div>
+        </div>
+    </form>
     <div>
-        opcje
+        Kategorie
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Cat 1</li>
+                <li class="list-group-item">Cat 2</li>
+            </ul>
     </div>
 </div>

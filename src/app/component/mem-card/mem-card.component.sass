@@ -1,2 +1,80 @@
+@import 'src/_variables.sass'
+    
 .card
-    width: 650px
+    margin: 12px 0
+    
+
+.card-header > .card-text
+    padding: 0
+    margin: 0
+    font-size: .8rem
+    display: flex
+    justify-content: center
+    align-items: center
+
+.card-text fa-icon
+    font-size: 1.5rem
+    margin-left: auto
+
+.card-body
+    padding: 12px 20px 20px 20px
+
+.card-body .card-title
+    margin-bottom: 6px
+    font-size: 1.2rem
+    font-weight: bold
+
+.card-body .card-subtitle
+    margin-bottom: 8px
+    font-size: .8rem
+
+.subtitle-category a
+    padding-right: 16px
+    color: yellow
+
+.subtitle-tag
+    padding-right: 4px
+
+.subtitle-tag::before
+    content: '#'
+    color: grey
+    font-size: .8rem
+
+.card-img img
+    width: 100%
+
+.card-footer
+    padding: 8px 20px
+
+.vote-buttons-container
+    display: flex
+    justify-content: center
+
+.vote-buttons-container button
+    margin: 2px
+    max-width: 40px
+
+.addon-buttons-container
+    display: flex
+    justify-content: center
+
+.addon-buttons-container button
+    max-width: 120px
+    
+.vote-results
+    display: flex
+    justify-content: center
+
+.vote-results span:first-child
+    margin: 0 6px
+
+.vote-results span:last-child
+    margin: 0 6px
+
+@media ( min-width: $breakpoint-md )
+    .card-body
+        padding: 12px 40px 20px 40px
+
+@media ( min-width: $breakpoint-lg )
+    .card-body
+        padding: 12px 60px 20px 60px

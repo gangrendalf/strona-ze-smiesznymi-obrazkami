@@ -1,29 +1,68 @@
-<div class="card mt-5 mb-5" *ngIf="(memData | async) as mem">
+<div class="card" *ngIf="(_memData | async) as mem" >
     <div class="card-header">
-        {{ mem.author.nick }}
+        <div class="card-text">
+            <span>
+                {{ mem.author.nick }}
+            </span>
+            <fa-icon [icon]="_commentIcon"></fa-icon>
+        </div>
     </div>
     <div class="card-body">
-        <div class="card-subtitle">
+        <div class="card-title">
             {{ mem.title }}
         </div>
-        <div class="card-text">
-            {{ mem.category }}
+        <div class="card-subtitle">
+            <span class="subtitle-category">
+                <a routerLink="['/' + mem.category]">{{ mem.category }}</a>
+            </span>
+            <span class="subtitle-tag" *ngFor="let tag of mem.tags">
+                <a [routerLink]="['/' + tag]">{{ tag }}</a>
+            </span>
         </div>
-        <div class="card-img d-flex justify-content-center">
+        <div class="card-img">
             <a routerLink="main-page">
                 <img src="{{ mem.image }}" alt="random image">
             </a>
         </div>
     </div>
     <div class="card-footer">
-        <div class="d-flex">
-            <div>
-                <span>+ {{ mem.upvotes }}</span>
-                <span>- {{ mem.downvotes }}</span>
+        <div class="row">
+            <div class="col-4 vote-buttons-container">
+                <button 
+                    class="btn btn-block btn-secondary"
+                    type="button"
+                    ><fa-icon [icon]="_plusIcon"></fa-icon>
+                </button>
+                <button
+                    class="btn btn-block btn-secondary"
+                    type="button"
+                    ><fa-icon [icon]="_minusIcon"></fa-icon>
+                </button>
             </div>
-            <div>
-                fav
+            <div class="col-4">
+                <!-- content or spacing beetwen button groups -->
+            </div>
+            <div class="col-4 addon-buttons-container">
+                <button 
+                    class="btn btn-block btn-outline-primary"
+                    type="button"
+                    ><fa-icon [icon]="_starIcon"></fa-icon>
+                </button>
             </div>
         </div>
+        <div class="row">
+            <div class="col-4 vote-results">
+                <span>{{ mem.upvotes }}</span>
+                <span>/</span>
+                <span>{{ mem.upvotes }}</span>
+            </div>
+            <div class="col-4">
+                <!-- content or spacing beetwen button groups -->
+            </div>
+            <div class="col-4">
+                <!-- content or spacing beetwen button groups -->
+            </div>
+
+        </div>        
     </div>
 </div>

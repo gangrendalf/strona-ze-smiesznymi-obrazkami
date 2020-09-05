@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from 'src/app/service/database.service';
 import { IItem } from 'src/app/model/item';
-import { IItemInfo } from 'src/app/model/item-info';
+
+import { faPlus, faMinus, IconDefinition, faStar, faCommentAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'mem-card',
@@ -10,13 +11,19 @@ import { IItemInfo } from 'src/app/model/item-info';
 })
 export class MemCardComponent implements OnInit {
   @Input('itemId') memId: string;
-  memData: Promise<IItem> | null = null;
+
+  private _plusIcon: IconDefinition = faPlus;
+  private _minusIcon: IconDefinition = faMinus;
+  private _starIcon: IconDefinition = faStar;
+  private _commentIcon: IconDefinition = faCommentAlt;
+
+  private _memData: Promise<IItem> | null = null;
 
 
   constructor(private dbs: DatabaseService) { }
 
   ngOnInit() {
-    this.memData = this.dbs.getItem(this.memId);
+    this._memData = this.dbs.getItem(this.memId);
   }
 
 }

@@ -1,4 +1,4 @@
-<nav class="navigation-bar">
+<nav class="navigation-bar" #navigationBar>
     <div class="row no-gutters align-items-center">
         <div class="col-2 col-md-1">
             SzŚo!
@@ -15,7 +15,8 @@
                 <fa-icon [icon]="_barsIcon"></fa-icon>
             </button>
         </div>
-        <div class="col-1 col-md-12">
+        <!-- SWAP -->
+        <div class="col-1 col-md-12" #bottomOnDesktop>
             <div #menuContainer class="menu-container">
                 <buttons-add class="d-md-none"></buttons-add>
                 <buttons-category></buttons-category>
@@ -26,7 +27,8 @@
             <buttons-user></buttons-user>
         </div>
         <!-- second row on mobile, first on desktop -->
-        <div class="col-12 col-md-6">
+        <!-- swap with SWAP -->
+        <div class="col-12 col-md-6" #bottomOnMobile>
             <buttons-links></buttons-links>
         </div>
     </div>

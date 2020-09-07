@@ -8,18 +8,36 @@ import { disableScroll, enableScroll } from 'src/app/module/shared/functions'
   styleUrls: ['./navigation.component.sass']
 })
 export class NavigationComponent implements AfterViewInit {
-  @ViewChild('menuContainerToggler', {static: true}) menuContainerToggler: ElementRef<HTMLButtonElement>;
-  @ViewChild('menuContainer', {static: true}) menuContainer: ElementRef;
+  @ViewChild('menuContainerToggler', { static: true }) menuContainerTogglerRef: ElementRef<HTMLButtonElement>;
+  @ViewChild('menuContainer', { static: true }) menuContainerRef: ElementRef;
+  @ViewChild('navigationBar', { static: true }) navigationBarRef: ElementRef<HTMLDivElement>;
+  @ViewChild('bottomOnMobile', { static: true }) bottomBarOnMobileRef: ElementRef<HTMLDivElement>;
+  @ViewChild('bottomOnDesktop', { static: true }) bottomBarOnDesktopRef: ElementRef<HTMLDivElement>;
+
 
   private _barsIcon: IconDefinition = faBars;
 
-  constructor() { }
+  constructor() { 
+    document.addEventListener('scroll', () => {
+      if(window.scrollY > 10){
+        this.bottomBarOnMobileRef.nativeElement.classList.add('bottom-bar--hidden');
+        this.bottomBarOnDesktopRef.nativeElement.classList.add('bottom-bar--hidden');
+        this.navigationBarRef.nativeElement.classList.add('bottom-bar--hidden');
+      }
+      else{
+        this.bottomBarOnMobileRef.nativeElement.classList.remove('bottom-bar--hidden');
+        this.bottomBarOnDesktopRef.nativeElement.classList.remove('bottom-bar--hidden');
+        this.navigationBarRef.nativeElement.classList.remove('bottom-bar--hidden');
+      }
+
+    })
+  }
 
   ngAfterViewInit(){
-    this.menuContainerToggler.nativeElement.addEventListener('click', () => {
-      this.menuContainer.nativeElement.classList.toggle('menu-container--shown');
+    this.menuContainerTogglerRef.nativeElement.addEventListener('click', () => {
+      this.menuContainerRef.nativeElement.classList.toggle('menu-container--shown');
       
-      this.menuContainer.nativeElement.classList.contains('menu-container--shown') ? disableScroll() : enableScroll();
+      this.menuContainerRef.nativeElement.classList.contains('menu-container--shown') ? disableScroll() : enableScroll();
     });
   }
 }

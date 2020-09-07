@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DatabaseService } from 'src/app/service/database.service';
-import { PageService } from 'src/app/service/page.service';
-import { ActivatedRoute } from '@angular/router';
+import { DatabaseService } from 'src/app/module/shared/service/database.service';
+import { PageService } from 'src/app/module/mem/service/page.service';
 
 @Component({
   selector: 'mems-set',

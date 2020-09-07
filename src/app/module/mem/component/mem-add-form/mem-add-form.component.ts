@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, NgForm } from '@angular/forms';
-import { DatabaseService } from 'src/app/service/database.service';
+import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { IItem } from 'src/app/model/item';
 import { IconDefinition, faSmile, faFileVideo, faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { testUser } from 'src/app/model/user';

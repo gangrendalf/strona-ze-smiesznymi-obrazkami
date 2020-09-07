@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
-import { AuthService } from 'src/app/service/auth.service';
+import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { faUserCircle, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 

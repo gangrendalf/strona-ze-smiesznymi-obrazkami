@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { IUserRegisterData } from '../model/user-register-data';
-import { IUser } from '../model/user';
-import { DatabaseService } from './database.service';
-import { IUserLoginData } from '../model/user-login-data';
+import { IUserRegisterData } from '../../../model/user-register-data';
+import { IUser } from '../../../model/user';
+import { DatabaseService } from '../../shared/service/database.service';
+import { IUserLoginData } from '../../../model/user-login-data';
 import { ReplaySubject, Observable } from 'rxjs';
-import { IAuthState } from '../model/auth-state';
+import { IAuthState } from '../../../model/auth-state';
 import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 

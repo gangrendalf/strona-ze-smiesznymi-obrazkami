@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DatabaseService } from 'src/app/service/database.service';
+import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { IItem } from 'src/app/model/item';
 
 import { faPlus, faMinus, IconDefinition, faStar, faCommentAlt } from '@fortawesome/free-solid-svg-icons';

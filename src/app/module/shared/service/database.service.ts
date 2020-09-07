@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { map, take } from 'rxjs/operators';
-import { IItem } from '../model/item';
-import { ICategory } from '../model/category';
-import { IItemInfo } from '../model/item-info';
-import { IUser } from '../model/user';
+import { IItem } from '../../../model/item';
+import { ICategory } from '../../../model/category';
+import { IItemInfo } from '../../../model/item-info';
+import { IUser } from '../../../model/user';
 
 @Injectable({
   providedIn: 'root'

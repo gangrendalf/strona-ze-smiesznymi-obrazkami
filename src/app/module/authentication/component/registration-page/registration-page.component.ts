@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/service/auth.service';
+import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { IUser } from 'src/app/model/user';
 import { NgForm } from '@angular/forms';
 import { IUserRegisterData } from 'src/app/model/user-register-data';

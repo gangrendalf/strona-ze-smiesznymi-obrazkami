@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IAuthState } from 'src/app/model/auth-state';
-import { AuthService } from 'src/app/service/auth.service';
+import { AuthService } from 'src/app/module/authentication/service/auth.service';
 
 @Component({
   selector: 'buttons-user',

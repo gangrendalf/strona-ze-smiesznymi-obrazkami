@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { PageService } from 'src/app/service/page.service';
+import { PageService } from 'src/app/module/mem/service/page.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 @Component({

@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MemAddFormComponent } from './component/mem-add-form/mem-add-form.component';
-import { MemsSetComponent } from './component/mems-set/mems-set.component';
-import { RegistrationPageComponent } from './component/registration-page/registration-page.component';
-import { LoginComponent } from './component/login/login.component';
-import { MoviesSetComponent } from './component/movies-set/movies-set.component';
-import { AuthGuard } from './guard/auth.guard';
-import { UnAuthGuard } from './guard/un-auth.guard';
 
+import { MemAddFormComponent } from 'src/app/module/mem/component/mem-add-form/mem-add-form.component';
+import { MemsSetComponent } from 'src/app/module/mem/component/mems-set/mems-set.component';
+import { MoviesSetComponent } from 'src/app/module/mem/component/movies-set/movies-set.component';
+
+import { RegistrationPageComponent } from 'src/app/module/authentication/component/registration-page/registration-page.component';
+import { LoginComponent } from 'src/app/module/authentication/component/login/login.component';
+import { AuthGuard } from './module/authentication/guard/auth.guard';
+import { UnAuthGuard } from './module/authentication/guard/un-auth.guard';
 
 const routes: Routes = [
   { path: '', component: MemsSetComponent},

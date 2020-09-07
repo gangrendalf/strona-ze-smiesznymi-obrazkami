@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { DatabaseService } from './database.service';
+import { DatabaseService } from '../../shared/service/database.service';
 import { Observable, Subject, ReplaySubject } from 'rxjs';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class PageService {
   private _memsPerPage: number = 3;

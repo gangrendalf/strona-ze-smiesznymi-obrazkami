@@ -1,13 +1,13 @@
 import { IUser } from './user';
+import { IVote } from './vote';
 
 export interface IItem {
     title: string,
-    author: IUser,
+    authorID: string,
+    creationDate: number,
     category: string,
     tags: string[],
-    upvotes: number,
-    downvotes: number,
     imageURL: string,
     comments: string[],
-    creationDate: number
+    votes: IVote[] 
 }

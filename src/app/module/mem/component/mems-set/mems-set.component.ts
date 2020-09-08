@@ -10,7 +10,7 @@ import { PageService } from 'src/app/module/mem/service/page.service';
 export class MemsSetComponent implements OnInit {
   private _memIds: string[];
 
-  constructor(private ps: PageService, private dbs: DatabaseService) { }
+  constructor(private ps: PageService) { }
 
   async ngOnInit() {
     this.ps.currentPageMemSet$.subscribe(memSet =>{

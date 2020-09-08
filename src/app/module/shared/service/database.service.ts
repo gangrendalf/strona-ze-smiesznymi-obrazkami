@@ -5,9 +5,8 @@ import { map, take } from 'rxjs/operators';
 import { IItem } from '../../../model/item';
 import { ICategory } from '../../../model/category';
 import { IItemInfo } from '../../../model/item-info';
-import { IUser, testUser } from '../../../model/user';
+import { IUser } from '../../../model/user';
 import { Observable } from 'rxjs';
-import { UploadTaskSnapshot } from '@angular/fire/storage/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -37,18 +36,15 @@ export class DatabaseService {
       .toPromise();
   }
 
-  public getItem(id: string): Promise<IItem>{
+  public getItem(id: string): Observable<IItem>{
     let docRef: AngularFirestoreDocument<IItem>;
     docRef = this.af.doc('item/' + id);
 
-    return docRef.valueChanges()
-      .pipe(
-        take(1))
-      .toPromise();
+    return docRef.valueChanges();
   }
 
-  public async setItemAndItemInfo(mem: IItem, file: File){
-    mem.imageURL = (await this.setImageFile(file, mem.author.uid));
+  public async createItemAndItemInfo(mem: IItem, file: File){
+    mem.imageURL = (await this.setImageFile(file, mem.authorID));
     
     let collRef: AngularFirestoreCollection<IItem>;
     collRef = this.af.collection('item');   
@@ -62,6 +58,14 @@ export class DatabaseService {
         };
         collRef.add(data);
       });
+  }
+
+  public updateItem(id: string, item: IItem){
+    let docRef: AngularFirestoreDocument<IItem>;
+    docRef = this.af.doc(`item/${id}`);
+
+    docRef.update(item);
+
   }
 
   public getCategory(): Promise<ICategory[]>{

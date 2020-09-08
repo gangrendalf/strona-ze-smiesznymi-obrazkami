@@ -3,8 +3,9 @@ import { FormGroup, NgForm } from '@angular/forms';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { IItem } from 'src/app/model/item';
 import { IconDefinition, faSmile, faFileVideo, faFileImage } from '@fortawesome/free-solid-svg-icons';
-import { testUser } from 'src/app/model/user';
-import { Observable } from 'rxjs';
+import { testUser, IUser } from 'src/app/model/user';
+import { AuthService } from 'src/app/module/authentication/service/auth.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'mem-add-form',
@@ -17,6 +18,8 @@ export class MemAddFormComponent implements OnInit {
   @ViewChild('addMemBox', {static: true}) addMemBox: ElementRef<HTMLDivElement>;
   @ViewChild('f', {static: true}) memForm: ElementRef<FormGroup>;
 
+  private _user: IUser = null;
+
   private _itemType: ItemType;
 
   private iconImage: IconDefinition = faFileImage;
@@ -27,12 +30,14 @@ export class MemAddFormComponent implements OnInit {
   private _fileUrl: string = null;
   // private _fileUploadProgress$: Observable<number>;
 
-  constructor(private dbs: DatabaseService) { }
+  constructor(private dbs: DatabaseService, private auth: AuthService) { }
 
-  ngOnInit(){
+  async ngOnInit(){
     this.addImageBox.nativeElement.addEventListener('click', e => this._itemType = ItemType.image);
     this.addMovieBox.nativeElement.addEventListener('click', e => this._itemType = ItemType.movie);
     this.addMemBox.nativeElement.addEventListener('click', e => this._itemType = ItemType.mem);
+
+    this._user = (await this.auth.authState$.pipe(take(1)).toPromise()).user;
   }
 
   submit(f: NgForm){
@@ -41,14 +46,13 @@ export class MemAddFormComponent implements OnInit {
       category: f.value.category,
       tags: [f.value.tags],
       imageURL: null,
-      author: testUser,
+      authorID: this._user.uid,
       comments: [],
-      downvotes: 0,
-      upvotes: 0,
+      votes: null,
       creationDate: new Date().getTime()
     }
 
-    this.dbs.setItemAndItemInfo(mem, this._file);
+    this.dbs.createItemAndItemInfo(mem, this._file);
   }
 
   loadFile(event){

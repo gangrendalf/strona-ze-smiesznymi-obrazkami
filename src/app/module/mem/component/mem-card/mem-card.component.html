@@ -1,39 +1,45 @@
-<div class="card" *ngIf="(_memData | async) as mem" >
+<div class="card" *ngIf="_memData && _authorData" >
     <div class="card-header">
         <div class="card-text">
             <span>
-                {{ mem.author.nick }}
+                {{ _authorData.nick }}
             </span>
             <fa-icon [icon]="_commentIcon"></fa-icon>
         </div>
     </div>
     <div class="card-body">
         <div class="card-title">
-            {{ mem.title }}
+            {{ _memData.title }}
         </div>
         <div class="card-subtitle">
             <span class="subtitle-category">
-                <a routerLink="['/' + mem.category]">{{ mem.category }}</a>
+                <a routerLink="['/' + _memData.category]">{{ _memData.category }}</a>
             </span>
-            <span class="subtitle-tag" *ngFor="let tag of mem.tags">
+            <span class="subtitle-tag" *ngFor="let tag of _memData.tags">
                 <a [routerLink]="['/' + tag]">{{ tag }}</a>
             </span>
         </div>
         <div class="card-img">
             <a routerLink="main-page">
-                <img src="{{ mem.imageURL }}" alt="random image">
+                <img src="{{ _memData.imageURL }}" alt="random image">
             </a>
         </div>
     </div>
     <div class="card-footer">
         <div class="row">
             <div class="col-4 vote-buttons-container">
-                <button 
+                <button
+                    (click)="vote(1)"
+                    [disabled]="!_userId"
+                    [class.vote--upvote]="_userVote && _userVote.note == 1"
                     class="btn btn-block btn-secondary"
                     type="button"
                     ><fa-icon [icon]="_plusIcon"></fa-icon>
                 </button>
                 <button
+                    (click)="vote(-1)"
+                    [disabled]="!_userId"
+                    [class.vote--downvote]="_userVote && _userVote.note == -1"
                     class="btn btn-block btn-secondary"
                     type="button"
                     ><fa-icon [icon]="_minusIcon"></fa-icon>
@@ -52,9 +58,9 @@
         </div>
         <div class="row">
             <div class="col-4 vote-results">
-                <span>{{ mem.upvotes }}</span>
+                <span>{{ _upVotesCount }}</span>
                 <span>/</span>
-                <span>{{ mem.upvotes }}</span>
+                <span>{{ _downVotesCount }}</span>
             </div>
             <div class="col-4">
                 <!-- content or spacing beetwen button groups -->

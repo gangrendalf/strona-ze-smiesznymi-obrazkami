@@ -7,7 +7,7 @@ export interface IItem {
     tags: string[],
     upvotes: number,
     downvotes: number,
-    image: Blob,
+    imageURL: string,
     comments: string[],
     creationDate: number
 }

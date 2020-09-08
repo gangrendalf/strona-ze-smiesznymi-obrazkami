@@ -1,3 +1,5 @@
+@import 'src/_variables.sass'
+
 .box-holder
     display: flex
     justify-content: center
@@ -34,4 +36,29 @@
 form
     padding: 30px
     background: #333
+
+.text--error
+    padding-top: 8px
+    text-align: center
+    color: red
+
+input.ng-touched.ng-invalid
+    box-shadow: 0 0 6px 1px crimson
+
+input[name=image]
+    display: none
+
+label[for=image]
+    height: 300px
+    width: 100%
+    background-color: #fff
+    border-radius: 0.25rem
+    padding: 80px 20px
+
+// label[for=image] fa-icon
+
+@media ( min-width: $breakpoint-md )
+    label[for=image]
+        padding: 80px 100px
+
 

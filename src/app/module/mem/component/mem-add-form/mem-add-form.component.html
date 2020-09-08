@@ -39,13 +39,14 @@
 
 <form 
     #f="ngForm" 
-    (ngSubmit)="test(f)" 
+    (ngSubmit)="submit(f)" 
     *ngIf="_itemType != null">
     <!-- display for all ItemType -->
     <div class="form-group form-row">
         <div class="col">
             <input
                 ngModel 
+                #title="ngModel"
                 required
                 placeholder="Wpisz tytuł swojego dzieła"
                 autocomplete="off"
@@ -53,6 +54,11 @@
                 name="title" 
                 type="text" 
                 class="form-control">
+            <div *ngIf="title.touched && title.errors">
+                <div *ngIf="title.errors.required" class="text--error">
+                    Pole tytuł jest wymagane!
+                </div>
+            </div>
         </div>
     </div>
     <!-- display for all ItemType -->
@@ -60,6 +66,7 @@
         <div class="col">
             <select 
                 ngModel
+                #category="ngModel"
                 required
                 name="category" 
                 id="category"
@@ -73,7 +80,12 @@
                 </option>
                 <option value="y">Y</option>
                 <option value="y">X</option>
-            </select>    
+            </select>
+            <div *ngIf="category.touched && category.errors">
+                <div *ngIf="category.errors.required" class="text--error">
+                    Pole kategoria jest wymagane!
+                </div>
+            </div>    
         </div>
     </div>
     <!-- display only for ItemType.movie -->
@@ -81,6 +93,7 @@
         <div class="col">
             <select 
                 ngModel
+                #movieCategory="ngModel"
                 required
                 name="movie-category" 
                 id="movie-category"
@@ -95,6 +108,11 @@
                 <option value="y">Y</option>
                 <option value="y">X</option>
             </select>    
+            <div *ngIf="movieCategory.touched && movieCategory.errors">
+                <div *ngIf="movieCategory.errors.required" class="text--error">
+                    Pole kategoria jest wymagane!
+                </div>
+            </div>  
         </div>
     </div>
     <!-- display only for ItemType.movie -->
@@ -102,6 +120,7 @@
         <div class="col">
             <input 
                 ngModel
+                #movieDescription="ngModel"
                 required
                 placeholder="Opis filmu"
                 autocomplete="off"
@@ -109,6 +128,11 @@
                 name="movie-description" 
                 id="movie-description" 
                 class="form-control">
+            <div *ngIf="movieDescription.touched && movieDescription.errors">
+                <div *ngIf="movieDescription.errors.required" class="text--error">
+                    Pole opis filmu jest wymagane!
+                </div>
+            </div>  
         </div>
     </div>
     <!-- display only for all ItemType -->
@@ -116,6 +140,7 @@
         <div class="col">
             <input
                 ngModel 
+                #tags="ngModel"
                 required
                 placeholder="Tagi"
                 autocomplete="off"
@@ -123,21 +148,54 @@
                 name="tags" 
                 id="tags" 
                 class="form-control">
+            <div *ngIf="tags.touched && tags.errors">
+                <div *ngIf="tags.errors.required" class="text--error">
+                    Pole tagi jest wymagane!
+                </div>
+            </div>  
         </div>
     </div>
     <!-- display only for ItemType.image or ItemType.movie -->
     <div class="form-group form-row" *ngIf="_itemType == 'image' || _itemType == 'movie'">
         <div class="col">
-            <input 
-                ngModel
-                required
-                placeholder="Link do Twojego dzieła"
-                autocomplete="off"
-                type="text" 
-                name="image" 
-                id="image" 
-                class="form-control">
+            <label for="image" id="imageContainer">
+                <fa-icon [icon]="iconImage"></fa-icon>
+                Dodaj swoj obrazek
+                <input 
+                    (change)="loadFile($event)"
+                    ngModel
+                    #image="ngModel"
+                    required
+                    autocomplete="off"
+                    type="file"
+                    accept="image/jpeg, image/png, image/gif" 
+                    name="image" 
+                    id="image" 
+                    class="form-control">
+            </label>
+            <div *ngIf="image.touched && image.errors">
+                <div *ngIf="image.errors.required" class="text--error">
+                    <fa-icon [icon]="iconImage"></fa-icon>
+                    Pole obraz jest wymagane!
+                </div>
+            </div>  
+            <!-- <div class="progress"> -->
+                <!-- <div  -->
+                    <!-- class="progress-bar bg-success"  -->
+                    <!-- role="progressbar"  -->
+                    <!-- [style.width]="(_fileUploadProgress$ | async) + '%'" aria-valuenow="(_fileUploadProgress$ | async) + '%'" --> -->
+                    <!-- aria-valuemin="0"  -->
+                    <!-- aria-valuemax="100"> -->
+                <!-- </div> -->
+            <!-- </div> -->
         </div>
     </div>
-    <button type="submit" class="btn btn-outline-secondary">Add</button>
+    <button 
+        [disabled]="f.pristine || f.invalid"
+        type="submit" 
+        class="btn btn-outline-secondary">Add</button>
+    <div>
+        {{ f.errors | json }}
+        {{ f.dirty }}
+    </div>
 </form>

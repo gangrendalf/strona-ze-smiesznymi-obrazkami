@@ -1,0 +1,36 @@
+<div *ngIf="_authorId && _memId">
+    <mem-card [memId]="_memId"></mem-card>
+
+    <div class="comment-add">
+        <form #f="ngForm" (ngSubmit)="addComment(f)">
+            <div class="form-group form-inline">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <fa-icon class="input-group-text" [icon]="_iconUser"></fa-icon>
+                    </div>
+                    <textarea
+                        ngModel
+                        placeholder="Wpisz sowj komentarz tutaj"
+                        class="form-control" 
+                        name="text" 
+                        id="text"
+                        rows="4">
+                    </textarea>
+                </div>
+                <button 
+                    type="submit"
+                    class="btn btn-secondary"
+                    >Dodaj
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <ng-container *ngFor="let comment of _comments">
+        <mem-comment 
+            [memId]="_memId" 
+            [comment]="comment"
+            [userId]="_userId">
+        </mem-comment>
+    </ng-container>
+</div>

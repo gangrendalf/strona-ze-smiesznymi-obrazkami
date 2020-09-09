@@ -3,10 +3,10 @@ import { DatabaseService } from 'src/app/module/shared/service/database.service'
 import { IItem } from 'src/app/model/item';
 
 import { faPlus, faMinus, IconDefinition, faStar, faCommentAlt } from '@fortawesome/free-solid-svg-icons';
-import { IUser } from 'src/app/model/user';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { IVote, EVote } from 'src/app/model/vote';
 import { Subscription } from 'rxjs';
+import { VotingCore } from 'src/app/module/shared/functions';
 
 @Component({
   selector: 'mem-card',
@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./mem-card.component.sass']
 })
 export class MemCardComponent implements OnInit, OnDestroy {
-  @Input('itemId') memId: string;
+  @Input('memId') memId: string;
 
   private _plusIcon: IconDefinition = faPlus;
   private _minusIcon: IconDefinition = faMinus;
@@ -22,12 +22,12 @@ export class MemCardComponent implements OnInit, OnDestroy {
   private _commentIcon: IconDefinition = faCommentAlt;
 
   private _memData: IItem | null;
-  private _authorData: IUser | null;
   
   private _userId: string = null;
   private _userVote: IVote;
   private _upVotesCount: number = 0;
   private _downVotesCount: number = 0;
+  private _voter: VotingCore;
 
   private _authSubscription: Subscription;
   private _memSubscription: Subscription;
@@ -44,20 +44,15 @@ export class MemCardComponent implements OnInit, OnDestroy {
     this._memSubscription = this.dbs.getItem(this.memId)
       .subscribe(mem => {
         this._memData = mem;
-        if(!this._authorData)
-          this.dbs.getUser(mem.authorID).then(
-            res => this._authorData = res,
-            rej => this._authorData = null
-          );
-
+        
         if(!this._memData.votes)
           this._memData.votes = [];
 
-        if(this._memData.votes.some(v => v.uid = this._userId))
-          this._userVote = this._memData.votes.find((value) => value.uid ==   this._userId);
-
+        this._userVote = this._memData.votes.find((value) => value.uid ==   this._userId);
         this._upVotesCount = this._memData.votes.filter(vote => vote.note ==  EVote.up).length;
         this._downVotesCount = this._memData.votes.filter(vote => vote.note   == EVote.down).length;
+
+        this._voter = new VotingCore(this._userId, this._userVote, this._memData);
       });
   }
 
@@ -67,23 +62,7 @@ export class MemCardComponent implements OnInit, OnDestroy {
   }
 
   vote(note: EVote){
-    if(this._userVote && this._userVote.note == note)
-      this._userVote.note = EVote.none;
-    else if(this._userVote && this._userVote.note != note)
-      this._userVote.note = note;
-    else {
-      this._userVote = {
-        uid: this._userId, 
-        note: note };
-      this._memData.votes.push(this._userVote);
-    }
-
-    if(this._userVote.note == EVote.none){
-      let voteIndex = this._memData.votes.indexOf(this._userVote);
-      this._memData.votes.splice(voteIndex, 1);
-      this._userVote = null;
-    }
-
+    this._memData = this._voter.vote(note);
     this.dbs.updateItem(this.memId, this._memData);
   }
 

@@ -9,6 +9,7 @@ import { RegistrationPageComponent } from 'src/app/module/authentication/compone
 import { LoginComponent } from 'src/app/module/authentication/component/login/login.component';
 import { AuthGuard } from './module/authentication/guard/auth.guard';
 import { UnAuthGuard } from './module/authentication/guard/un-auth.guard';
+import { MemDetailComponent } from './module/mem/component/mem-detail/mem-detail.component';
 
 const routes: Routes = [
   { path: '', component: MemsSetComponent},
@@ -16,10 +17,11 @@ const routes: Routes = [
   { path: 'waiting-room', component: MemsSetComponent },
   { path: 'top', component: MemsSetComponent},
   { path: 'movies', component: MoviesSetComponent },
+  { path: 'mem/:uid/:nick/:id', component: MemDetailComponent },
   { path: 'add', component: MemAddFormComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegistrationPageComponent, canActivate: [UnAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [UnAuthGuard] },
-  { path: '**', redirectTo: ''}
+  // { path: '**', redirectTo: ''}
 ];
 
 @NgModule({

@@ -1,9 +1,10 @@
-import { IUser } from './user';
+import { IUserDetail, IUser } from './user';
+import { IVote } from './vote';
 
 export interface IComment {
     author: IUser,
     date: number,
-    upvote: number,
-    downvote: number,
-    response: IComment[]
+    votes: IVote[]
+    response: IComment[],
+    text: string
 }

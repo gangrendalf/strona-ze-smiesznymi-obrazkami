@@ -3,9 +3,9 @@ import { FormGroup, NgForm } from '@angular/forms';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { IItem } from 'src/app/model/item';
 import { IconDefinition, faSmile, faFileVideo, faFileImage } from '@fortawesome/free-solid-svg-icons';
-import { testUser, IUser } from 'src/app/model/user';
+import { testUser, IUserDetail, IUser } from 'src/app/model/user';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
-import { take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 
 @Component({
   selector: 'mem-add-form',
@@ -37,7 +37,17 @@ export class MemAddFormComponent implements OnInit {
     this.addMovieBox.nativeElement.addEventListener('click', e => this._itemType = ItemType.movie);
     this.addMemBox.nativeElement.addEventListener('click', e => this._itemType = ItemType.mem);
 
-    this._user = (await this.auth.authState$.pipe(take(1)).toPromise()).user;
+    this.auth.authState$
+      .pipe(
+        take(1),
+        map(authState => {
+          let user: IUser = {
+            uid: authState.user.uid,
+            nick: authState.user.nick
+          };
+          return user;
+        }))
+      .subscribe(user => this._user = user )
   }
 
   submit(f: NgForm){
@@ -46,8 +56,7 @@ export class MemAddFormComponent implements OnInit {
       category: f.value.category,
       tags: [f.value.tags],
       imageURL: null,
-      authorID: this._user.uid,
-      comments: [],
+      author: this._user,
       votes: null,
       creationDate: new Date().getTime()
     }
@@ -71,7 +80,6 @@ export class MemAddFormComponent implements OnInit {
     const imgRef = document.getElementById('imageContainer');
     imgRef.appendChild(img);
   }
-
 }
 
 enum ItemType{

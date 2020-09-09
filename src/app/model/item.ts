@@ -1,13 +1,14 @@
-import { IUser } from './user';
+import { IUserDetail, IUser } from './user';
 import { IVote } from './vote';
+import { AngularFirestoreCollection } from '@angular/fire/firestore';
+import { IComment } from './comment';
 
 export interface IItem {
     title: string,
-    authorID: string,
+    author: IUser,
     creationDate: number,
     category: string,
     tags: string[],
     imageURL: string,
-    comments: string[],
     votes: IVote[] 
 }

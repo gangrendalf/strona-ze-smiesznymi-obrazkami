@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { IUserRegisterData } from '../../../model/user-register-data';
-import { IUser } from '../../../model/user';
+import { IUserDetail } from '../../../model/user';
 import { DatabaseService } from '../../shared/service/database.service';
 import { IUserLoginData } from '../../../model/user-login-data';
 import { ReplaySubject, Observable } from 'rxjs';
@@ -34,7 +34,7 @@ export class AuthService {
     this.auth.auth
       .createUserWithEmailAndPassword(data.email, data.password)
       .then(res => {
-        let userData: IUser = {
+        let userData: IUserDetail = {
           uid: res.user.uid,
           nick: data.nick,
           email: data.email,
@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   private async getUserDetail(uid: string){
-    let userData: IUser = null;
+    let userData: IUserDetail = null;
     let isLogged: boolean = false;
 
     if(uid){

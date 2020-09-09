@@ -1,6 +1,6 @@
-import { IUser } from './user';
+import { IUserDetail } from './user';
 
 export interface IAuthState {
     isLogged: boolean,
-    user?: IUser
+    user?: IUserDetail
 }

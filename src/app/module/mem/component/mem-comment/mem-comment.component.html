@@ -1,0 +1,56 @@
+<div class="comment">
+    <div class="comment-header">
+        <div class="comment-header--details">
+            <span class="user-img">
+                <fa-icon [icon]="_iconUser"></fa-icon>
+            </span>
+            <span class="user-name">
+                {{comment.author.nick }}
+            </span>
+            <span class="timestamp">
+                {{comment.date | date}}
+            </span>
+        </div>
+        <div class="comment-header--actions">
+            <span class="flag">
+                <fa-icon [icon]="_iconFlag"></fa-icon>
+            </span>
+            <span class="btn--replay">
+                <button class="btn btn-sm btn-outline-secondary">
+                    <fa-icon [icon]="_iconReply"></fa-icon>
+                </button>
+            </span>
+            <span class="btn--plus">
+                <button 
+                    (click)="vote(1)" 
+                    class="btn btn-sm btn-outline-secondary"
+                    type="button"
+                    ><fa-icon [icon]="_iconPlus"></fa-icon>
+                </button>
+            </span>
+            <span class="display--plus">
+                {{ _upVotesCount }}
+            </span>
+            <span class="btn--minus">
+                <button 
+                    (click)="vote(-1)" 
+                    class="btn btn-sm btn-outline-secondary"
+                    type="button"
+                    ><fa-icon [icon]="_iconMinus"></fa-icon>
+                </button>
+            </span>
+            <span class="display--minus">
+                {{ _downVotesCount }}
+            </span>
+        </div>
+    </div>
+    <div class="comment-body">
+        <div class="comment-text">
+            {{comment.text }}
+        </div>
+        <div class="comment-responses">
+
+        </div>
+    </div>
+    <hr>
+</div>

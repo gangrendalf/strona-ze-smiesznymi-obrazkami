@@ -9,7 +9,7 @@ import { MemModule } from './module/mem/mem.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     SharedModule,

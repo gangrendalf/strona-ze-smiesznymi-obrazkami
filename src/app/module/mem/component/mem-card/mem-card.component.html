@@ -10,7 +10,7 @@
     <div class="card-body">
         <span 
             class="card-title"
-            [routerLink]="['/mem', mem.author.uid, mem.author.nick, memId]">
+            [routerLink]="['/mem', mem.author.uid, mem.author.nick, memID]">
             {{ mem.title }}
         </span>
         <div class="card-subtitle">
@@ -22,7 +22,7 @@
             </span>
         </div>
         <div class="card-img">
-            <a [routerLink]="['/mem', mem.author.uid, mem.author.nick, memId]">
+            <a [routerLink]="['/mem', mem.author.uid, mem.author.nick, memID]">
                 <img src="{{ mem.imageURL }}" alt="random image">
             </a>
         </div>
@@ -32,7 +32,7 @@
             <div class="col-4 vote-buttons-container">
                 <button
                     (click)="vote(1)"
-                    [disabled]="!_userId"
+                    [disabled]="!_userID"
                     [class.vote--upvote]="_userVote && _userVote.note == 1"
                     class="btn btn-block btn-secondary"
                     type="button"
@@ -40,7 +40,7 @@
                 </button>
                 <button
                     (click)="vote(-1)"
-                    [disabled]="!_userId"
+                    [disabled]="!_userID"
                     [class.vote--downvote]="_userVote && _userVote.note == -1"
                     class="btn btn-block btn-secondary"
                     type="button"

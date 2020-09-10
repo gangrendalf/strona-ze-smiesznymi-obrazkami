@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { PageService } from 'src/app/module/mem/service/page.service';
 
 @Component({
@@ -7,15 +6,11 @@ import { PageService } from 'src/app/module/mem/service/page.service';
   templateUrl: './mems-set.component.html',
   styleUrls: ['./mems-set.component.sass']
 })
-export class MemsSetComponent implements OnInit {
+export class MemsSetComponent {
   private _memIds: string[];
 
-  constructor(private ps: PageService) { }
-
-  async ngOnInit() {
-    this.ps.currentPageMemSet$.subscribe(memSet =>{
-      this._memIds = memSet;
-    })
+  constructor(private ps: PageService) { 
+    this.ps.currentPageMemSet$
+      .subscribe(memSet => this._memIds = memSet);
   }
-
 }

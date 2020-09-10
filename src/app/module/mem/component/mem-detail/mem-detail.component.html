@@ -1,36 +1,19 @@
-<div *ngIf="_authorId && _memId">
-    <mem-card [memId]="_memId"></mem-card>
+<div *ngIf="_authorID && _memID">
+    <mem-card [memID]="_memID"></mem-card>
 
-    <div class="comment-add">
-        <form #f="ngForm" (ngSubmit)="addComment(f)">
-            <div class="form-group form-inline">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <fa-icon class="input-group-text" [icon]="_iconUser"></fa-icon>
-                    </div>
-                    <textarea
-                        ngModel
-                        placeholder="Wpisz sowj komentarz tutaj"
-                        class="form-control" 
-                        name="text" 
-                        id="text"
-                        rows="4">
-                    </textarea>
-                </div>
-                <button 
-                    type="submit"
-                    class="btn btn-secondary"
-                    >Dodaj
-                </button>
-            </div>
-        </form>
-    </div>
+    <mem-comment-input
+        [userID]="_userID"
+        [userNick]="_userNick"
+        (submitComment)="addComment($event)">
+    </mem-comment-input>
 
-    <ng-container *ngFor="let comment of _comments">
+    <ng-container *ngFor="let comment of _rootComments">
         <mem-comment 
-            [memId]="_memId" 
+            [memID]="_memID" 
             [comment]="comment"
-            [userId]="_userId">
+            [userID]="_userID"
+            [userNick]="_userNick"
+            [childComments]="_childComments">
         </mem-comment>
     </ng-container>
 </div>

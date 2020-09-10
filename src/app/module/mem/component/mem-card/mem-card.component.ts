@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/module/authentication/service/auth.service'
 import { IVote, EVote } from 'src/app/model/vote';
 import { Subscription } from 'rxjs';
 import { VotingCore } from 'src/app/module/shared/functions';
+import { IAuthState } from 'src/app/model/auth-state';
 
 @Component({
   selector: 'mem-card',
@@ -14,7 +15,7 @@ import { VotingCore } from 'src/app/module/shared/functions';
   styleUrls: ['./mem-card.component.sass']
 })
 export class MemCardComponent implements OnInit, OnDestroy {
-  @Input('memId') memId: string;
+  @Input('memID') memID: string;
 
   private _plusIcon: IconDefinition = faPlus;
   private _minusIcon: IconDefinition = faMinus;
@@ -23,7 +24,7 @@ export class MemCardComponent implements OnInit, OnDestroy {
 
   private _memData: IItem | null;
   
-  private _userId: string = null;
+  private _userID: string = null;
   private _userVote: IVote;
   private _upVotesCount: number = 0;
   private _downVotesCount: number = 0;
@@ -35,24 +36,12 @@ export class MemCardComponent implements OnInit, OnDestroy {
   constructor(private dbs: DatabaseService, private auth: AuthService) { }
 
   async ngOnInit() {
-    this._authSubscription = this.auth.authState$.subscribe(state => {
-      state.user ? 
-        this._userId = state.user.uid : 
-        this._userId = null;
-    })
+    this._authSubscription = this.auth.authState$.subscribe(state => this.extractUserData(state))
 
-    this._memSubscription = this.dbs.getItem(this.memId)
+    this._memSubscription = this.dbs.getItem(this.memID)
       .subscribe(mem => {
-        this._memData = mem;
-        
-        if(!this._memData.votes)
-          this._memData.votes = [];
-
-        this._userVote = this._memData.votes.find((value) => value.uid ==   this._userId);
-        this._upVotesCount = this._memData.votes.filter(vote => vote.note ==  EVote.up).length;
-        this._downVotesCount = this._memData.votes.filter(vote => vote.note   == EVote.down).length;
-
-        this._voter = new VotingCore(this._userId, this._userVote, this._memData);
+        this.extractMemData(mem);
+        this.initializeVotingSystem();
       });
   }
 
@@ -63,7 +52,31 @@ export class MemCardComponent implements OnInit, OnDestroy {
 
   vote(note: EVote){
     this._memData = this._voter.vote(note);
-    this.dbs.updateItem(this.memId, this._memData);
+    this.dbs.updateItem(this.memID, this._memData);
   }
 
+  extractUserData(state: IAuthState){
+    if(!state.user)
+      return;
+
+    this._userID = state.user.uid;
+  }
+
+  extractMemData(mem: IItem){
+    if(!mem)
+      return;
+
+    this._memData = mem;
+    
+    if(!this._memData.votes)
+      this._memData.votes = [];
+
+    this._userVote = this._memData.votes.find((value) => value.uid ==   this._userID);
+    this._upVotesCount = this._memData.votes.filter(vote => vote.note ==  EVote.up).length;
+    this._downVotesCount = this._memData.votes.filter(vote => vote.note   == EVote.down).length;
+  }
+  
+  initializeVotingSystem(){
+    this._voter = new VotingCore(this._userID, this._userVote, this._memData);
+  }
 }

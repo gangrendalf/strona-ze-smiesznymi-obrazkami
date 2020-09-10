@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore'
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestoreCollectionGroup } from '@angular/fire/firestore'
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { map, take } from 'rxjs/operators';
 import { IItem } from '../../../model/item';
@@ -125,24 +125,24 @@ export class DatabaseService {
     docRef.set(data);
   }
 
-  public getComments(memId: string): Observable<IComment[]>{
+  public getComments(memId: string, responseTo?: string[]): Observable<IComment[]>{
     let collRef: AngularFirestoreCollection<IComment>;
     collRef = this.af.collection(`item/${memId}/comments`, q => q.orderBy('date'));
-    
+
     return collRef.valueChanges();
   }
 
-  public setComments(memId: string, comment: IComment){
-    let collRef: AngularFirestoreDocument<IComment>;
-    collRef = this.af.doc(`item/${memId}/comments/${comment.date}`);
-
-    collRef.set(comment)
+  public setComments(memId: string, comment: IComment, responseTo?: string[]){
+    let docRef: AngularFirestoreDocument<IComment>;
+    docRef = this.af.doc(`item/${memId}/comments/${comment.date.toString()}`);
+    
+    docRef.set(comment);
   }
 
-  public updateComment(memId: string, comment: IComment){
+  public updateComment(memId: string, comment: IComment, responseTo?: string[]){
     let docRef: AngularFirestoreDocument<IComment>;
-    docRef = this.af.doc(`item/${memId}/comments/${comment.date}`);
-
+    docRef = this.af.doc(`item/${memId}/comments/${comment.date.toString()}`);
+    
     docRef.update(comment);
   }
 }

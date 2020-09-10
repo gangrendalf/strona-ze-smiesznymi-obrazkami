@@ -8,6 +8,7 @@ import { PaginatorComponent } from './component/paginator/paginator.component';
 import { MoviesSetComponent } from './component/movies-set/movies-set.component';
 import { MemDetailComponent } from './component/mem-detail/mem-detail.component';
 import { MemCommentComponent } from './component/mem-comment/mem-comment.component';
+import { MemCommentInputComponent } from './component/mem-comment-input/mem-comment-input.component';
 
 
 @NgModule({
@@ -19,7 +20,7 @@ import { MemCommentComponent } from './component/mem-comment/mem-comment.compone
     MoviesSetComponent,
     MemDetailComponent,
     MemCommentComponent,
-
+    MemCommentInputComponent
   ],
   imports: [
     SharedModule

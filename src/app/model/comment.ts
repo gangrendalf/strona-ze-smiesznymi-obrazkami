@@ -5,6 +5,6 @@ export interface IComment {
     author: IUser,
     date: number,
     votes: IVote[]
-    response: IComment[],
-    text: string
+    text: string,
+    parentID: string 
 }

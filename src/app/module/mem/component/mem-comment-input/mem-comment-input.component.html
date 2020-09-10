@@ -1,0 +1,23 @@
+<form #f="ngForm" (ngSubmit)="submitComment(f)">
+    <div class="form-group form-inline">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <fa-icon class="input-group-text" [icon]="_iconUser"></fa-icon>
+            </div>
+            <textarea
+                ngModel
+                placeholder="Wpisz sowj komentarz tutaj"
+                class="form-control" 
+                name="text" 
+                id="text"
+                rows="4">
+            </textarea>
+        </div>
+        <button 
+            type="submit"
+            class="btn btn-secondary"
+            >Dodaj
+        </button>
+    </div>
+</form>
+

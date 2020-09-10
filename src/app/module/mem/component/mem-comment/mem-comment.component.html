@@ -16,7 +16,10 @@
                 <fa-icon [icon]="_iconFlag"></fa-icon>
             </span>
             <span class="btn--replay">
-                <button class="btn btn-sm btn-outline-secondary">
+                <button 
+                    (click)="toggleResponseInput()"
+                    class="btn btn-sm btn-outline-secondary"
+                    type="button">
                     <fa-icon [icon]="_iconReply"></fa-icon>
                 </button>
             </span>
@@ -48,8 +51,21 @@
         <div class="comment-text">
             {{comment.text }}
         </div>
-        <div class="comment-responses">
-
+        <mem-comment-input
+            *ngIf="_showResponseInput"
+            [userID]="userID"
+            [userNick]="userNick"
+            [parentCommentID]="comment.date.toString()"
+            (submitComment)="addComment($event)">
+        </mem-comment-input>
+        <div class="responses" *ngFor="let response of _responses">
+            <mem-comment
+                [memID]="memID" 
+                [comment]="response"
+                [userID]="userID"
+                [userNick]="userNick"
+                [childComments]="childComments">
+            </mem-comment>
         </div>
     </div>
     <hr>

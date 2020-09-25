@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PageService } from 'src/app/module/mem/service/page.service';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { PaginatorLink } from '../../model/paginator-link';
 
 @Component({
   selector: 'paginator',
@@ -8,34 +9,18 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
   styleUrls: ['./paginator.component.sass']
 })
 export class PaginatorComponent {
-  private _lastPage: number = -1;
-  private _currentPage: number = -1;
-  private _displayPages: number[] = [];
-  private _lastPageActive: boolean = false; // used in template
+  private _displayLinks: PaginatorLink[] = [];
+  private _defaultPageActive: boolean = false;
 
-  @ViewChild('wrapper', {static: true}) wrapper: ElementRef<HTMLDivElement>;
+  constructor(private ps: PageService, public route: ActivatedRoute) {
+    ps.paginatorLinks$
+      .subscribe(links => this._displayLinks = links);
 
-  constructor(private ps: PageService, private router: Router) {
-    ps.maxPageNumber$.subscribe(pageAmount => {
-      this._lastPage = pageAmount;
-      this._currentPage = pageAmount;
-      this.createLinks();
-    });
-    ps.currentPageNumber$.subscribe(currentPage => this._currentPage = currentPage);
-
-    router.events.subscribe(e => {
-      if(e instanceof NavigationEnd)
-        router.url == '/' ? this._lastPageActive = true : this._lastPageActive = false;
-    })
+    route.queryParamMap
+      .subscribe(paramMap => {
+        !paramMap.has('page-number') 
+          ? this._defaultPageActive = true
+          : this._defaultPageActive = false;
+      })
   }
-
-  createLinks(){
-    this._displayPages = [];
-
-    if(this._currentPage == this._lastPage){
-      for(let i = this._lastPage; i > this._lastPage - 10 && i > 0; i--)
-        this._displayPages.push(i);
-    }
-  }
-
 }

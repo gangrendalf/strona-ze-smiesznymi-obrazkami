@@ -10,7 +10,7 @@ export class MemsSetComponent {
   private _memIds: string[];
 
   constructor(private ps: PageService) { 
-    this.ps.currentPageMemSet$
-      .subscribe(memSet => this._memIds = memSet);
+    this.ps.activePageMemCollection$
+      .subscribe(memCollection => this._memIds = memCollection);
   }
 }

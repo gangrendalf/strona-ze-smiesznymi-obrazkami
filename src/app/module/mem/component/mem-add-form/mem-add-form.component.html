@@ -78,8 +78,9 @@
                     hidden
                     >Wybierz categorie
                 </option>
-                <option value="y">Y</option>
-                <option value="y">X</option>
+                <ng-container *ngFor="let category of _categories">
+                    <option [value]="category.name">{{category.name}}</option>
+                </ng-container>
             </select>
             <div *ngIf="category.touched && category.errors">
                 <div *ngIf="category.errors.required" class="text--error">

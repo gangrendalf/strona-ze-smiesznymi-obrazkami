@@ -16,25 +16,11 @@ export class DatabaseService {
 
   constructor(private af: AngularFirestore, private afStorage: AngularFireStorage) { }
 
-  public getItemsCount(): Promise<number> {
-    let collRef: AngularFirestoreCollection<IItemInfo>;
-    collRef = this.af.collection('item-info');
-
-    return collRef.valueChanges().pipe(
-        take(1),
-        map(r => r.length))
-      .toPromise();
-  }
-
-  public getItemsIds(): Promise<string[]>{
+  public getItemsReference(): Observable<IItemInfo[]>{
     let collRef: AngularFirestoreCollection<IItemInfo>;
     collRef = this.af.collection('item-info', q => q.orderBy('creationDate')); 
 
-    return collRef.valueChanges()
-      .pipe(
-        take(1),
-        map( items => items.map(item => item.itemId) ))
-      .toPromise();
+    return collRef.valueChanges();
   }
 
   public getItem(id: string): Observable<IItem>{

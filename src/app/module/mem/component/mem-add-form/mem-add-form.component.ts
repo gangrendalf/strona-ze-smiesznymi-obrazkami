@@ -3,9 +3,10 @@ import { FormGroup, NgForm } from '@angular/forms';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { IItem } from 'src/app/model/item';
 import { IconDefinition, faSmile, faFileVideo, faFileImage } from '@fortawesome/free-solid-svg-icons';
-import { testUser, IUserDetail, IUser } from 'src/app/model/user';
+import { IUser } from 'src/app/model/user';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { take, map } from 'rxjs/operators';
+import { ICategory } from 'src/app/model/category';
 
 @Component({
   selector: 'mem-add-form',
@@ -28,6 +29,8 @@ export class MemAddFormComponent implements OnInit {
 
   private _file: File = null;
   private _fileUrl: string = null;
+
+  private _categories: ICategory[];
   // private _fileUploadProgress$: Observable<number>;
 
   constructor(private dbs: DatabaseService, private auth: AuthService) { }
@@ -47,7 +50,9 @@ export class MemAddFormComponent implements OnInit {
           };
           return user;
         }))
-      .subscribe(user => this._user = user )
+      .subscribe(user => this._user = user );
+
+    this._categories = await this.dbs.getCategory();
   }
 
   submit(f: NgForm){

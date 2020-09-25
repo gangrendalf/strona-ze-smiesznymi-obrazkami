@@ -1,12 +1,23 @@
-<div #wrapper>
-    <ng-container *ngFor="let pageNumber of _displayPages">
-        <button 
-            class="btn btn-sm btn-outline-secondary mr-2"
-            routerLink="page"
-            [queryParams]="{ id: pageNumber }"
+<div class="buttons-container">
+    <button
+        (click)="ps.activateNextPage()"
+        class="btn btn-block btn-secondary"
+        type="button"
+        >Nastepna strona
+    </button>
+</div>
+<div class="buttons-container buttons-container--small justify-content-center">
+    <ng-container *ngFor="let link of _displayLinks">
+        <button
+            routerLink="/page"
+            [queryParams]="{ 'page-number': link.pageNumber }"
             routerLinkActive="active"
-            [class.active]="pageNumber == _lastPage && _lastPageActive"
-            >{{ pageNumber }} 
+            [disabled]="link.isSpecialString"
+            [class.active]="_defaultPageActive && link.specialString == 'last page'"
+            [class.btn-outline-secondary]="!link.isSpecialString"
+            class="btn btn-sm mr-2"
+            type="button"
+            >{{ link.isSpecialString ? link.specialString : link.pageNumber }} 
         </button>
     </ng-container>
 </div>

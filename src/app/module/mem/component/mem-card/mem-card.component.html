@@ -15,7 +15,7 @@
         </span>
         <div class="card-subtitle">
             <span class="subtitle-category">
-                <a routerLink="['/' + mem.category]">{{ mem.category }}</a>
+                <a [routerLink]="['/category', mem.category]">{{ mem.category }}</a>
             </span>
             <span class="subtitle-tag" *ngFor="let tag of mem.tags">
                 <a [routerLink]="['/' + tag]">{{ tag }}</a>

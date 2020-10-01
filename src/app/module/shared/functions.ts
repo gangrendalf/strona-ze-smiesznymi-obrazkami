@@ -27,9 +27,15 @@ export class VotingCore{
     }
 
     public vote(note: EVote): any{ // : IItem | IComment
-        if(this.userVote && this.userVote.note == note)
+      const userDidVote: boolean = (this.userVote != null);
+      const userChangedNote: boolean = userDidVote ? (this.userVote.note != note) : false;
+      const userResetNote: boolean =  userDidVote ? (this.userVote.note == note) : false;
+
+      console.log(userDidVote, userChangedNote, userResetNote);
+
+        if(userDidVote && userResetNote)
           this.userVote.note = EVote.none;
-        else if(this.userVote && this.userVote.note != note)
+        else if(userDidVote && userChangedNote)
           this.userVote.note = note;
         else {
           this.userVote = {

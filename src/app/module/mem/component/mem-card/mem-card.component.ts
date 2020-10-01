@@ -35,7 +35,7 @@ export class MemCardComponent implements OnInit, OnDestroy {
 
   constructor(private dbs: DatabaseService, private auth: AuthService) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     this._authSubscription = this.auth.authState$.subscribe(state => this.extractUserData(state))
 
     this._memSubscription = this.dbs.getItem(this.memID)
@@ -44,25 +44,15 @@ export class MemCardComponent implements OnInit, OnDestroy {
         this.initializeVotingSystem();
       });
   }
-
-  ngOnDestroy(){
-    this._authSubscription.unsubscribe();
-    this._memSubscription.unsubscribe();
-  }
-
-  vote(note: EVote){
-    this._memData = this._voter.vote(note);
-    this.dbs.updateItem(this.memID, this._memData);
-  }
-
-  extractUserData(state: IAuthState){
+  
+  private extractUserData(state: IAuthState){
     if(!state.user)
       return;
 
     this._userID = state.user.uid;
   }
 
-  extractMemData(mem: IItem){
+  private extractMemData(mem: IItem){
     if(!mem)
       return;
 
@@ -75,8 +65,18 @@ export class MemCardComponent implements OnInit, OnDestroy {
     this._upVotesCount = this._memData.votes.filter(vote => vote.note ==  EVote.up).length;
     this._downVotesCount = this._memData.votes.filter(vote => vote.note   == EVote.down).length;
   }
-  
-  initializeVotingSystem(){
+
+  private initializeVotingSystem(){
     this._voter = new VotingCore(this._userID, this._userVote, this._memData);
+  }
+
+  private vote(note: EVote){
+    this._memData = this._voter.vote(note);
+    this.dbs.updateItem(this.memID, this._memData);
+  }
+
+  ngOnDestroy(){
+    this._authSubscription.unsubscribe();
+    this._memSubscription.unsubscribe();
   }
 }

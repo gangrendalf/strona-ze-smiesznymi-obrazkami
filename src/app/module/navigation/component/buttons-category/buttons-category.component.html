@@ -10,19 +10,12 @@
     #categoryContainer
     class="d-none d-md-flex">
     <ul class="list-group list-group-flush list-group-horizontal-md">
-        <li class="list-group-item">
+        <li class="list-group-item" *ngFor="let category of visibleCategories"> 
             <button
-                [routerLink]="['/category', categoryName]"
+                [routerLink]="['/category', category.name]"
                 class="btn btn-block"
                 type="button"
-                >Humor
-            </button>
-        </li>
-        <li class="list-group-item">
-            <button
-                class="btn btn-block"
-                type="button"
-                >Cat 2
+                > {{ category.name }}
             </button>
         </li>
     </ul>

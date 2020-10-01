@@ -40,8 +40,10 @@ export class DatabaseService {
         let collRef: AngularFirestoreCollection<IItemInfo> = this.af.collection('item-info');
         let data: IItemInfo = {
           itemId: res.id,
-          categoryId: mem.category,
-          creationDate: mem.creationDate
+          category: mem.category,
+          creationDate: mem.creationDate,
+          approved: false,
+          approvalDate: null
         };
         collRef.add(data);
       });

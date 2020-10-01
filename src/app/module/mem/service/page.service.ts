@@ -76,22 +76,34 @@ export class PageService {
       case FilterType.top:
         filters = {type: FilterType.top, value: urlWithoutParams[1]}
         break;
-      default: break;
+      default: 
+        filters = {type: FilterType.none, value: FilterType.none}
+        break;
     }
     return filters;
   }
 
-  private applyFilters(mems: IItemInfo[], filters: Filter): IItemInfo[]{
-    if(!filters)
-      return mems;
-    
+  private applyFilters(mems: IItemInfo[], filters: Filter): IItemInfo[]{    
     let filteredMems: IItemInfo[];
 
-    if(filters.type == FilterType.category){
-      filteredMems = mems.filter(mem => mem.categoryId == filters.value);
-    }
+    if(filters.type == FilterType.waitingRoom)
+      filteredMems = mems.filter(mem => mem.approved == false);
     else
-      filteredMems = mems;
+      filteredMems = mems.filter(mem => mem.approved == true);
+
+    switch (filters.type){
+      case FilterType.category:
+        filteredMems = filteredMems.filter(mem => mem.category == filters.value);
+        break;
+      case FilterType.movies:
+        filteredMems = filteredMems.filter(mem => mem.category == filters.value);
+        break;
+      case FilterType.top:
+        filteredMems = filteredMems.filter(mem => mem.approvalDate > new Date().getTime());
+        break;
+      default: 
+        break;
+    }
 
     return filteredMems;
   }
@@ -154,7 +166,7 @@ export class PageService {
       startLocation = endLocation - offset;
   
       if(startLocation < 0 || endLocation < 0 || offset < 0){
-        console.error('PageService: function calculateMemSet() got at least one negative location parameter.');
+        console.error('PageService: function calculateMemSet() got at least one negative location parameter (probably no mems to display).');
       }
 
       this._activePageMemCollection$.next(ids.slice(startLocation, endLocation).reverse());
@@ -163,9 +175,7 @@ export class PageService {
   public activateNextPage(){
     let nextPage: number = this._activePageNumber - 1;
     
-    if(nextPage < 1)
-      nextPage = 1;
-
-    this.router.navigate(['/page'], {queryParams: {'page-number': nextPage}})
+    if(nextPage > 1)
+      this.router.navigate([this.router.url], {queryParams: {'page-number': nextPage}})
   }
 }

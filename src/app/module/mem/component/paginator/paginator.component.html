@@ -7,9 +7,9 @@
     </button>
 </div>
 <div class="buttons-container buttons-container--small justify-content-center">
-    <ng-container *ngFor="let link of _displayLinks">
+    <ng-container *ngFor="let link of _links">
         <button
-            routerLink="/page"
+            [routerLink]=""
             [queryParams]="{ 'page-number': link.pageNumber }"
             routerLinkActive="active"
             [disabled]="link.isSpecialString"

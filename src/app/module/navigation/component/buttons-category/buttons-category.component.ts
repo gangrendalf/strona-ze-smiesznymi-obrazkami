@@ -9,6 +9,7 @@ import { disableScroll, enableScroll } from 'src/app/module/shared/functions';
 export class CategoryComponent implements AfterViewInit {
   @ViewChild('categoryContainerToggler', {static: true}) categoryContainerToggler: ElementRef<HTMLButtonElement>;
   @ViewChild('categoryContainer', {static: true}) categoryContainer: ElementRef<HTMLDivElement>;
+  categoryName = 'humor';
   
   constructor() { }
 

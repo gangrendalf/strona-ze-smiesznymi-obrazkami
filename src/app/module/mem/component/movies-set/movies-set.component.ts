@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-movies-set',
+  selector: 'movies-set',
   templateUrl: './movies-set.component.html',
   styleUrls: ['./movies-set.component.sass']
 })

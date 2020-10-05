@@ -3,68 +3,117 @@
         <p>
             Załóż konto wypełniając poniższy formularz
         </p>
-        <form 
-            #f="ngForm"
-            (ngSubmit)="register(f)">
+        <form #f="ngForm" (ngSubmit)="register(f)">
             <div class="form-group form-row">
                 <input
                     ngModel
                     required
-                    autocomplete="off"
-                    placeholder="Login"
+                    minlength="3"
+                    pattern="^([a-zA-Z0-9]+)(([a-zA-Z0-9]*)(_*)(-*))*$"
+                    #login="ngModel"
                     id="login"
                     name="login"
+                    autocomplete="off"
+                    placeholder="Login"
                     type="text"
                     class="form-control">
+                <div class="text-danger" *ngIf="login.invalid && login.touched">
+                    <div *ngIf="login.errors.required">
+                        Pole login jest wymagane
+                    </div>
+                    <div *ngIf="login.errors.minlength">
+                        Login musi posiadać minimum {{ login.errors.minlength.requiredLength }} znaki
+                    </div>
+                    <div *ngIf="login.errors.pattern">
+                        Login musi zaczynać się literą bądź liczbą oraz może zawierać znaki - _
+                    </div>
+                </div>
             </div>
             <div class="form-group form-row">
                 <input
                     ngModel
                     required
-                    autocomplete="off"
-                    placeholder="Adres email"
+                    pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"
+                    #email="ngModel"
                     id="email"
                     name="email"
+                    autocomplete="off"
+                    placeholder="Adres email"
                     type="text"
                     class="form-control">
+                <div class="text-danger" *ngIf="email.invalid && email.touched">
+                    <div *ngIf="email.errors.required">
+                        Pole email jest wymagane
+                    </div>
+                    <div *ngIf="email.errors.pattern">
+                        Pole email musi bez poprawnym adresem email!
+                    </div>
+                </div>
             </div>
             <div class="form-group form-row">
                 <input
                     ngModel
                     required
-                    autocomplete="off"
-                    placeholder="Hasło"
+                    minlength="5"
+                    #password="ngModel"
                     id="password"
                     name="password"
-                    type="text"
+                    autocomplete="off"
+                    placeholder="Hasło"
+                    type="password"
                     class="form-control">
+                <div class="text-danger" *ngIf="password.invalid && password.touched">
+                    <div *ngIf="password.errors.required">
+                        Pole hasło jest wymagane
+                    </div>
+                    <div *ngIf="password.errors.minlength">
+                        Hasło musi składać się przynajmniej z {{ password.errors.minlength.requiredLength }} znaków
+                    </div>
+                </div>
             </div>
             <div class="form-group form-row">
                 <input
                     ngModel
                     required
-                    autocomplete="off"
-                    placeholder="Powtórz hasło"
+                    pattern="{{ password.value }}"
+                    #passwordConfirm="ngModel"
                     id="passwordConfirm"
                     name="passwordConfirm"
-                    type="text"
+                    autocomplete="off"
+                    placeholder="Powtórz hasło"
+                    type="password"
                     class="form-control">
+                <div class="text-danger" *ngIf="passwordConfirm.invalid && passwordConfirm.touched">
+                    <div *ngIf="passwordConfirm.errors.required">
+                        Pole powtorz haslo jest wymagane
+                    </div>
+                    <div *ngIf="passwordConfirm.errors.pattern">
+                        Pole potwierdzające hasło nie zgadza się
+                    </div>
+                </div>
             </div>
             <div class="form-group form-row">
                 <input
                     ngModel
                     required
-                    autocomplete="off"
-                    placeholder="Data urodzenia"
+                    #birthdate="ngModel"
                     id="birthdate"
                     name="birthdate"
+                    autocomplete="off"
+                    placeholder="Data urodzenia"
                     type="date"
                     class="form-control">
+                <div class="text-danger" *ngIf="birthdate.invalid && birthdate.touched">
+                    <div *ngIf="birthdate.errors.required">
+                        Rok Urodzenia jest wymagany
+                    </div>
+                </div>
             </div>
             <button
-                class="btn btn-primary"
+                [disabled]="f.invalid" 
                 type="submit"
-                > Załóż konto
+                class="btn btn-primary" 
+                >Załóż konto
             </button>
         </form>
     </div>

@@ -11,11 +11,13 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AngularFirestore } from '@angular/fire/firestore';
+import { SomethingGoesWrongComponent } from './component/something-goes-wrong/something-goes-wrong.component';
+import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [SomethingGoesWrongComponent, PageNotFoundComponent],
   imports: [
     BrowserModule,
     CommonModule,

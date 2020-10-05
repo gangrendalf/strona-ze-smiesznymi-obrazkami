@@ -5,17 +5,17 @@ import { IUserLoginData } from 'src/app/model/user-login-data';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.sass']
 })
 export class LoginComponent {
   constructor(private auth: AuthService, private router: Router, private route: ActivatedRoute) { }
 
-  login(f: NgForm) {
-    let data: IUserLoginData = {
-      email: f.value.email,
-      password: f.value.password
+  login(form: NgForm) {
+    const data: IUserLoginData = {
+      email: form.value.email,
+      password: form.value.password
     }
 
     this.auth.login(data);

@@ -20,7 +20,8 @@ export class AuthService {
     private auth: AngularFireAuth, 
     private dbs: DatabaseService,
     private router: Router,
-    private route: ActivatedRoute) { 
+    private route: ActivatedRoute) 
+    { 
     this.auth.authState
       .pipe(
         map(user => user ? user.uid : null)
@@ -51,15 +52,18 @@ export class AuthService {
       });
   }
 
+  public resetPassword(email: string): Promise<void>{
+    return this.auth.auth.sendPasswordResetEmail(email);
+  }
+
   public login(data: IUserLoginData){
     this.auth.auth
-      .signInWithEmailAndPassword(data.email, data.password)
-      // .then(() => this.redirectToOrigin());
+      .signInWithEmailAndPassword(data.email, data.password);
   }
 
   public logout(){
-    this.auth.auth.signOut()
-      // .then(() => this.redirectToOrigin());
+    this.auth.auth
+      .signOut();
   }
 
   private async getUserDetail(uid: string){
@@ -72,7 +76,7 @@ export class AuthService {
     };
 
     this._authState$.next({isLogged: isLogged, user: userData});
-    //yeah... 
+    
     this.redirectToOrigin();
   }
 

@@ -10,9 +10,14 @@ import { LoginComponent } from 'src/app/module/authentication/component/login/lo
 import { AuthGuard } from './module/authentication/guard/auth.guard';
 import { UnAuthGuard } from './module/authentication/guard/un-auth.guard';
 import { MemDetailComponent } from './module/mem/component/mem-detail/mem-detail.component';
+import { RemindPasswordComponent } from './module/authentication/component/remind-password/remind-password.component';
+import { SomethingGoesWrongComponent } from './module/shared/component/something-goes-wrong/something-goes-wrong.component';
+import { PageNotFoundComponent } from './module/shared/component/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: '', component: MemsSetComponent},
+  { path: 'something-goes-wrong', component: SomethingGoesWrongComponent },
+  { path: 'page-not-found', component: PageNotFoundComponent },
   { path: 'page', component: MemsSetComponent },
   { path: 'waiting-room', component: MemsSetComponent },
   { path: 'top/:time-interval', component: MemsSetComponent },
@@ -22,6 +27,7 @@ const routes: Routes = [
   { path: 'add', component: MemAddFormComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegistrationPageComponent, canActivate: [UnAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [UnAuthGuard] },
+  { path: 'remind-password', component: RemindPasswordComponent, canActivate: [UnAuthGuard] },
   // { path: '**', redirectTo: ''}
 ];
 

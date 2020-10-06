@@ -1,6 +1,6 @@
 import { IVote, EVote } from 'src/app/model/vote';
-import { IComment } from 'src/app/model/comment';
-import { IItem } from 'src/app/model/item';
+import { Comment } from 'src/app/module/shared/model/comment.interface';
+import { Mem } from 'src/app/module/shared/model/mem.interface';
 
 export function disableScroll(){
     document.addEventListener('touchmove', preventDefault, { passive: false });
@@ -22,7 +22,7 @@ export class VotingCore{
     constructor(
         public userId: string, 
         public userVote: IVote, 
-        public item: IItem | IComment){
+        public item: Mem | Comment){
         //constructor
     }
 

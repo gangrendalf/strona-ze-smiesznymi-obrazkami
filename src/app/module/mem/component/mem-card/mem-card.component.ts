@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
-import { IItem } from 'src/app/model/item';
+import { Mem } from 'src/app/module/shared/model/mem.interface';
 
 import { faPlus, faMinus, IconDefinition, faStar, faCommentAlt } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
@@ -22,7 +22,7 @@ export class MemCardComponent implements OnInit, OnDestroy {
   private _starIcon: IconDefinition = faStar;
   private _commentIcon: IconDefinition = faCommentAlt;
 
-  private _memData: IItem | null;
+  private _memData: Mem | null;
   
   private _userID: string = null;
   private _userVote: IVote;
@@ -38,7 +38,7 @@ export class MemCardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this._authSubscription = this.auth.authState$.subscribe(state => this.extractUserData(state))
 
-    this._memSubscription = this.dbs.getItem(this.memID)
+    this._memSubscription = this.dbs.mem.getSingle(this.memID)
       .subscribe(mem => {
         this.extractMemData(mem);
         this.initializeVotingSystem();
@@ -52,7 +52,7 @@ export class MemCardComponent implements OnInit, OnDestroy {
     this._userID = state.user.uid;
   }
 
-  private extractMemData(mem: IItem){
+  private extractMemData(mem: Mem){
     if(!mem)
       return;
 
@@ -72,7 +72,7 @@ export class MemCardComponent implements OnInit, OnDestroy {
 
   private vote(note: EVote){
     this._memData = this._voter.vote(note);
-    this.dbs.updateItem(this.memID, this._memData);
+    this.dbs.mem.update(this._memData, this.memID);
   }
 
   ngOnDestroy(){

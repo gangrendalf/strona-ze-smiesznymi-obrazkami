@@ -1,4 +1,4 @@
-export interface IItemInfo {
+export interface MemReference {
     itemId: string,
     creationDate: number,
     category: string,

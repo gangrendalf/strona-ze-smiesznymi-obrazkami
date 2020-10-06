@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, NgForm } from '@angular/forms';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
-import { IItem } from 'src/app/model/item';
+import { Mem } from 'src/app/module/shared/model/mem.interface';
 import { IconDefinition, faSmile, faFileVideo, faFileImage } from '@fortawesome/free-solid-svg-icons';
-import { IUser } from 'src/app/model/user';
+import { User } from 'src/app/module/shared/model/user.interface';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { take, map } from 'rxjs/operators';
-import { ICategory } from 'src/app/model/category';
+import { Category } from 'src/app/module/shared/model/category.interface';
+import { CategoryComponent } from 'src/app/module/navigation/component/buttons-category/buttons-category.component';
 
 @Component({
   selector: 'mem-add-form',
@@ -19,7 +20,7 @@ export class MemAddFormComponent implements OnInit {
   @ViewChild('addMemBox', {static: true}) addMemBox: ElementRef<HTMLDivElement>;
   @ViewChild('f', {static: true}) memForm: ElementRef<FormGroup>;
 
-  private _user: IUser = null;
+  private _user: User = null;
 
   private _itemType: ItemType;
 
@@ -30,7 +31,7 @@ export class MemAddFormComponent implements OnInit {
   private _file: File = null;
   private _fileUrl: string = null;
 
-  private _categories: ICategory[];
+  private _categories: Category[];
   // private _fileUploadProgress$: Observable<number>;
 
   constructor(private dbs: DatabaseService, private auth: AuthService) { }
@@ -44,7 +45,7 @@ export class MemAddFormComponent implements OnInit {
       .pipe(
         take(1),
         map(authState => {
-          let user: IUser = {
+          let user: User = {
             uid: authState.user.uid,
             nick: authState.user.nick
           };
@@ -52,11 +53,11 @@ export class MemAddFormComponent implements OnInit {
         }))
       .subscribe(user => this._user = user );
 
-    this._categories = await this.dbs.getCategory();
+    this._categories = await this.dbs.category.getAll().pipe(take(1)).toPromise();
   }
 
   submit(f: NgForm){
-    let mem: IItem = {
+    let mem: Mem = {
       title: f.value.title,
       category: f.value.category,
       tags: [f.value.tags],

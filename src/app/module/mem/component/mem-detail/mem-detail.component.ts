@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
-import { IComment } from 'src/app/model/comment';
+import { Comment } from 'src/app/module/shared/model/comment.interface';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
@@ -20,8 +20,8 @@ export class MemDetailComponent implements OnDestroy {
   private _userID: string = null;
   private _userNick: string = null;
 
-  private _rootComments: IComment[];
-  private _childComments: IComment[];
+  private _rootComments: Comment[];
+  private _childComments: Comment[];
 
   private _commentsSubscription: Subscription;
   private _authSubscription: Subscription;
@@ -30,7 +30,7 @@ export class MemDetailComponent implements OnDestroy {
   constructor(private route: ActivatedRoute, private dbs: DatabaseService, private auth: AuthService) { 
     this._routeSubscription = route.paramMap.subscribe(param => this.extractMemIdentifiers(param));
     this._authSubscription = auth.authState$.subscribe(state => this.extractUserData(state));
-    this._commentsSubscription = dbs.getComments(this._memID).subscribe(comments => this.separateRootAndChildComments(comments));
+    this._commentsSubscription = dbs.comment.getAll(this._memID).subscribe(comments => this.separateRootAndChildComments(comments));
   }
 
   ngOnDestroy(){
@@ -39,8 +39,8 @@ export class MemDetailComponent implements OnDestroy {
     this._routeSubscription.unsubscribe();
   }
 
-  addComment(comment: IComment){
-    this.dbs.setComments(this._memID, comment);
+  addComment(comment: Comment){
+    this.dbs.comment.set(comment, this._memID);
   }
 
   extractMemIdentifiers(param: ParamMap){
@@ -60,7 +60,7 @@ export class MemDetailComponent implements OnDestroy {
     this._userNick = state.user.nick;
   }
 
-  separateRootAndChildComments(comments: IComment[]){
+  separateRootAndChildComments(comments: Comment[]){
     this._rootComments = comments.filter(comment => comment.parentID == null);
     this._childComments = comments.filter(comment => comment.parentID != null);
   }

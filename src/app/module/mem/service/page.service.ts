@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { DatabaseService } from '../../shared/service/database.service';
 import { Observable, Subject, ReplaySubject, combineLatest } from 'rxjs';
 import { ActivatedRoute, NavigationEnd, ParamMap, Router, RouterEvent } from '@angular/router';
-import { IItemInfo } from 'src/app/model/item-info';
 import { PaginatorLink } from '../model/paginator-link';
 import { filter } from 'rxjs/operators';
-import { NavigationEvent } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-view-model';
 import { FilterType } from '../model/filter-type.enum';
 import { Filter } from '../model/filter';
+import { MemReference } from '../../shared/model/mem-reference.interface';
 
 @Injectable({
   providedIn: "root"
@@ -29,12 +28,12 @@ export class PageService {
 
     this.synchronizeMemsAndActivePageParameters()
       .subscribe(data => {
-        let memsInfo: IItemInfo[] = data[0];
+        let memsInfo: MemReference[] = data[0];
         let activeRouteParams: ParamMap = data[1];
         let navigationEndEvent: NavigationEnd = (data[2] as NavigationEnd);
 
         let filters = this.extractFiltersFromNavigationEvent(navigationEndEvent);
-        let filteredMemsInfo: IItemInfo[] = this.applyFilters(memsInfo, filters);
+        let filteredMemsInfo: MemReference[] = this.applyFilters(memsInfo, filters);
 
         this.calculateMaxPageNumber(filteredMemsInfo.length);
         this.checkActivePageNumber(activeRouteParams);
@@ -52,7 +51,7 @@ export class PageService {
 
   private synchronizeMemsAndActivePageParameters(){
     return combineLatest(
-      this.dbs.getItemsReference(), 
+      this.dbs.memReference.getAll(), 
       this.route.queryParamMap, 
       this.router.events.pipe(filter(e => e instanceof NavigationEnd))
       );
@@ -83,8 +82,8 @@ export class PageService {
     return filters;
   }
 
-  private applyFilters(mems: IItemInfo[], filters: Filter): IItemInfo[]{    
-    let filteredMems: IItemInfo[];
+  private applyFilters(mems: MemReference[], filters: Filter): MemReference[]{    
+    let filteredMems: MemReference[];
 
     if(filters.type == FilterType.waitingRoom)
       filteredMems = mems.filter(mem => mem.approved == false);
@@ -148,7 +147,7 @@ export class PageService {
     this._paginatorLinks$.next(links);
   }
 
-  private calculateMemIDCollection(memsInfo: IItemInfo[]){
+  private calculateMemIDCollection(memsInfo: MemReference[]){
       let ids = memsInfo.map(memInfo => memInfo.itemId)
 
       let offset: number = -1;

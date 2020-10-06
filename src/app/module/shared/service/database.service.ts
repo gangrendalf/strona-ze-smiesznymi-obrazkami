@@ -1,76 +1,41 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestoreCollectionGroup } from '@angular/fire/firestore'
+import { AngularFirestore } from '@angular/fire/firestore'
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
-import { map, take } from 'rxjs/operators';
-import { IItem } from '../../../model/item';
-import { ICategory } from '../../../model/category';
-import { IItemInfo } from '../../../model/item-info';
-import { IUserDetail } from '../../../model/user';
-import { Observable } from 'rxjs';
-import { IComment } from 'src/app/model/comment';
+import { Mem } from '../model/mem.interface';
+import { MemReference } from '../model/mem-reference.interface';
+import { CommentDatabaseModel } from '../model/comment.database-model';
+import { CategoryDatabaseModel } from '../model/category.database-model';
+import { UserDatabaseModel } from '../model/user.database-model';
+import { MemDatabaseModel } from '../model/mem.database-model';
+import { MemReferenceDatabaseModel } from '../model/mem-reference.database-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatabaseService {
+  public comment: CommentDatabaseModel;
+  public category: CategoryDatabaseModel;
+  public user: UserDatabaseModel;
+  public mem: MemDatabaseModel;
+  public memReference: MemReferenceDatabaseModel;
+  
 
-  constructor(private af: AngularFirestore, private afStorage: AngularFireStorage) { }
-
-  public getItemsReference(): Observable<IItemInfo[]>{
-    let collRef: AngularFirestoreCollection<IItemInfo>;
-    collRef = this.af.collection('item-info', q => q.orderBy('creationDate')); 
-
-    return collRef.valueChanges();
+  constructor(public af: AngularFirestore, private afStorage: AngularFireStorage) { 
+    this.comment = new CommentDatabaseModel(af);
+    this.category = new CategoryDatabaseModel(af);
+    this.user = new UserDatabaseModel(af);
+    this.mem = new MemDatabaseModel(af);
+    this.memReference = new MemReferenceDatabaseModel(af);
   }
 
-  public getItem(id: string): Observable<IItem>{
-    let docRef: AngularFirestoreDocument<IItem>;
-    docRef = this.af.doc('item/' + id);
-
-    return docRef.valueChanges();
-  }
-
-  public async createItemAndItemInfo(mem: IItem, file: File){
+  public async createItemAndItemInfo(mem: Mem, file: File){
     mem.imageURL = (await this.setImageFile(file, mem.author.uid));
     
-    let collRef: AngularFirestoreCollection<IItem>;
-    collRef = this.af.collection('item');   
-    collRef.add(mem)
-      .then(res => {
-        let collRef: AngularFirestoreCollection<IItemInfo> = this.af.collection('item-info');
-        let data: IItemInfo = {
-          itemId: res.id,
-          category: mem.category,
-          creationDate: mem.creationDate,
-          approved: false,
-          approvalDate: null
-        };
-        collRef.add(data);
-      });
-  }
+    this.mem.set(mem)
+      .then(
+        (res) => this.memReference.set(res as MemReference)
+      );
 
-  public updateItem(id: string, item: IItem){
-    let docRef: AngularFirestoreDocument<IItem>;
-    docRef = this.af.doc(`item/${id}`);
-
-    docRef.update(item);
-  }
-
-  public getCategory(): Promise<ICategory[]>{
-    let collRef: AngularFirestoreCollection<ICategory>;
-    collRef = this.af.collection('category', query => query.orderBy('name'));
-    
-    return collRef.valueChanges()
-      .pipe(
-        take(1))
-      .toPromise();
-  }
-
-  public setCategory(category: ICategory){
-    let collRed: AngularFirestoreCollection<ICategory>;
-    collRed = this.af.collection('category');
-
-    collRed.add(category);
   }
 
   private setImageFile(file: File, uid: string): Promise<any> {
@@ -94,43 +59,5 @@ export class DatabaseService {
         }
         );
     })
-  }
-
-  public getUser(id: string): Promise<IUserDetail> {
-    let docRef: AngularFirestoreDocument<IUserDetail>;
-    docRef = this.af.doc('user/' + id);
-
-    return docRef.valueChanges()
-      .pipe(
-        take(1))
-      .toPromise();
-  }
-
-  public setUser(data: IUserDetail){
-    let docRef: AngularFirestoreDocument<IUserDetail>;
-    docRef = this.af.doc('user/' + data.uid);
-
-    docRef.set(data);
-  }
-
-  public getComments(memId: string, responseTo?: string[]): Observable<IComment[]>{
-    let collRef: AngularFirestoreCollection<IComment>;
-    collRef = this.af.collection(`item/${memId}/comments`, q => q.orderBy('date'));
-
-    return collRef.valueChanges();
-  }
-
-  public setComments(memId: string, comment: IComment, responseTo?: string[]){
-    let docRef: AngularFirestoreDocument<IComment>;
-    docRef = this.af.doc(`item/${memId}/comments/${comment.date.toString()}`);
-    
-    docRef.set(comment);
-  }
-
-  public updateComment(memId: string, comment: IComment, responseTo?: string[]){
-    let docRef: AngularFirestoreDocument<IComment>;
-    docRef = this.af.doc(`item/${memId}/comments/${comment.date.toString()}`);
-    
-    docRef.update(comment);
   }
 }

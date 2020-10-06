@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { IUserRegisterData } from '../../../model/user-register-data';
-import { IUserDetail } from '../../../model/user';
+import { UserDetail } from '../../shared/model/user.interface';
 import { DatabaseService } from '../../shared/service/database.service';
 import { IUserLoginData } from '../../../model/user-login-data';
 import { ReplaySubject, Observable } from 'rxjs';
 import { IAuthState } from '../../../model/auth-state';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Injectable({
@@ -35,7 +35,7 @@ export class AuthService {
     this.auth.auth
       .createUserWithEmailAndPassword(data.email, data.password)
       .then(res => {
-        let userData: IUserDetail = {
+        let userData: UserDetail = {
           uid: res.user.uid,
           nick: data.nick,
           email: data.email,
@@ -48,7 +48,7 @@ export class AuthService {
           watchedUsers: 0
         }
         
-        this.dbs.setUser(userData);
+        this.dbs.user.set(userData);
       });
   }
 
@@ -67,11 +67,11 @@ export class AuthService {
   }
 
   private async getUserDetail(uid: string){
-    let userData: IUserDetail = null;
+    let userData: UserDetail = null;
     let isLogged: boolean = false;
 
     if(uid){
-      userData = await this.dbs.getUser(uid);
+      userData = await this.dbs.user.getSingle(uid).pipe(take(1)).toPromise();
       isLogged = true;
     };
 

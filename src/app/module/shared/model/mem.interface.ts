@@ -1,9 +1,9 @@
-import { IUser } from './user';
-import { IVote } from './vote';
+import { User } from './user.interface';
+import { IVote } from '../../../model/vote';
 
-export interface IItem {
+export interface Mem {
     title: string,
-    author: IUser,
+    author: User,
     creationDate: number,
     category: string,
     tags: string[],

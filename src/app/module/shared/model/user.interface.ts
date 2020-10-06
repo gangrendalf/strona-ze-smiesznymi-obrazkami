@@ -1,4 +1,4 @@
-export interface IUserDetail {
+export interface UserDetail {
     uid: string,
     nick: string,
     birthdate: number,
@@ -8,15 +8,15 @@ export interface IUserDetail {
     addedComments: number,
     addedMems: number,
     watchedUsers: number,
-    watchedTags: string[]
+    watchedTags: string[] 
 }
 
-export interface IUser{
+export interface User{
     uid: string,
     nick: string
 }
 
-export const testUser: IUserDetail = {
+export const testUser: UserDetail = {
         uid: "123",
         nick: "Anonymus",
         addedComments: 0,

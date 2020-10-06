@@ -1,5 +1,5 @@
 import { Component, Output, Input, EventEmitter } from '@angular/core';
-import { IComment } from 'src/app/model/comment';
+import { Comment } from 'src/app/module/shared/model/comment.interface';
 import { NgForm } from '@angular/forms';
 import { IconDefinition, faUser } from '@fortawesome/free-solid-svg-icons';
 
@@ -14,12 +14,12 @@ export class MemCommentInputComponent {
   @Input('userNick') userNick: string;
   @Input('parentCommentID') parentCommentID: string;
   
-  @Output('submitComment') submit = new EventEmitter<IComment>();
+  @Output('submitComment') submit = new EventEmitter<Comment>();
 
   private _iconUser: IconDefinition = faUser;
 
   private submitComment(f: NgForm){
-    let comment: IComment = {
+    let comment: Comment = {
       author: {
         uid: this.userID,
         nick: this.userNick

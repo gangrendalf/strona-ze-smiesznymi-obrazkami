@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
-import { ICategory } from 'src/app/model/category';
+import { take } from 'rxjs/operators';
+import { Category } from 'src/app/module/shared/model/category.interface';
 import { disableScroll, enableScroll } from 'src/app/module/shared/functions';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 
@@ -11,9 +12,9 @@ import { DatabaseService } from 'src/app/module/shared/service/database.service'
 export class CategoryComponent implements OnInit, AfterViewInit {
   @ViewChild('categoryContainerToggler', {static: true}) categoryContainerToggler: ElementRef<HTMLButtonElement>;
   @ViewChild('categoryContainer', {static: true}) categoryContainer: ElementRef<HTMLDivElement>;
-  private allCategories: ICategory[] = [];
-  private someCategories: ICategory[] = [];
-  private visibleCategories: ICategory[] = [];
+  private allCategories: Category[] = [];
+  private someCategories: Category[] = [];
+  private visibleCategories: Category[] = [];
   
   constructor(private dbs: DatabaseService) { }
   
@@ -27,7 +28,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   };
 
   private async getCategories(){
-    this.allCategories = await this.dbs.getCategory(); 
+    this.allCategories = await this.dbs.category.getAll().pipe(take(1)).toPromise(); 
   }
 
   private selectFourRandomCategoriesForDisplay(){

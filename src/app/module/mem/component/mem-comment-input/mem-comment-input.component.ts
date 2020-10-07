@@ -2,6 +2,7 @@ import { Component, Output, Input, EventEmitter } from '@angular/core';
 import { Comment } from 'src/app/module/shared/model/comment.interface';
 import { NgForm } from '@angular/forms';
 import { IconDefinition, faUser } from '@fortawesome/free-solid-svg-icons';
+import { User } from 'src/app/module/shared/model/user.interface';
 
 @Component({
   selector: 'mem-comment-input',
@@ -10,8 +11,7 @@ import { IconDefinition, faUser } from '@fortawesome/free-solid-svg-icons';
 })
 
 export class MemCommentInputComponent {
-  @Input('userID') userID: string;
-  @Input('userNick') userNick: string;
+  @Input('user') user: User;
   @Input('parentCommentID') parentCommentID: string;
   
   @Output('submitComment') submit = new EventEmitter<Comment>();
@@ -21,13 +21,13 @@ export class MemCommentInputComponent {
   private submitComment(f: NgForm){
     let comment: Comment = {
       author: {
-        uid: this.userID,
-        nick: this.userNick
+        uid: this.user.uid,
+        nick: this.user.nick
       },
       date: new Date().getTime(),
       text: f.value.text,
       votes: [],
-      parentID: this.parentCommentID ? this.parentCommentID : null
+      parentCommentID: this.parentCommentID ? this.parentCommentID : null
     }
 
     this.submit.emit(comment);

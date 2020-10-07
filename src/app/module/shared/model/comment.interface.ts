@@ -6,5 +6,6 @@ export interface Comment {
     date: number,
     votes: IVote[]
     text: string,
-    parentID: string 
+    id?: string,
+    parentCommentID: string 
 }

@@ -19,6 +19,8 @@ export class CommentDatabaseModel implements DatabaseInterface<Comment> {
     
     public set(data: Comment, parentID?: string): Promise<void | Comment> {
         const itemID: string = this.af.createId();
+        data.id = itemID;
+        
         const docRef: AngularFirestoreDocument<Comment> = 
             this.af.doc(`item/${parentID}/comments/${itemID}`);
         

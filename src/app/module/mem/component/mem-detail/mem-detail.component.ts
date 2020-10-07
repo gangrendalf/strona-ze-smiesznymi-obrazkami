@@ -63,8 +63,8 @@ export class MemDetailComponent implements OnInit, OnDestroy {
   }
 
   separateRootAndChildComments(comments: Comment[]){
-    this._rootComments = comments.filter(comment => comment.parentID == null);
-    this._childComments = comments.filter(comment => comment.parentID != null);
+    this._rootComments = comments.filter(comment => comment.parentCommentID == null);
+    this._childComments = comments.filter(comment => comment.parentCommentID != null);
   }
 
   private loadMemFromLocalStorage(){

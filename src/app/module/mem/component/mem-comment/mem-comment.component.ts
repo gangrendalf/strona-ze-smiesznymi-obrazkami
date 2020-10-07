@@ -4,6 +4,7 @@ import { Comment } from 'src/app/module/shared/model/comment.interface';
 import { IconDefinition, faUser, faFlag, faPlus, faMinus, faReply } from '@fortawesome/free-solid-svg-icons';
 import { EVote, IVote } from 'src/app/model/vote';
 import { VotingCore } from 'src/app/module/shared/functions';
+import { User } from 'src/app/module/shared/model/user.interface';
 
 @Component({
   selector: 'mem-comment',
@@ -13,8 +14,7 @@ import { VotingCore } from 'src/app/module/shared/functions';
 export class MemCommentComponent implements OnInit {
   @Input('memID') memID: string;
   @Input('comment') comment: Comment;
-  @Input('userID') userID: string;
-  @Input('userNick') userNick: string;
+  @Input('user') user: User;
   @Input('childComments') childComments: Comment[];
 
   private _iconUser: IconDefinition = faUser;
@@ -22,10 +22,6 @@ export class MemCommentComponent implements OnInit {
   private _iconPlus: IconDefinition = faPlus;
   private _iconMinus: IconDefinition = faMinus;
   private _iconReply: IconDefinition = faReply;
-
-  private _upVotesCount: number = 0;
-  private _downVotesCount: number = 0;
-  private _userVote: IVote;
 
   private _voter: VotingCore;
 
@@ -39,19 +35,20 @@ export class MemCommentComponent implements OnInit {
     if(!this.comment.votes)
       this.comment.votes = [];
 
-    this._userVote = this.comment.votes.find((value) => value.uid ==   this.userID);
-    this._upVotesCount = this.comment.votes.filter(vote => vote.note ==  EVote.up).length;
-    this._downVotesCount = this.comment.votes.filter(vote => vote.note   == EVote.down).length;
-    this._voter = new VotingCore(this.userID, this._userVote, this.comment);    
+    this._voter = new VotingCore(this.user, this.comment);    
 
     if(this.childComments)
-      this._responses = this.childComments.filter(response => response.parentID == this.comment.date.toString());
+      this._responses = this.childComments.filter(response => response.parentCommentID == this.comment.id);
   }
 
-  vote(note: EVote){
-    this.comment = this._voter.vote(note);
+  voteUp(){
+    const tempCommentData = this._voter.voteUp() as Comment;
+    this.dbs.comment.update(tempCommentData, this.comment.date.toString(), this.memID);
+  }
 
-    this.dbs.comment.update(this.comment, this.comment.date.toString(), this.memID);
+  voteDown(){
+    const tempCommentData = this._voter.voteDown() as Comment;
+    this.dbs.comment.update(tempCommentData, this.comment.date.toString(), this.memID);
   }
 
   toggleResponseInput(){

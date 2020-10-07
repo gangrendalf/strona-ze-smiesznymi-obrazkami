@@ -31,16 +31,16 @@
         <div class="row">
             <div class="col-4 vote-buttons-container">
                 <button
-                    (click)="vote(1)"
-                    [disabled]="!_userID"
+                    (click)="voteUp()"
+                    [disabled]="!_user"
                     [class.vote--upvote]="_userVote && _userVote.note == 1"
                     class="btn btn-block btn-secondary"
                     type="button"
                     ><fa-icon [icon]="_plusIcon"></fa-icon>
                 </button>
                 <button
-                    (click)="vote(-1)"
-                    [disabled]="!_userID"
+                    (click)="voteDown()"
+                    [disabled]="!_user"
                     [class.vote--downvote]="_userVote && _userVote.note == -1"
                     class="btn btn-block btn-secondary"
                     type="button"
@@ -58,11 +58,11 @@
                 </button>
             </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="_voter">
             <div class="col-4 vote-results">
-                <span>{{ _upVotesCount }}</span>
+                <span>{{ _voter.upVotesCount | async }}</span>
                 <span>/</span>
-                <span>{{ _downVotesCount }}</span>
+                <span>{{ _voter.downVotesCount | async }}</span>
             </div>
             <div class="col-4">
                 <!-- content or spacing beetwen button groups -->

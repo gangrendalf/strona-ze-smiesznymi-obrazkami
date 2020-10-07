@@ -7,7 +7,6 @@ import { User } from 'src/app/module/shared/model/user.interface';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { take, map } from 'rxjs/operators';
 import { Category } from 'src/app/module/shared/model/category.interface';
-import { CategoryComponent } from 'src/app/module/navigation/component/buttons-category/buttons-category.component';
 import { Image } from 'src/app/module/shared/model/image.interface';
 import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
 

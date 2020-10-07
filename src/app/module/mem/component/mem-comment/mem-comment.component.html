@@ -25,7 +25,7 @@
             </span>
             <span class="btn--plus">
                 <button 
-                    (click)="vote(1)" 
+                    (click)="voteUp()" 
                     class="btn btn-sm btn-outline-secondary"
                     type="button"
                     ><fa-icon [icon]="_iconPlus"></fa-icon>
@@ -36,7 +36,7 @@
             </span>
             <span class="btn--minus">
                 <button 
-                    (click)="vote(-1)" 
+                    (click)="voteDown()" 
                     class="btn btn-sm btn-outline-secondary"
                     type="button"
                     ><fa-icon [icon]="_iconMinus"></fa-icon>
@@ -53,17 +53,15 @@
         </div>
         <mem-comment-input
             *ngIf="_showResponseInput"
-            [userID]="userID"
-            [userNick]="userNick"
-            [parentCommentID]="comment.date.toString()"
+            [user]="user"
+            [parentCommentID]="comment.id"
             (submitComment)="addComment($event)">
         </mem-comment-input>
         <div class="responses" *ngFor="let response of _responses">
             <mem-comment
                 [memID]="memID" 
                 [comment]="response"
-                [userID]="userID"
-                [userNick]="userNick"
+                [user]="user"
                 [childComments]="childComments">
             </mem-comment>
         </div>

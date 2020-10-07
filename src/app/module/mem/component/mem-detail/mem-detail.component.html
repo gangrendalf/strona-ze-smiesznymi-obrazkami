@@ -2,8 +2,7 @@
     <mem-card [memReference]="_memReference"></mem-card>
 
     <mem-comment-input
-        [userID]="_user.uid"
-        [userNick]="_user.nick"
+        [user]="_user"
         (submitComment)="addComment($event)">
     </mem-comment-input>
 
@@ -11,8 +10,7 @@
         <mem-comment 
             [memID]="_memReference.itemID" 
             [comment]="comment"
-            [userID]="_user.uid"
-            [userNick]="_user.nick"
+            [user]="_user"
             [childComments]="_childComments">
         </mem-comment>
     </ng-container>

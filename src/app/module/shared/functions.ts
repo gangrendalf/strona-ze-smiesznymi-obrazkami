@@ -27,6 +27,9 @@ export class VotingCore{
   private _userVoted: boolean = false
 
   constructor(private user: User, private item: Mem | Comment){
+    if(!item.votes)
+      item.votes = [];
+      
     this.checkAndUpdateNotesCount();
   }
   
@@ -86,16 +89,9 @@ export class VotingCore{
   }
 
   private checkAndUpdateNotesCount(){
-    const upVotes = 
-      this.item.votes 
-        ? this.item.votes.filter(vote => vote.note == EVote.up).length 
-        : 0;
-
-    const downVotes = 
-      this.item.votes 
-        ? this.item.votes.filter(vote => vote.note == EVote.down).length
-        : 0;
-
+    const upVotes = this.item.votes.filter(vote => vote.note == EVote.up).length;
+    const downVotes =  this.item.votes.filter(vote => vote.note == EVote.down).length;
+    
     this._upVotesCount$.next(upVotes);
     this._downVotesCount$.next(downVotes);
   }

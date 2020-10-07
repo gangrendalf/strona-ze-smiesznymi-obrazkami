@@ -43,12 +43,12 @@ export class MemCommentComponent implements OnInit {
 
   voteUp(){
     const tempCommentData = this._voter.voteUp() as Comment;
-    this.dbs.comment.update(tempCommentData, this.comment.date.toString(), this.memID);
+    this.dbs.comment.update(tempCommentData, this.comment.id, this.memID);
   }
 
   voteDown(){
     const tempCommentData = this._voter.voteDown() as Comment;
-    this.dbs.comment.update(tempCommentData, this.comment.date.toString(), this.memID);
+    this.dbs.comment.update(tempCommentData, this.comment.id, this.memID);
   }
 
   toggleResponseInput(){

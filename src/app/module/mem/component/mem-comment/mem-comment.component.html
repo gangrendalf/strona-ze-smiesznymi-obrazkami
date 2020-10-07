@@ -32,7 +32,7 @@
                 </button>
             </span>
             <span class="display--plus">
-                {{ _upVotesCount }}
+                {{ _voter.upVotesCount | async }}
             </span>
             <span class="btn--minus">
                 <button 
@@ -43,7 +43,7 @@
                 </button>
             </span>
             <span class="display--minus">
-                {{ _downVotesCount }}
+                {{ _voter.downVotesCount | async }}
             </span>
         </div>
     </div>

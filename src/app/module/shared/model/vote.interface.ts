@@ -1,9 +1,9 @@
-export interface IVote{
-    note: EVote,
+export interface Vote{
+    note: Note,
     uid: string
 }
 
-export enum EVote{
+export enum Note{
     up = 1,
     none = 0,
     down = -1

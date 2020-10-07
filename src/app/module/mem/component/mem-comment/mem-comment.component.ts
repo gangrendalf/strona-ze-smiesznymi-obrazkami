@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { Comment } from 'src/app/module/shared/model/comment.interface';
 import { IconDefinition, faUser, faFlag, faPlus, faMinus, faReply } from '@fortawesome/free-solid-svg-icons';
-import { EVote, IVote } from 'src/app/model/vote';
 import { VotingCore } from 'src/app/module/shared/functions';
 import { User } from 'src/app/module/shared/model/user.interface';
 

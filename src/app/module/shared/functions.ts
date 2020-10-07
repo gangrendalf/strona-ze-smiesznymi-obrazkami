@@ -1,5 +1,5 @@
-import { observable, Observable, ReplaySubject, Subject } from 'rxjs';
-import { IVote, EVote } from 'src/app/model/vote';
+import { Observable, ReplaySubject } from 'rxjs';
+import { Vote, Note } from 'src/app/module/shared/model/vote.interface';
 import { Comment } from 'src/app/module/shared/model/comment.interface';
 import { Mem } from 'src/app/module/shared/model/mem.interface';
 import { User } from './model/user.interface';
@@ -23,7 +23,7 @@ function preventDefault(e: Event) {
 export class VotingCore{
   private _upVotesCount$: ReplaySubject<number> = new ReplaySubject(1);
   private _downVotesCount$: ReplaySubject<number> = new ReplaySubject(1);
-  private _userVote: IVote = null;
+  private _userVote: Vote = null;
   private _userVoted: boolean = false
 
   constructor(private user: User, private item: Mem | Comment){
@@ -42,18 +42,18 @@ export class VotingCore{
   }
 
   public voteUp(): Mem | Comment{
-    this.vote(EVote.up);
+    this.vote(Note.up);
 
     return this.item;
   }
 
   public voteDown(): Mem | Comment{
-    this.vote(EVote.down);
+    this.vote(Note.down);
     
     return this.item;
   }
 
-  private vote(note: EVote){
+  private vote(note: Note){
     this.checkUserVote();
     this.calculateNote(note);
     this.checkAndUpdateNotesCount();
@@ -68,7 +68,7 @@ export class VotingCore{
     this._userVote = this.item.votes.find(vote => vote.uid == this.user.uid);
   }
 
-  private calculateNote(note: EVote){
+  private calculateNote(note: Note){
     if(!this._userVoted){
       this._userVote = 
         {
@@ -89,8 +89,8 @@ export class VotingCore{
   }
 
   private checkAndUpdateNotesCount(){
-    const upVotes = this.item.votes.filter(vote => vote.note == EVote.up).length;
-    const downVotes =  this.item.votes.filter(vote => vote.note == EVote.down).length;
+    const upVotes = this.item.votes.filter(vote => vote.note == Note.up).length;
+    const downVotes =  this.item.votes.filter(vote => vote.note == Note.down).length;
     
     this._upVotesCount$.next(upVotes);
     this._downVotesCount$.next(downVotes);

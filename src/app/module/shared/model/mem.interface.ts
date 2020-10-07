@@ -1,5 +1,5 @@
 import { User } from './user.interface';
-import { IVote } from '../../../model/vote';
+import { Vote } from './vote.interface';
 import { Image } from './image.interface';
 
 export interface Mem {
@@ -10,5 +10,5 @@ export interface Mem {
     category: string,
     tags: string[],
     image: Image,
-    votes: IVote[] 
+    votes: Vote[] 
 }

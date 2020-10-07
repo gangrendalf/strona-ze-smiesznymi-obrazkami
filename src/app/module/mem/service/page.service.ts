@@ -17,10 +17,10 @@ export class PageService {
   private _activePageNumber: number;
 
 
-  private _activePageMemCollection$: Subject<string[]> = new ReplaySubject(1);
+  private _activePageMemCollection$: Subject<MemReference[]> = new ReplaySubject(1);
   private _paginatorLinks$: Subject<PaginatorLink[]> = new ReplaySubject(1);
 
-  public activePageMemCollection$: Observable<string[]> = new Observable();
+  public activePageMemCollection$: Observable<MemReference[]> = new Observable();
   public paginatorLinks$: Observable<PaginatorLink[]>;
 
   constructor(private dbs: DatabaseService, private route: ActivatedRoute, private router: Router) {
@@ -148,7 +148,7 @@ export class PageService {
   }
 
   private calculateMemIDCollection(memsInfo: MemReference[]){
-      let ids = memsInfo.map(memInfo => memInfo.itemId)
+      let ids = memsInfo.map(memInfo => memInfo)
 
       let offset: number = -1;
       let startLocation: number = -1;
@@ -175,6 +175,6 @@ export class PageService {
     let nextPage: number = this._activePageNumber - 1;
     
     if(nextPage > 1)
-      this.router.navigate([this.router.url], {queryParams: {'page-number': nextPage}})
+      this.router.navigate([this.router.url], {queryParams: {'page-number': nextPage}});
   }
 }

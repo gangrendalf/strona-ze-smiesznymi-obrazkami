@@ -10,7 +10,7 @@
     <div class="card-body">
         <span 
             class="card-title"
-            [routerLink]="['/mem', mem.author.uid, mem.author.nick, memID]">
+            (click)="openDetailView()">
             {{ mem.title }}
         </span>
         <div class="card-subtitle">
@@ -22,8 +22,8 @@
             </span>
         </div>
         <div class="card-img">
-            <a [routerLink]="['/mem', mem.author.uid, mem.author.nick, memID]">
-                <img src="{{ mem.imageURL }}" alt="random image">
+            <a (click)="openDetailView()" *ngIf='_imageData'>
+                <img src="{{ _imageData.URL }}" alt="random image">
             </a>
         </div>
     </div>

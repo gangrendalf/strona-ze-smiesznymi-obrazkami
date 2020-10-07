@@ -17,7 +17,7 @@ export class CategoryDatabaseModel implements DatabaseInterface<Category>{
         return collRef.valueChanges();
     }
 
-    set(data: Category, parentID?: string): Promise<void | Object> {
+    set(data: Category, parentID?: string): Promise<void | Category> {
         const itemID: string = this.af.createId();
         const docRef: AngularFirestoreDocument<Category> = 
             this.af.doc(`category/${itemID}`);

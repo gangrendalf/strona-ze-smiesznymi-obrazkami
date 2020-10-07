@@ -1,5 +1,7 @@
 export interface MemReference {
-    itemId: string,
+    itemID: string,
+    authorID: string,
+    imageID: string,
     creationDate: number,
     category: string,
     approved: boolean,

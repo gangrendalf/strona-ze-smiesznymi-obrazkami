@@ -18,24 +18,17 @@ export class MemDatabaseModel implements DatabaseInterface<Mem> {
         throw new Error('Method not implemented.');
     }
 
-    set(data: Mem, parentID?: string): Promise<void | Object> {
+    set(data: Mem, parentID?: string): Promise<void | Mem> {
         const itemID: string = this.af.createId();
         const collRef: AngularFirestoreDocument<Mem> = 
             this.af.doc(`item/${itemID}`);
 
+        data.id = itemID;
+
         return new Promise((resolve, reject) => {
             collRef.set(data)
                 .then(
-                    () => {
-                        const referenceData: MemReference = {
-                            itemId: itemID,
-                            category: data.category,
-                            creationDate: data.creationDate,
-                            approved: false,
-                            approvalDate: null
-                          };
-                        resolve(referenceData);
-                    },
+                    () => resolve(data),
                     (error) => reject(error)
                 )
         })

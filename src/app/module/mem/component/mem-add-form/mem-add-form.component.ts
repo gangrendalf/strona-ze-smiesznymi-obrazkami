@@ -8,6 +8,8 @@ import { AuthService } from 'src/app/module/authentication/service/auth.service'
 import { take, map } from 'rxjs/operators';
 import { Category } from 'src/app/module/shared/model/category.interface';
 import { CategoryComponent } from 'src/app/module/navigation/component/buttons-category/buttons-category.component';
+import { Image } from 'src/app/module/shared/model/image.interface';
+import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
 
 @Component({
   selector: 'mem-add-form',
@@ -56,18 +58,34 @@ export class MemAddFormComponent implements OnInit {
     this._categories = await this.dbs.category.getAll().pipe(take(1)).toPromise();
   }
 
-  submit(f: NgForm){
-    let mem: Mem = {
+  async submit(f: NgForm){
+    const image: Image = ((await this.dbs.image.set({uid: this._user.uid, file: this._file})) as Image);
+    
+    const mem: Mem = {
       title: f.value.title,
       category: f.value.category,
       tags: [f.value.tags],
-      imageURL: null,
+      image: image,
       author: this._user,
       votes: null,
       creationDate: new Date().getTime()
     }
 
-    this.dbs.createItemAndItemInfo(mem, this._file);
+    this.dbs.mem.set(mem)
+      .then(
+        (res: Mem) => {
+          const memRef: MemReference = {
+            itemID: res.id,
+            authorID: res.author.uid,
+            imageID: res.image.id,
+            category: res.category,
+            creationDate: res.creationDate,
+            approved: false,
+            approvalDate: null
+          }
+          this.dbs.memReference.set(memRef)
+        }
+      );
   }
 
   loadFile(event){

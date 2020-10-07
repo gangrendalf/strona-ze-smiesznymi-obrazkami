@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Comment } from 'src/app/module/shared/model/comment.interface';
@@ -6,6 +6,9 @@ import { DatabaseService } from 'src/app/module/shared/service/database.service'
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { IAuthState } from 'src/app/model/auth-state';
+import { Mem } from 'src/app/module/shared/model/mem.interface';
+import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
+import { User } from 'src/app/module/shared/model/user.interface';
 
 @Component({
   selector: 'mem-detail',
@@ -13,55 +16,60 @@ import { IAuthState } from 'src/app/model/auth-state';
   styleUrls: ['./mem-detail.component.sass']
 })
 
-export class MemDetailComponent implements OnDestroy {
-  private _memID: string;
-  private _authorID: string;
-  private _authorNick: string;
-  private _userID: string = null;
-  private _userNick: string = null;
+export class MemDetailComponent implements OnInit, OnDestroy {
+  private _memReference: MemReference = null;
+  private _user: User;
 
   private _rootComments: Comment[];
   private _childComments: Comment[];
 
   private _commentsSubscription: Subscription;
   private _authSubscription: Subscription;
-  private _routeSubscription: Subscription;
   
-  constructor(private route: ActivatedRoute, private dbs: DatabaseService, private auth: AuthService) { 
-    this._routeSubscription = route.paramMap.subscribe(param => this.extractMemIdentifiers(param));
-    this._authSubscription = auth.authState$.subscribe(state => this.extractUserData(state));
-    this._commentsSubscription = dbs.comment.getAll(this._memID).subscribe(comments => this.separateRootAndChildComments(comments));
+  constructor(private dbs: DatabaseService, private auth: AuthService) { 
+
+
+
+  }
+
+  ngOnInit(){
+    this.loadMemFromLocalStorage();
+    
+    this._authSubscription = 
+      this.auth.authState$
+        .subscribe(state => this.extractUserData(state));
+
+    this._commentsSubscription = 
+      this.dbs.comment
+        .getAll(this._memReference.itemID)
+        .subscribe(comments => this.separateRootAndChildComments(comments));
   }
 
   ngOnDestroy(){
     this._commentsSubscription.unsubscribe();
     this._authSubscription.unsubscribe();
-    this._routeSubscription.unsubscribe();
   }
 
   addComment(comment: Comment){
-    this.dbs.comment.set(comment, this._memID);
+    this.dbs.comment.set(comment, this._memReference.itemID);
   }
 
-  extractMemIdentifiers(param: ParamMap){
-    if( !(param.has('uid') && param.has('nick') && param.has('id')) )
-      return;
-
-    this._authorID = param.get('uid');
-    this._authorNick = param.get('nick');
-    this._memID = param.get('id');
-  }
 
   extractUserData(state: IAuthState){
     if(!state.user)
       return;
 
-    this._userID = state.user.uid;
-    this._userNick = state.user.nick;
+    this._user = {nick: state.user.nick, uid: state.user.uid};
   }
 
   separateRootAndChildComments(comments: Comment[]){
     this._rootComments = comments.filter(comment => comment.parentID == null);
     this._childComments = comments.filter(comment => comment.parentID != null);
+  }
+
+  private loadMemFromLocalStorage(){
+    const localStorageString = localStorage.getItem('memReference');
+    const localStorageObject = JSON.parse(localStorageString);
+    this._memReference = localStorageObject;
   }
 }

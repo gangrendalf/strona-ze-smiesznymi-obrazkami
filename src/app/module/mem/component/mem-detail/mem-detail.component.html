@@ -1,18 +1,18 @@
-<div *ngIf="_authorID && _memID">
-    <mem-card [memID]="_memID"></mem-card>
+<div *ngIf="_user && _memReference">
+    <mem-card [memReference]="_memReference"></mem-card>
 
     <mem-comment-input
-        [userID]="_userID"
-        [userNick]="_userNick"
+        [userID]="_user.uid"
+        [userNick]="_user.nick"
         (submitComment)="addComment($event)">
     </mem-comment-input>
 
     <ng-container *ngFor="let comment of _rootComments">
         <mem-comment 
-            [memID]="_memID" 
+            [memID]="_memReference.itemID" 
             [comment]="comment"
-            [userID]="_userID"
-            [userNick]="_userNick"
+            [userID]="_user.uid"
+            [userNick]="_user.nick"
             [childComments]="_childComments">
         </mem-comment>
     </ng-container>

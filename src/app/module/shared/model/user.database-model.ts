@@ -17,7 +17,7 @@ export class UserDatabaseModel implements DatabaseInterface<UserDetail>{
         throw new Error('Method not implemented.');
     }
 
-    set(data: UserDetail, parentID?: string): Promise<void | Object> {
+    set(data: UserDetail, parentID?: string): Promise<void | UserDetail> {
         const docRef: AngularFirestoreDocument<UserDetail> = 
             this.af.doc('user/' + data.uid);
     

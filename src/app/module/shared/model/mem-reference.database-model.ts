@@ -17,7 +17,7 @@ export class MemReferenceDatabaseModel implements DatabaseInterface<MemReference
         return collRef.valueChanges();
     }
 
-    set(data: MemReference, parentID?: string): Promise<void | Object> {
+    set(data: MemReference, parentID?: string): Promise<void | MemReference> {
         const itemID: string = this.af.createId();
         const docRef: AngularFirestoreDocument<MemReference> = 
             this.af.doc(`item-info/${itemID}`);

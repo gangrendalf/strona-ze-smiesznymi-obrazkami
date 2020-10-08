@@ -1,1 +1,47 @@
-<p>profile works!</p>
+<div>
+    <div>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item">
+                <button
+                    [routerLink]="['/profile', _userID, 'wall']"
+                    type="button" 
+                    class="btn btn-outline-secondary"
+                    >Tablica
+                </button>
+            </li>
+            <li class="list-group-item">
+                <button
+                    [routerLink]="['/profile', _userID, 'watched-users']"
+                    type="button" 
+                    class="btn btn-outline-secondary"
+                    >Obserwowani
+                </button>
+            </li>
+            <li class="list-group-item">
+                <button
+                    [routerLink]="['/profile', _userID, 'watched-tags']"
+                    type="button" 
+                    class="btn btn-outline-secondary"
+                    >Tagi
+                </button>
+            </li>
+            <li class="list-group-item">
+                <button
+                    [routerLink]="['/profile', _userID, 'watched-mems']"
+                    type="button" 
+                    class="btn btn-outline-secondary"
+                    >Memy
+                </button>
+            </li>
+            <li class="list-group-item">
+                <button
+                    [routerLink]="['/profile', _userID, 'history']"
+                    type="button" 
+                    class="btn btn-outline-secondary"
+                    >Historia
+                </button>
+            </li>
+        </ul>
+    </div>
+    <router-outlet></router-outlet>
+</div>

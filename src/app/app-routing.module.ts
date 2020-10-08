@@ -13,6 +13,12 @@ import { MemDetailComponent } from './module/mem/component/mem-detail/mem-detail
 import { RemindPasswordComponent } from './module/authentication/component/remind-password/remind-password.component';
 import { SomethingGoesWrongComponent } from './module/shared/component/something-goes-wrong/something-goes-wrong.component';
 import { PageNotFoundComponent } from './module/shared/component/page-not-found/page-not-found.component';
+import { ProfileComponent } from './module/profile/component/profile/profile.component';
+import { WallComponent } from './module/profile/component/wall/wall.component';
+import { WatchedUsersComponent } from './module/profile/component/watched-users/watched-users.component';
+import { WatchedTagsComponent } from './module/profile/component/watched-tags/watched-tags.component';
+import { WatchedMemsComponent } from './module/profile/component/watched-mems/watched-mems.component';
+import { HistoryComponent } from './module/profile/component/history/history.component';
 
 const routes: Routes = [
   { path: '', component: MemsSetComponent},
@@ -28,6 +34,19 @@ const routes: Routes = [
   { path: 'register', component: RegistrationPageComponent, canActivate: [UnAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [UnAuthGuard] },
   { path: 'remind-password', component: RemindPasswordComponent, canActivate: [UnAuthGuard] },
+
+  { path: 'profile/:uid', component: ProfileComponent, 
+    children: [
+      { path: '', redirectTo: 'wall', pathMatch: 'full'},
+      { path: 'wall', component: WallComponent },
+      { path: 'watched-users', component: WatchedUsersComponent },
+      { path: 'watched-tags', component: WatchedTagsComponent },
+      { path: 'watched-mems', component: WatchedMemsComponent },
+      { path: 'history', component: HistoryComponent }
+    ] 
+  },
+
+
   // { path: '**', redirectTo: ''}
 ];
 

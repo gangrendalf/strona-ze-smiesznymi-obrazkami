@@ -7,13 +7,35 @@
 <div #wrapper class="wrapper hidden">
     <ul class="list-group list-group-flush">
         <li class="list-group-item list-group-item-action">
-            <button class="btn btn-block">
-                link 1
+            <button
+                [routerLink]="['/profile', _userID]"
+                type="button" 
+                class="btn btn-block"
+                >Profil
             </button>
         </li>
         <li class="list-group-item list-group-item-action">
-            <button class="btn btn-block">
-                link 2
+            <button
+                [routerLink]="['/profile', _userID, 'watched-users']"
+                type="button" 
+                class="btn btn-block"
+                >Obserwowani
+            </button>   
+        </li>
+        <li class="list-group-item list-group-item-action">
+            <button
+                [routerLink]="['/profile', _userID, 'watched-tags']"
+                type="button"
+                class="btn btn-block"
+                >Tagi
+            </button>
+        </li>
+        <li class="list-group-item list-group-item-action">
+            <button
+                [routerLink]="['/profile', _userID, 'watched-mems']"
+                type="button" 
+                class="btn btn-block"
+                >Memy
             </button>
         </li>
         <li class="list-group-item list-group-item-action">

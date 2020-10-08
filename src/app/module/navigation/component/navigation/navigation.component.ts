@@ -14,30 +14,44 @@ export class NavigationComponent implements AfterViewInit {
   @ViewChild('bottomOnMobile', { static: true }) bottomBarOnMobileRef: ElementRef<HTMLDivElement>;
   @ViewChild('bottomOnDesktop', { static: true }) bottomBarOnDesktopRef: ElementRef<HTMLDivElement>;
 
-
   private _barsIcon: IconDefinition = faBars;
 
   constructor() { 
-    document.addEventListener('scroll', () => {
-      if(window.scrollY > 10){
-        this.bottomBarOnMobileRef.nativeElement.classList.add('bottom-bar--hidden');
-        this.bottomBarOnDesktopRef.nativeElement.classList.add('bottom-bar--hidden');
-        this.navigationBarRef.nativeElement.classList.add('bottom-bar--hidden');
-      }
-      else{
-        this.bottomBarOnMobileRef.nativeElement.classList.remove('bottom-bar--hidden');
-        this.bottomBarOnDesktopRef.nativeElement.classList.remove('bottom-bar--hidden');
-        this.navigationBarRef.nativeElement.classList.remove('bottom-bar--hidden');
-      }
-
-    })
+    this.hideBottomBarOnScroll();
   }
 
   ngAfterViewInit(){
-    this.menuContainerTogglerRef.nativeElement.addEventListener('click', () => {
-      this.menuContainerRef.nativeElement.classList.toggle('menu-container--shown');
-      
-      this.menuContainerRef.nativeElement.classList.contains('menu-container--shown') ? disableScroll() : enableScroll();
-    });
+    this.toggleMenuOnClick();
+    this.blockBrackgroundScrollOnClick();
+  }
+
+  private hideBottomBarOnScroll(){
+    document.addEventListener('scroll', () => 
+      window.scrollY > 10 ? this.hideBottomBar() : this.showBottomBar()
+    )
+  }
+
+  private hideBottomBar(){
+    this.bottomBarOnMobileRef.nativeElement.classList.add('bottom-bar--hidden');
+    this.bottomBarOnDesktopRef.nativeElement.classList.add('bottom-bar--hidden');
+    this.navigationBarRef.nativeElement.classList.add('bottom-bar--hidden');
+  }
+
+  private showBottomBar(){
+    this.bottomBarOnMobileRef.nativeElement.classList.remove('bottom-bar--hidden');
+    this.bottomBarOnDesktopRef.nativeElement.classList.remove('bottom-bar--hidden');
+    this.navigationBarRef.nativeElement.classList.remove('bottom-bar--hidden');
+  }
+
+  private toggleMenuOnClick(){
+    this.menuContainerTogglerRef.nativeElement.addEventListener('click', () => 
+      this.menuContainerRef.nativeElement.classList.toggle('menu-container--shown')
+    );
+  }
+
+  private blockBrackgroundScrollOnClick(){
+    this.menuContainerTogglerRef.nativeElement.addEventListener('click', () => 
+      this.menuContainerRef.nativeElement.classList.contains('menu-container--shown') ? disableScroll() : enableScroll()
+    );
   }
 }

@@ -1,16 +1,14 @@
-<div>
-    <button
-        #categoryContainerToggler
-        class="btn btn-block btn-outline-primary d-block d-md-none"
-        type="button"
-        >Kategorie
-    </button>
-</div>
+<button
+    #categoryContainerToggler
+    class="btn btn-block btn-outline-primary d-block d-md-none"
+    type="button"
+    >Kategorie
+</button>
 <div 
     #categoryContainer
     class="d-none d-md-flex">
     <ul class="list-group list-group-flush list-group-horizontal-md">
-        <li class="list-group-item" *ngFor="let category of visibleCategories"> 
+        <li class="list-group-item" *ngFor="let category of _visibleCategories"> 
             <button
                 [routerLink]="['/category', category.name]"
                 class="btn btn-block"

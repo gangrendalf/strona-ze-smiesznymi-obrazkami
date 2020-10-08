@@ -12,50 +12,83 @@ import { DatabaseService } from 'src/app/module/shared/service/database.service'
 export class CategoryComponent implements OnInit, AfterViewInit {
   @ViewChild('categoryContainerToggler', {static: true}) categoryContainerToggler: ElementRef<HTMLButtonElement>;
   @ViewChild('categoryContainer', {static: true}) categoryContainer: ElementRef<HTMLDivElement>;
-  private allCategories: Category[] = [];
-  private someCategories: Category[] = [];
-  private visibleCategories: Category[] = [];
+
+  private readonly _BREAKPOINT_MD = 768;
+  private _allCategories: Category[] = [];
+  private _someCategories: Category[] = [];
+  private _visibleCategories: Category[] = [];
   
   constructor(private dbs: DatabaseService) { }
   
   async ngOnInit(){
-    await this.getCategories();
-    this.selectFourRandomCategoriesForDisplay();
+    await this.getAllCategories();
+    this.selectFourRandomCategoriesForDesktopView();
+    this.selectVisibleCategories();
   }
 
   ngAfterViewInit(){
-    this.toggleCategoriesContainer();
-  };
-
-  private async getCategories(){
-    this.allCategories = await this.dbs.category.getAll().pipe(take(1)).toPromise(); 
+    this.addListeners();
   }
 
-  private selectFourRandomCategoriesForDisplay(){
+  private async getAllCategories(){
+    this._allCategories = await this.dbs.category.getAll().pipe(take(1)).toPromise(); 
+  }
+
+  private selectFourRandomCategoriesForDesktopView(){
     do{
-      const randomIndex = Math.round(Math.random() * (this.allCategories.length - 1));
-      const randomCategory = this.allCategories[randomIndex];
-      const categoryNotUsed = !this.someCategories.find((category) => category == randomCategory); 
+      const randomIndex = Math.round(Math.random() * (this._allCategories.length - 1));
+      const randomCategory = this._allCategories[randomIndex];
+      const categoryDuplicated = this._someCategories.find((category) => category == randomCategory); 
       
-      if(categoryNotUsed)
-        this.someCategories.push(randomCategory);
+      if(!categoryDuplicated)
+        this._someCategories.push(randomCategory);
 
-    } while (this.someCategories.length < 4);
+    } while (this._someCategories.length < 4);
 
-    this.visibleCategories = this.someCategories;
+    this._visibleCategories = this._someCategories;
   }
 
-  private toggleCategoriesContainer(){
+  private selectVisibleCategories(){
+    if(window.innerWidth > this._BREAKPOINT_MD)
+      this._visibleCategories = this._someCategories;
+    else
+      this._visibleCategories = this._allCategories;
+  }
+
+  private addListeners(){
+    this.toggleCategoryContainer()
+    this.disableContentScrollWhenCategoryContainerShown();
+    this.hideCategoryContainerOnResize()
+    this.selectVisibleCategoriesOnResize();
+  }
+
+  private toggleCategoryContainer(){
     this.categoryContainerToggler.nativeElement.addEventListener('click', () => {
       this.categoryContainer.nativeElement.classList.toggle('category-container--shown');
-      
-      this.categoryContainer.nativeElement.classList.contains('category-container--shown') 
-        ? this.visibleCategories = this.allCategories 
-        : this.visibleCategories = this.someCategories;
+    });
+  }
 
+  private disableContentScrollWhenCategoryContainerShown(){
+    this.categoryContainerToggler.nativeElement.addEventListener('click', () => {
       this.categoryContainer.nativeElement.classList.contains('category-container--shown') 
         ? disableScroll() 
         : enableScroll();
     });
   }
+
+  private hideCategoryContainerOnResize(){
+    window.addEventListener('resize', (e) => {
+      if(window.innerWidth > this._BREAKPOINT_MD){
+        this.categoryContainer.nativeElement.classList.remove('category-container--shown');
+        enableScroll();
+      }
+    })
+  }
+
+  private selectVisibleCategoriesOnResize(){
+    window.addEventListener('resize', (e) => 
+      this.selectVisibleCategories())
+  }
+
+
 }

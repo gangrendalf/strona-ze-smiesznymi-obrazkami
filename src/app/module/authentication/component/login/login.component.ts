@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
-import { IUserLoginData } from 'src/app/model/user-login-data';
+import { UserLoginData } from 'src/app/module/authentication/model/user-login-data';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -13,7 +13,7 @@ export class LoginComponent {
   constructor(private auth: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   login(form: NgForm) {
-    const data: IUserLoginData = {
+    const data: UserLoginData = {
       email: form.value.email,
       password: form.value.password
     }

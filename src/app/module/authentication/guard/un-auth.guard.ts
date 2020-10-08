@@ -14,12 +14,7 @@ export class UnAuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> {
     
-    return await this.auth.authState$
-      .pipe(
-        take(1),
-        map(state => !state.isLogged)
-      )
-      .toPromise();
+    return !(await this.auth.authState.pipe(take(1)).toPromise()).isLogged
   }
   
 }

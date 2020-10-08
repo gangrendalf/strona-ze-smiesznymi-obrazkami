@@ -1,12 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Comment } from 'src/app/module/shared/model/comment.interface';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
-import { IAuthState } from 'src/app/model/auth-state';
-import { Mem } from 'src/app/module/shared/model/mem.interface';
 import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
 import { User } from 'src/app/module/shared/model/user.interface';
 
@@ -36,8 +33,8 @@ export class MemDetailComponent implements OnInit, OnDestroy {
     this.loadMemFromLocalStorage();
     
     this._authSubscription = 
-      this.auth.authState$
-        .subscribe(state => this.extractUserData(state));
+      this.auth.authState
+        .subscribe(authState => this._user = authState.user);
 
     this._commentsSubscription = 
       this.dbs.comment
@@ -52,14 +49,6 @@ export class MemDetailComponent implements OnInit, OnDestroy {
 
   addComment(comment: Comment){
     this.dbs.comment.set(comment, this._memReference.itemID);
-  }
-
-
-  extractUserData(state: IAuthState){
-    if(!state.user)
-      return;
-
-    this._user = {nick: state.user.nick, uid: state.user.uid};
   }
 
   separateRootAndChildComments(comments: Comment[]){

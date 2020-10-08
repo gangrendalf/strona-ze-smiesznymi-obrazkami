@@ -42,17 +42,9 @@ export class MemAddFormComponent implements OnInit {
     this.addMovieBox.nativeElement.addEventListener('click', e => this._itemType = ItemType.movie);
     this.addMemBox.nativeElement.addEventListener('click', e => this._itemType = ItemType.mem);
 
-    this.auth.authState$
-      .pipe(
-        take(1),
-        map(authState => {
-          let user: User = {
-            uid: authState.user.uid,
-            nick: authState.user.nick
-          };
-          return user;
-        }))
-      .subscribe(user => this._user = user );
+    this.auth.authState
+      .pipe(take(1))
+      .subscribe(authState => this._user = authState.user );
 
     this._categories = await this.dbs.category.getAll().pipe(take(1)).toPromise();
   }

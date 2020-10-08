@@ -1,4 +1,4 @@
-<ng-container *ngIf="!_authState.isLogged">
+<ng-container *ngIf="!_userLogged">
     <button
         routerLink="/register"
         routerLinkActive="active"
@@ -14,7 +14,7 @@
         >Logowanie
     </button>
 </ng-container>
-<ng-container *ngIf="_authState.isLogged">
+<ng-container *ngIf="_userLogged">
     <user-notification></user-notification>
     <user-menu></user-menu>
 </ng-container>

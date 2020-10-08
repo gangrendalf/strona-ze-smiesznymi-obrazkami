@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { IAuthState } from 'src/app/model/auth-state';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 
 @Component({
@@ -8,10 +7,10 @@ import { AuthService } from 'src/app/module/authentication/service/auth.service'
   styleUrls: ['./buttons-user.component.sass']
 })
 export class ButtonsUserComponent implements OnInit {
-  private _authState: IAuthState = { isLogged: false };
+  private _userLogged: boolean = false;
 
   constructor(public auth: AuthService) {
-    this.auth.authState$.subscribe(state => this._authState = state );
+    this.auth.authState.subscribe(authState => this._userLogged = authState.isLogged );
    }
 
   ngOnInit() {

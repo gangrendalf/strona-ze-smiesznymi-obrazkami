@@ -36,16 +36,9 @@ export class MemCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._authSubscription = 
-      this.auth.authState$.subscribe(
-          state => {
-              this._user = 
-              {
-                nick: state.user.nick,
-                uid: state.user.uid
-              };
-          })
+      this.auth.authState.subscribe(authState => this._user = authState.user)
 
-    this._memSubscription = 
+      this._memSubscription = 
       combineLatest(this.dbs.mem.getSingle(this.memReference.itemID), this.dbs.image.getSingle(this.memReference.imageID, this.memReference.authorID))
         .subscribe(data => {
           this._memData = data[0];
@@ -53,6 +46,7 @@ export class MemCardComponent implements OnInit, OnDestroy {
 
           this.initializeVotingSystem();
       })
+
   }
   
   private initializeVotingSystem(){

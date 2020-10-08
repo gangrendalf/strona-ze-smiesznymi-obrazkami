@@ -1,4 +1,4 @@
-export interface IUserRegisterData {
+export interface UserRegisterData {
     email: string,
     password: string,
     nick: string,

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { NgForm } from '@angular/forms';
-import { IUserRegisterData } from 'src/app/model/user-register-data';
+import { UserRegisterData } from 'src/app/module/authentication/model/user-register-data';
 
 @Component({
   selector: 'registration-page',
@@ -11,12 +11,12 @@ import { IUserRegisterData } from 'src/app/model/user-register-data';
 export class RegistrationPageComponent {
   constructor(private auth: AuthService) { }
 
-  register(f: NgForm){
-    const data: IUserRegisterData = {
-      nick: f.value.login,
-      birthdate: f.value.birthdate,
-      email: f.value.email,
-      password: f.value.password
+  register(form: NgForm){
+    const data: UserRegisterData = {
+      nick: form.value.login,
+      birthdate: form.value.birthdate,
+      email: form.value.email,
+      password: form.value.password
     };
 
     this.auth.registerUser(data);

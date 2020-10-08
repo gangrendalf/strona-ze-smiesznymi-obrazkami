@@ -14,21 +14,7 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> {
     
-    return await this.auth.authState$
-      .pipe(
-        take(1),
-        map(state => {
-          if(!state.isLogged){
-            const redirectedFrom: string = next.url.toString();
-            const redirectTo: string = '/login';
-
-            this.router.navigate([redirectTo], {queryParams: {redirectedFrom: redirectedFrom}});
-          }
-
-          return state.isLogged;
-        })
-      )
-      .toPromise();
+    return (await this.auth.authState.pipe(take(1)).toPromise()).isLogged;
   }
   
 }

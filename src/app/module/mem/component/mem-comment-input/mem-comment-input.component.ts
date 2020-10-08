@@ -22,7 +22,9 @@ export class MemCommentInputComponent {
     let comment: Comment = {
       author: {
         uid: this.user.uid,
-        nick: this.user.nick
+        nick: this.user.nick,
+        isModerator: this.user.isModerator,
+        isAdmin: this.user.isAdmin
       },
       date: new Date().getTime(),
       text: f.value.text,

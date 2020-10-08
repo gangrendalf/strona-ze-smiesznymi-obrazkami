@@ -6,7 +6,7 @@ import { DatabaseService } from '../../shared/service/database.service';
 import { UserLoginData } from '../model/user-login-data';
 import { ReplaySubject, Observable } from 'rxjs';
 import { AuthState } from '../model/auth-state';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -34,14 +34,30 @@ export class AuthService {
   private async loadUserLoggedInData(firebaseUser: firebase.User): Promise<void>{
     const isLogged = true;
     const uid = firebaseUser.uid;
-    const nick = 
-      (await this.dbs.user
-          .getSingle(uid)
-          .pipe(take(1))
-          .toPromise())
-          .nick;
 
-    this._authState = { isLogged: isLogged, user: {nick: nick, uid: uid}};
+    const detail = 
+        await this.dbs.user
+          .getSingle(uid)
+          .pipe(
+          take(1),
+          map( user => {
+            return {
+              nick: user.nick,
+              isModerator: user.isModerator,
+              isAdmin: user.isAdmin
+              }
+          }))
+          .toPromise()
+        
+
+    this._authState = {
+      isLogged: isLogged, 
+      user: {
+        uid: uid, 
+        nick: detail.nick, 
+        isModerator: detail.isModerator, 
+        isAdmin: detail.isAdmin
+      }};
   }
 
   private loadUserLoggedOutData(): void{
@@ -70,7 +86,9 @@ export class AuthService {
           summaryDownvotes: 0,
           summaryUpvotes: 0,
           watchedTags: null,
-          watchedUsers: 0
+          watchedUsers: 0,
+          isModerator: false,
+          isAdmin: false
         }
         
         this.dbs.user.set(userData);

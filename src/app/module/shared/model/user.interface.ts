@@ -8,12 +8,16 @@ export interface UserDetail {
     addedComments: number,
     addedMems: number,
     watchedUsers: number,
-    watchedTags: string[] 
+    watchedTags: string[],
+    isModerator: boolean,
+    isAdmin: boolean
 }
 
 export interface User{
     uid: string,
-    nick: string
+    nick: string,
+    isModerator: boolean,
+    isAdmin: boolean
 }
 
 export const testUser: UserDetail = {
@@ -26,5 +30,7 @@ export const testUser: UserDetail = {
         summaryDownvotes: 0,
         summaryUpvotes: 0,
         watchedTags: [''],
-        watchedUsers: 0
+        watchedUsers: 0,
+        isModerator: false,
+        isAdmin: false
 }

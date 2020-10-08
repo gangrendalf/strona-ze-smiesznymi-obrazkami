@@ -6,12 +6,6 @@ import { faPlus, IconDefinition } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './buttons-add.component.html',
   styleUrls: ['./buttons-add.component.sass']
 })
-export class ButtonsAddComponent implements OnInit {
+export class ButtonsAddComponent {
   private _addIcon: IconDefinition = faPlus;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }

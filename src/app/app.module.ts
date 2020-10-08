@@ -5,6 +5,7 @@ import { NavigationModule } from './module/navigation/navigation.module';
 import { SharedModule } from './module/shared/shared.module';
 import { AuthenticationModule } from './module/authentication/authentication.module';
 import { MemModule } from './module/mem/mem.module';
+import { ProfileModule } from './module/profile/profile.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { MemModule } from './module/mem/mem.module';
     SharedModule,
     NavigationModule,
     AuthenticationModule,
-    MemModule
+    MemModule,
+    ProfileModule
   ],
   providers: [
   ],

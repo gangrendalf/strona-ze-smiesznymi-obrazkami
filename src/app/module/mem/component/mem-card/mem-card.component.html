@@ -1,9 +1,9 @@
 <div class="card" *ngIf="_memData as mem" >
     <div class="card-header">
         <div class="card-text">
-            <span>
+            <a [routerLink]="['/user', mem.author.uid]">
                 {{ mem.author.nick }}
-            </span>
+            </a>
             <fa-icon [icon]="_commentIcon"></fa-icon>
         </div>
     </div>

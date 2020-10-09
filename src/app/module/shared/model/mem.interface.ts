@@ -10,5 +10,8 @@ export interface Mem {
     category: string,
     tags: string[],
     image: Image,
-    votes: Vote[] 
+    votes: Vote[],
+    approved: boolean,
+    approvalDate: number,
+    approvedBy: string
 }

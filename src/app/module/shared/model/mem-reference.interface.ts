@@ -1,4 +1,5 @@
 export interface MemReference {
+    referenceID?: string,
     itemID: string,
     authorID: string,
     imageID: string,

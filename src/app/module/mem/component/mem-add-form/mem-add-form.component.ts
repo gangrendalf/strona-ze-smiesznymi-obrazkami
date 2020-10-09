@@ -59,7 +59,10 @@ export class MemAddFormComponent implements OnInit {
       image: image,
       author: this._user,
       votes: null,
-      creationDate: new Date().getTime()
+      creationDate: new Date().getTime(),
+      approved: false,
+      approvalDate: null,
+      approvedBy: null
     }
 
     this.dbs.mem.set(mem)
@@ -71,8 +74,8 @@ export class MemAddFormComponent implements OnInit {
             imageID: res.image.id,
             category: res.category,
             creationDate: res.creationDate,
-            approved: false,
-            approvalDate: null
+            approved: res.approved,
+            approvalDate: res.approvalDate
           }
           this.dbs.memReference.set(memRef)
         }

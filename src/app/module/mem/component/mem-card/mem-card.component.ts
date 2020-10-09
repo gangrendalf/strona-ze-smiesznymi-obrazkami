@@ -60,15 +60,7 @@ export class MemCardComponent implements OnInit, OnDestroy {
 
   private saveMemIntoLocalStorage(){
     const localStorgeItem: string = 
-      JSON.stringify({
-        'itemID': this.memReference.itemID,
-        'authorID': this.memReference.authorID,
-        'imageID': this.memReference.imageID,
-        'creationDate': this.memReference.creationDate.toString(),
-        'category': this.memReference.category,
-        'approved': this.memReference.approved ? 'true' : 'false',
-        'approvalDate': this.memReference.approvalDate ? this.memReference.approvalDate.toString() : null
-      });
+      JSON.stringify(this.memReference);
 
     localStorage.setItem('memReference', localStorgeItem )
   }
@@ -77,14 +69,26 @@ export class MemCardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/mem', this._memData.author.uid, this._memData.author.nick, this._memData.id])
   }
 
-  voteUp(){
+  private voteUp(){
     const tempMemData = this._voter.voteUp() as Mem;
     this.dbs.mem.update(tempMemData, this._memData.id);
   }
 
-  voteDown(){
+  private voteDown(){
     const tempMemData = this._voter.voteDown() as Mem;
     this.dbs.mem.update(tempMemData, this._memData.id);
+  }
+
+  private approve(){
+    this._memData.approved = true;
+    this._memData.approvalDate = new Date().getTime();
+    this._memData.approvedBy = this._user.uid
+
+    this.memReference.approved = this._memData.approved;
+    this.memReference.approvalDate = this._memData.approvalDate;
+
+    this.dbs.mem.update(this._memData, this._memData.id);
+    this.dbs.memReference.update(this.memReference, this.memReference.referenceID)
   }
 
   ngOnDestroy(){

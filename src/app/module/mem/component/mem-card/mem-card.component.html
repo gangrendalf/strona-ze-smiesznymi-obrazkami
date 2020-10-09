@@ -47,8 +47,14 @@
                     ><fa-icon [icon]="_minusIcon"></fa-icon>
                 </button>
             </div>
-            <div class="col-4">
-                <!-- content or spacing beetwen button groups -->
+            <div class="col-4 d-flex">
+                <button
+                    *ngIf="_user && (_user.isModerator || _user.isAdmin) && !mem.approved"
+                    (click)="approve()"
+                    type="button"
+                    class="btn btn-block btn-outline-info"            
+                    >Zaakceptuj
+                </button>
             </div>
             <div class="col-4 addon-buttons-container">
                 <button 

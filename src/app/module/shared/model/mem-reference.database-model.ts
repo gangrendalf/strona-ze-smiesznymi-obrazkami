@@ -20,12 +20,17 @@ export class MemReferenceDatabaseModel implements DatabaseInterface<MemReference
     set(data: MemReference, parentID?: string): Promise<void | MemReference> {
         const itemID: string = this.af.createId();
         const docRef: AngularFirestoreDocument<MemReference> = 
-            this.af.doc(`item-info/${itemID}`);
-
+        this.af.doc(`item-info/${itemID}`);
+        
+        data.referenceID = itemID;
+        
         return docRef.set(data);
     }
     
     update(data: MemReference, itemID: string, parentID?: string): Promise<void> {
-        throw new Error('Method not implemented.');
+        const docRef: AngularFirestoreDocument<MemReference> = 
+        this.af.doc(`item-info/${itemID}`);
+
+        return docRef.update(data);
     }
 }

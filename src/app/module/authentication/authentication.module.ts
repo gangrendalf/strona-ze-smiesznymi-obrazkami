@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RegistrationPageComponent } from './component/registration-page/registration-page.component';
+import { RegistrationComponent } from './component/registration/registration.component';
 import { LoginComponent } from './component/login/login.component';
 import { SharedModule } from '../shared/shared.module';
 import { RemindPasswordComponent } from './component/remind-password/remind-password.component';
@@ -7,7 +7,7 @@ import { RemindPasswordComponent } from './component/remind-password/remind-pass
 
 @NgModule({
   declarations: [
-    RegistrationPageComponent,
+    RegistrationComponent,
     LoginComponent,
     RemindPasswordComponent
   ],

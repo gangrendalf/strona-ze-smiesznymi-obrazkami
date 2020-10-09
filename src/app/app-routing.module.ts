@@ -5,7 +5,7 @@ import { MemAddFormComponent } from 'src/app/module/mem/component/mem-add-form/m
 import { MemsSetComponent } from 'src/app/module/mem/component/mems-set/mems-set.component';
 import { MoviesSetComponent } from 'src/app/module/mem/component/movies-set/movies-set.component';
 
-import { RegistrationPageComponent } from 'src/app/module/authentication/component/registration-page/registration-page.component';
+import { RegistrationComponent } from 'src/app/module/authentication/component/registration/registration.component';
 import { LoginComponent } from 'src/app/module/authentication/component/login/login.component';
 import { AuthGuard } from './module/authentication/guard/auth.guard';
 import { UnAuthGuard } from './module/authentication/guard/un-auth.guard';
@@ -32,7 +32,7 @@ const routes: Routes = [
   { path: 'movies', component: MoviesSetComponent },
   { path: 'mem/:uid/:nick/:id', component: MemDetailComponent },
   { path: 'add', component: MemAddFormComponent, canActivate: [AuthGuard] },
-  { path: 'register', component: RegistrationPageComponent, canActivate: [UnAuthGuard] },
+  { path: 'register', component: RegistrationComponent, canActivate: [UnAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [UnAuthGuard] },
   { path: 'remind-password', component: RemindPasswordComponent, canActivate: [UnAuthGuard] },
 

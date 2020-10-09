@@ -5,11 +5,11 @@ import { UserRegisterData } from 'src/app/module/authentication/model/user-regis
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'registration-page',
-  templateUrl: './registration-page.component.html',
-  styleUrls: ['./registration-page.component.sass']
+  selector: 'registration',
+  templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.sass']
 })
-export class RegistrationPageComponent {
+export class RegistrationComponent {
   constructor(private auth: AuthService, private router: Router) { }
 
   register(form: NgForm){

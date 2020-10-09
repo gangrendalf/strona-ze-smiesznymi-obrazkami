@@ -1,0 +1,118 @@
+$top-section-height: 370px
+$background-image-height: 230px
+$background-image-selector-square: 50px
+$user-section-height: $top-section-height - $background-image-height  
+$user-avatar-height: 150px
+    
+.top
+    height: $top-section-height
+    display: flex
+    flex-direction: column
+    position: relative
+    justify-content: flex-end
+
+.background
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: $background-image-height
+    background-color: #111
+
+.background .image-selector
+    position: relative
+    top: 0
+    left: 0
+    width: $background-image-selector-square
+    height: $background-image-selector-square
+    background-color: #111
+    border-radius: 50%
+
+.background .image-selector fa-icon
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    font-size: 1.2rem
+
+.user
+    height: $user-section-height
+    width: 100%
+    position: relative
+
+
+.user-info
+    height: 150px
+    width: 100%
+    position: absolute
+    top: -110px
+    left: 0px
+    display: flex
+    align-items: center
+
+.user-info .image
+    background-color: #111
+    border-radius: 50%
+    height: $user-avatar-height
+    width: $user-avatar-height
+    margin-left: 10px
+    position: relative
+
+.user-info .image .image-selector
+    position: absolute
+    bottom: 10%
+    left: 50%
+    transform: translate(-50%, -50%)
+    font-size: 1.2rem
+
+.user-info .text
+    margin-left: 10px
+
+.user-info .text .nick
+    font-size: 1.6rem
+    color: green
+
+.user-info .text .visits
+    font-size: .7rem
+
+.user-links
+    display: flex
+    justify-content: flex-start
+    flex-direction: column-reverse
+    height: $user-section-height
+
+.user-links li
+    padding: 6px 6px
+
+.user-links .points
+    margin-left: auto
+    padding-right: 10px
+
+@media ( min-width: 492px )
+    .user-links li
+        padding: 12px 6px
+
+@media ( min-width: 768px )
+    $top-section-height: 300px
+    $background-image-height: 230px
+    $user-section-height: $top-section-height - $background-image-height  
+
+    .top
+        height: $top-section-height
+
+    .user
+        height: $user-section-height
+    
+    .user-links
+        margin-left: 140px
+        height: $user-section-height
+        align-items: center
+        flex-direction: row
+
+    .user-links li
+        padding: 12px 8px
+
+@media ( min-width: 992px )
+    .user-links li
+        padding: 12px 20px
+

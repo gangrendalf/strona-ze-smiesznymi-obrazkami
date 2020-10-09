@@ -72,11 +72,12 @@ export class AuthService {
     return this._authState$.asObservable();
   }
 
-  public registerUser(data: UserRegisterData){
-    this.auth.auth
+  public registerUser(data: UserRegisterData): Promise<void>{
+    return new Promise<void>((resolve, reject) => {
+      this.auth.auth
       .createUserWithEmailAndPassword(data.email, data.password)
       .then(res => {
-        let userData: UserDetail = {
+        const userData: UserDetail = {
           uid: res.user.uid,
           nick: data.nick,
           email: data.email,
@@ -90,20 +91,40 @@ export class AuthService {
           isModerator: false,
           isAdmin: false
         }
-        
-        this.dbs.user.set(userData);
-      });
+        return userData
+      }).then(userData => {
+        return this.dbs.user.set(userData);
+      }).then(success => {
+        resolve();
+      }).catch(fail => {
+        console.error('tworzenie konta nie powiodlo sie');
+        reject();
+      })
+    })
   }
 
   public resetPassword(email: string): Promise<void>{
     return this.auth.auth.sendPasswordResetEmail(email);
   }
 
-  public login(data: UserLoginData){
-    this.auth.auth.signInWithEmailAndPassword(data.email, data.password);
+  public login(data: UserLoginData): Promise<boolean>{
+    return new Promise((resolve, reject) => {
+      this.auth.auth
+        .signInWithEmailAndPassword(data.email, data.password)
+        .then(
+          (success) => resolve(true),
+          (fail) => reject('zle dane kolego')
+        )
+      })
   }
 
-  public logout(){
-    this.auth.auth.signOut();
+  public logout(): Promise<boolean>{
+    return new Promise((resolve, reject) => {
+      this.auth.auth.signOut()
+        .then(
+          (success) => resolve(true),
+          (fail) => reject('nie udalo sie wylogowac')
+        )
+    })
   }
 }

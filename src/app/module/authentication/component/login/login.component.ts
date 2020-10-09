@@ -18,6 +18,10 @@ export class LoginComponent {
       password: form.value.password
     }
 
-    this.auth.login(data);
+    this.auth.login(data)
+      .then(
+        () => this.router.navigate(['/']),
+        () => this.router.navigate(['/something-goes-wrong'])
+      );
   }
 }

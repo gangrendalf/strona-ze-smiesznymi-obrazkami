@@ -7,6 +7,7 @@ import { WatchedTagsComponent } from './component/watched-tags/watched-tags.comp
 import { WatchedMemsComponent } from './component/watched-mems/watched-mems.component';
 import { HistoryComponent } from './component/history/history.component';
 import { SharedModule } from '../shared/shared.module';
+import { MemModule } from '../mem/mem.module';
 
 
 
@@ -20,7 +21,8 @@ import { SharedModule } from '../shared/shared.module';
     HistoryComponent],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    MemModule
   ],
   exports: [
     ProfileComponent

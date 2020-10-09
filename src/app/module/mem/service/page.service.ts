@@ -59,24 +59,26 @@ export class PageService {
 
   private extractFiltersFromNavigationEvent(e: NavigationEnd) {
     let urlWithoutParams: string[] = e.url.slice(1).split('?')[0].split('/')
-
     let filters: Filter;
-
+    
     switch (urlWithoutParams[0] as FilterType){
       case FilterType.category:
-        filters = {type: FilterType.category, value: urlWithoutParams[1]}
-        break;
-      case FilterType.waitingRoom:
-        filters = {type: FilterType.waitingRoom, value: null}
+        filters = {type: FilterType.category, value: urlWithoutParams[1]};
         break;
       case FilterType.movies:
-        filters = {type: FilterType.movies, value: null}
+        filters = {type: FilterType.movies, value: null};
         break;
       case FilterType.top:
-        filters = {type: FilterType.top, value: urlWithoutParams[1]}
+        filters = {type: FilterType.top, value: urlWithoutParams[1]};
+        break;
+      case FilterType.user:
+        filters = {type: FilterType.user, value: urlWithoutParams[1]};
+        break;
+      case FilterType.waitingRoom:
+        filters = {type: FilterType.waitingRoom, value: null};
         break;
       default: 
-        filters = {type: FilterType.none, value: FilterType.none}
+        filters = {type: FilterType.none, value: FilterType.none};
         break;
     }
     return filters;
@@ -85,25 +87,26 @@ export class PageService {
   private applyFilters(mems: MemReference[], filters: Filter): MemReference[]{    
     let filteredMems: MemReference[];
 
-    if(filters.type == FilterType.waitingRoom)
-      filteredMems = mems.filter(mem => mem.approved == false);
-    else
-      filteredMems = mems.filter(mem => mem.approved == true);
-
     switch (filters.type){
       case FilterType.category:
-        filteredMems = filteredMems.filter(mem => mem.category == filters.value);
+        filteredMems = mems.filter(mem => mem.category == filters.value);
         break;
       case FilterType.movies:
-        filteredMems = filteredMems.filter(mem => mem.category == filters.value);
+        filteredMems = mems.filter(mem => mem.category == filters.value);
         break;
       case FilterType.top:
-        filteredMems = filteredMems.filter(mem => mem.approvalDate > new Date().getTime());
+        filteredMems = mems.filter(mem => mem.approvalDate > new Date().getTime());
+        break;
+      case FilterType.user:
+        filteredMems = mems.filter(mem => mem.authorID == filters.value);
+        break;
+      case FilterType.waitingRoom:
+        filteredMems = mems.filter(mem => mem.approved == false);
         break;
       default: 
+        filteredMems = mems.filter(mem => mem.approved == true);
         break;
     }
-
     return filteredMems;
   }
 

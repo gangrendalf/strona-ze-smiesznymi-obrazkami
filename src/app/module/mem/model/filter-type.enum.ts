@@ -3,5 +3,6 @@ export enum FilterType {
     waitingRoom = 'waiting-room',
     movies = 'movies',
     top = 'top',
+    user = 'user',
     none = 'none'
 }

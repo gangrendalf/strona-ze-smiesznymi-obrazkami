@@ -35,10 +35,10 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [UnAuthGuard] },
   { path: 'remind-password', component: RemindPasswordComponent, canActivate: [UnAuthGuard] },
 
-  { path: 'profile/:uid', component: ProfileComponent, 
+  { path: 'user/:uid', component: ProfileComponent, runGuardsAndResolvers: 'always', 
     children: [
       { path: '', redirectTo: 'wall', pathMatch: 'full'},
-      { path: 'wall', component: WallComponent },
+      { path: 'wall', component: WallComponent, runGuardsAndResolvers: 'always' },
       { path: 'watched-users', component: WatchedUsersComponent },
       { path: 'watched-tags', component: WatchedTagsComponent },
       { path: 'watched-mems', component: WatchedMemsComponent },
@@ -51,7 +51,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

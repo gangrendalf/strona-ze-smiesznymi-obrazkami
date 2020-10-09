@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 
 import { faCamera, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { UserDetail } from 'src/app/module/shared/model/user.interface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'profile',
@@ -13,14 +15,12 @@ export class ProfileComponent implements OnInit {
   private _cameraIcon: IconDefinition = faCamera;
 
   private _userID: string = null;
+  private _user$: Observable<UserDetail>;
 
   constructor(private route: ActivatedRoute, private dbs: DatabaseService) { 
-    route.paramMap.subscribe(paramMap => {
-      if(paramMap.has('uid'))
-        this._userID = paramMap.get('uid');
-      else
-        console.error('missing uid in routeParamMap');
-    })
+    this._userID = route.snapshot.paramMap.get('uid');
+
+    this._user$ = this.dbs.user.getSingle(this._userID);
   }
 
   ngOnInit() {

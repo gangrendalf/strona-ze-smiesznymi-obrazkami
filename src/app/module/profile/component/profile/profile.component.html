@@ -1,74 +1,81 @@
-<div class="top">
-    <section class="background">
-        <div class="image-selector">
-            <fa-icon [icon]="_cameraIcon"></fa-icon>
-        </div>
-    </section>
-    <section class="user">
-        <div class="user-info">
-            <div class="image">
+<div class="row">
+    <div class="col">
+        <div class="top" *ngIf="(_user$ | async) as user">
+            <section class="background">
                 <div class="image-selector">
                     <fa-icon [icon]="_cameraIcon"></fa-icon>
                 </div>
-            </div>
-            <div class="text">
-                <div class="nick">
-                    nick
+            </section>
+            <section class="user">
+                <div class="user-info">
+                    <div class="image">
+                        <div class="image-selector">
+                            <fa-icon [icon]="_cameraIcon"></fa-icon>
+                        </div>
+                    </div>
+                    <div class="text">
+                        <div class="nick">
+                            {{ user.nick }}
+                        </div>
+                        <div class="visits">
+                            0 wyświetleń
+                        </div>
+                    </div>
                 </div>
-                <div class="visits">
-                    0 wyświetleń
+                <div class="user-links">
+                    <ul class="list-group list-group-horizontal list-group-flush d-flex flex-wrap flex-md-nowrap">
+                        <li class="list-group-item">
+                            <button
+                                [routerLink]="['/user', _userID, 'wall']"
+                                type="button" 
+                                class="btn btn-outline-secondary"
+                                >Tablica
+                            </button>
+                        </li>
+                        <li class="list-group-item">
+                            <button
+                                [routerLink]="['/user', _userID, 'watched-users']"
+                                type="button" 
+                                class="btn btn-outline-secondary"
+                                >Obserwowani
+                            </button>
+                        </li>
+                        <li class="list-group-item">
+                            <button
+                                [routerLink]="['/user', _userID, 'watched-tags']"
+                                type="button" 
+                                class="btn btn-outline-secondary"
+                                >Tagi
+                            </button>
+                        </li>
+                        <li class="list-group-item">
+                            <button
+                                [routerLink]="['/user', _userID, 'watched-mems']"
+                                type="button" 
+                                class="btn btn-outline-secondary"
+                                >Memy
+                            </button>
+                        </li>
+                        <!-- <li class="list-group-item">
+                            <button
+                                [routerLink]="['/user', _userID, 'history']"
+                                type="button" 
+                                class="btn btn-outline-secondary"
+                                >Historia
+                            </button>
+                        </li> -->
+                    </ul>
+                    <span class="points">
+                        points
+                    </span>
                 </div>
-            </div>
+            </section>
         </div>
-        <div class="user-links">
-            <ul class="list-group list-group-horizontal list-group-flush d-flex flex-wrap flex-md-nowrap">
-                <li class="list-group-item">
-                    <button
-                        [routerLink]="['/profile', _userID, 'wall']"
-                        type="button" 
-                        class="btn btn-outline-secondary"
-                        >Tablica
-                    </button>
-                </li>
-                <li class="list-group-item">
-                    <button
-                        [routerLink]="['/profile', _userID, 'watched-users']"
-                        type="button" 
-                        class="btn btn-outline-secondary"
-                        >Obserwowani
-                    </button>
-                </li>
-                <li class="list-group-item">
-                    <button
-                        [routerLink]="['/profile', _userID, 'watched-tags']"
-                        type="button" 
-                        class="btn btn-outline-secondary"
-                        >Tagi
-                    </button>
-                </li>
-                <li class="list-group-item">
-                    <button
-                        [routerLink]="['/profile', _userID, 'watched-mems']"
-                        type="button" 
-                        class="btn btn-outline-secondary"
-                        >Memy
-                    </button>
-                </li>
-                <li class="list-group-item">
-                    <button
-                        [routerLink]="['/profile', _userID, 'history']"
-                        type="button" 
-                        class="btn btn-outline-secondary"
-                        >Historia
-                    </button>
-                </li>
-            </ul>
-            <span class="points">
-                points
-            </span>
-        </div>
-    </section>
+    </div>
 </div>
-<div>
-    <router-outlet></router-outlet>
+<div class="row">
+    <div class="col">
+        <router-outlet></router-outlet>
+    </div>
 </div>
+    

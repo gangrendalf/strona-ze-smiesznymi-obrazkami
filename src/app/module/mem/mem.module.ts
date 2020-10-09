@@ -27,7 +27,6 @@ import { MemCommentInputComponent } from './component/mem-comment-input/mem-comm
   ],
   exports: [
     MemsSetComponent,
-    PaginatorComponent
   ]
 })
 export class MemModule { }

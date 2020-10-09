@@ -22,9 +22,9 @@ export class RegistrationPageComponent {
 
     this.auth.registerUser(data)
       .then(
-        (success) => this.router.navigate(['/']),
-        (fail) => this.router.navigate(['/something-goes-wrong'])
+        success => this.router.navigate(['/'])
+      ).catch(
+        fail => this.router.navigate(['/something-goes-wrong'])
       );
   }
-
 }

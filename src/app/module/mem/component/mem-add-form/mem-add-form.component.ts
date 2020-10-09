@@ -9,6 +9,7 @@ import { take, map } from 'rxjs/operators';
 import { Category } from 'src/app/module/shared/model/category.interface';
 import { Image } from 'src/app/module/shared/model/image.interface';
 import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'mem-add-form',
@@ -37,7 +38,7 @@ export class MemAddFormComponent implements OnInit {
 
   // private _fileUploadProgress$: Observable<number>;
 
-  constructor(private dbs: DatabaseService, private auth: AuthService) { }
+  constructor(private dbs: DatabaseService, private auth: AuthService, private router: Router) { }
 
   async ngOnInit(){
     this.addImageBox.nativeElement.addEventListener('click', e => this._itemType = ItemType.image);
@@ -83,20 +84,24 @@ export class MemAddFormComponent implements OnInit {
     }
 
     this.dbs.mem.set(mem)
-      .then(
-        (res: Mem) => {
-          const memRef: MemReference = {
-            itemID: res.id,
-            authorID: res.author.uid,
-            imageID: res.image.id,
-            category: res.category,
-            creationDate: res.creationDate,
-            approved: res.approved,
-            approvalDate: res.approvalDate,
-            tags: res.tags
-          }
-          this.dbs.memReference.set(memRef)
+      .then((res: Mem) => {
+        const memRef: MemReference = {
+          itemID: res.id,
+          authorID: res.author.uid,
+          imageID: res.image.id,
+          category: res.category,
+          creationDate: res.creationDate,
+          approved: res.approved,
+          approvalDate: res.approvalDate,
+          tags: res.tags
         }
+        return memRef;
+      }).then((memRef) => {
+        return this.dbs.memReference.set(memRef)
+      }).then(
+        (success) => this.router.navigate(['/waiting-room'])
+      ).catch(
+        (fail) => this.router.navigate(['/something-goes-wrong'])
       );
   }
 

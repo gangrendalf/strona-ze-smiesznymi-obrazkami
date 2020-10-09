@@ -36,18 +36,18 @@ export class AuthService {
     const uid = firebaseUser.uid;
 
     const detail = 
-        await this.dbs.user
-          .getSingle(uid)
-          .pipe(
-          take(1),
-          map( user => {
-            return {
-              nick: user.nick,
-              isModerator: user.isModerator,
-              isAdmin: user.isAdmin
-              }
-          }))
-          .toPromise()
+      await this.dbs.user
+        .getSingle(uid)
+        .pipe(
+        take(1),
+        map( user => {
+          return {
+            nick: user.nick,
+            isModerator: user.isModerator,
+            isAdmin: user.isAdmin
+            }
+        }))
+        .toPromise()
         
 
     this._authState = {
@@ -112,8 +112,9 @@ export class AuthService {
       this.auth.auth
         .signInWithEmailAndPassword(data.email, data.password)
         .then(
-          (success) => resolve(true),
-          (fail) => reject('zle dane kolego')
+          success => resolve(true)
+        ).catch(
+          fail => reject('zle dane kolego')
         )
       })
   }
@@ -122,8 +123,9 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.auth.auth.signOut()
         .then(
-          (success) => resolve(true),
-          (fail) => reject('nie udalo sie wylogowac')
+          success => resolve(true)
+        ).catch(
+          fail => reject('nie udalo sie wylogowac')
         )
     })
   }

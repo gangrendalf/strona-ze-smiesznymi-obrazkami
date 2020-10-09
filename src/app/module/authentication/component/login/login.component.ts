@@ -20,8 +20,9 @@ export class LoginComponent {
 
     this.auth.login(data)
       .then(
-        () => this.router.navigate(['/']),
-        () => this.router.navigate(['/something-goes-wrong'])
+        success => this.router.navigate(['/'])
+      ).catch(
+        fail => this.router.navigate(['/something-goes-wrong'])
       );
   }
 }

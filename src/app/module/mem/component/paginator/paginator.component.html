@@ -1,23 +1,25 @@
-<div class="buttons-container">
-    <button
-        (click)="ps.activateNextPage()"
-        class="btn btn-block btn-secondary"
-        type="button"
-        >Nastepna strona
-    </button>
-</div>
-<div class="buttons-container buttons-container--small justify-content-center">
-    <ng-container *ngFor="let link of _links">
+<div *ngIf="(_links$ | async) as links">
+    <div class="buttons-container">
         <button
-            [routerLink]=""
-            [queryParams]="{ 'page-number': link.pageNumber }"
-            routerLinkActive="active"
-            [disabled]="link.isSpecialString"
-            [class.active]="_defaultPageActive && link.specialString == 'last page'"
-            [class.btn-outline-secondary]="!link.isSpecialString"
-            class="btn btn-sm mr-2"
+            (click)="ps.activateNextPage()"
+            class="btn btn-block btn-secondary"
             type="button"
-            >{{ link.isSpecialString ? link.specialString : link.pageNumber }} 
+            >Nastepna strona
         </button>
-    </ng-container>
+    </div>
+    <div class="buttons-container buttons-container--small justify-content-center">
+        <ng-container *ngFor="let link of links">
+            <button
+                [routerLink]=""
+                [queryParams]="{ 'page-number': link.pageNumber }"
+                routerLinkActive="active"
+                [disabled]="link.isSpecialString"
+                [class.active]="_defaultPageActive && link.specialString == 'last page'"
+                [class.btn-outline-secondary]="!link.isSpecialString"
+                class="btn btn-sm mr-2"
+                type="button"
+                >{{ link.isSpecialString ? link.specialString : link.pageNumber }} 
+            </button>
+        </ng-container>
+    </div>
 </div>

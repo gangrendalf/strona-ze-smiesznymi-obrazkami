@@ -131,6 +131,12 @@ export class PageService {
     let links: PaginatorLink[] = [];
     let delta: number = 3;
 
+    if(this._activePageNumber < 1){
+      // console.error('PageService: calculatePaginatorLinks() no pages to display');
+      this._paginatorLinks$.next(null);
+      return;
+    }
+
     links = [new PaginatorLink(this._activePageNumber)] 
     
     for(let i = 1; this._activePageNumber + i < this._maxPageNumber && i <= delta; i++)
@@ -174,7 +180,9 @@ export class PageService {
       startLocation = endLocation - offset;
   
       if(startLocation < 0 || endLocation < 0 || offset < 0){
-        console.error('PageService: function calculateMemSet() got at least one negative location parameter (probably no mems to display).');
+        // console.error('PageService: function calculateMemSet() got at least one negative location parameter (probably no mems to display).');
+        this._activePageMemCollection$.next(null);
+        return;
       }
 
       this._activePageMemCollection$.next(ids.slice(startLocation, endLocation).reverse());
@@ -183,7 +191,7 @@ export class PageService {
   public activateNextPage(){
     let nextPage: number = this._activePageNumber - 1;
     
-    if(nextPage > 1)
+    if(nextPage >= 1)
       this.router.navigate([this.router.url], {queryParams: {'page-number': nextPage}});
   }
 }

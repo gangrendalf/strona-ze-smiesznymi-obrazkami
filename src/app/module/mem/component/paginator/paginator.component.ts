@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ParamMap, UrlSegment } from '@angular/router';
+import { Observable } from 'rxjs';
 import { PageService } from 'src/app/module/mem/service/page.service';
 import { PaginatorLink } from '../../model/paginator-link';
 
@@ -9,13 +10,12 @@ import { PaginatorLink } from '../../model/paginator-link';
   styleUrls: ['./paginator.component.sass']
 })
 export class PaginatorComponent {
-  private _links: PaginatorLink[] = [];
   private _defaultPageActive: boolean = false;
   private _activePath: string;
+  private _links$: Observable<PaginatorLink[]>
 
   constructor(private ps: PageService, public route: ActivatedRoute) {
-    ps.paginatorLinks$
-      .subscribe(links => this._links = links);
+    this._links$ = this.ps.paginatorLinks$; 
 
     route.queryParamMap
       .subscribe(paramMap => {

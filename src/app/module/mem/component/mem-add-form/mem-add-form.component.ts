@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, NgForm } from '@angular/forms';
+import { FormGroup, NgForm, NgModel } from '@angular/forms';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { Mem } from 'src/app/module/shared/model/mem.interface';
-import { IconDefinition, faSmile, faFileVideo, faFileImage } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition, faSmile, faFileVideo, faFileImage, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { User } from 'src/app/module/shared/model/user.interface';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { take, map } from 'rxjs/operators';
@@ -19,7 +19,6 @@ export class MemAddFormComponent implements OnInit {
   @ViewChild('addImageBox', {static: true}) addImageBox: ElementRef<HTMLDivElement>;
   @ViewChild('addMovieBox', {static: true}) addMovieBox: ElementRef<HTMLDivElement>;
   @ViewChild('addMemBox', {static: true}) addMemBox: ElementRef<HTMLDivElement>;
-  @ViewChild('f', {static: true}) memForm: ElementRef<FormGroup>;
 
   private _user: User = null;
 
@@ -28,11 +27,14 @@ export class MemAddFormComponent implements OnInit {
   private iconImage: IconDefinition = faFileImage;
   private iconMovie: IconDefinition = faFileVideo;
   private iconMem: IconDefinition = faSmile;
+  private iconTimes: IconDefinition = faTimes;
 
   private _file: File = null;
   private _fileUrl: string = null;
 
   private _categories: Category[];
+  private _tags: string[] = [];
+
   // private _fileUploadProgress$: Observable<number>;
 
   constructor(private dbs: DatabaseService, private auth: AuthService) { }
@@ -49,13 +51,28 @@ export class MemAddFormComponent implements OnInit {
     this._categories = await this.dbs.category.getAll().pipe(take(1)).toPromise();
   }
 
+  private addTag(tagRef: NgModel){
+    const tag = tagRef.value;
+    const tagExist = this._tags.some(t => t == tag);
+
+    if(!tagExist)
+      this._tags.push(tag);
+
+    tagRef.reset();
+  }
+
+  private deleteTag(tag: string){
+    const index: number = this._tags.indexOf(tag);
+    this._tags.splice(index, 1)
+  }
+
   async submit(f: NgForm){
     const image: Image = ((await this.dbs.image.set({uid: this._user.uid, file: this._file})) as Image);
     
     const mem: Mem = {
       title: f.value.title,
       category: f.value.category,
-      tags: [f.value.tags],
+      tags: this._tags,
       image: image,
       author: this._user,
       votes: null,
@@ -75,7 +92,8 @@ export class MemAddFormComponent implements OnInit {
             category: res.category,
             creationDate: res.creationDate,
             approved: res.approved,
-            approvalDate: res.approvalDate
+            approvalDate: res.approvalDate,
+            tags: res.tags
           }
           this.dbs.memReference.set(memRef)
         }

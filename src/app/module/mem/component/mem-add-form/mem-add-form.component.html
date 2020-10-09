@@ -139,10 +139,16 @@
     <!-- display only for all ItemType -->
     <div class="form-group form-row">
         <div class="col">
+            <ng-container *ngFor="let tag of _tags">
+                <span> 
+                    {{ tag }} 
+                    <fa-icon (click)="deleteTag(tag)" [icon]="iconTimes"></fa-icon> 
+                </span>
+            </ng-container>
             <input
+                (keydown.enter)="addTag(tags)"
                 ngModel 
                 #tags="ngModel"
-                required
                 placeholder="Tagi"
                 autocomplete="off"
                 type="text" 

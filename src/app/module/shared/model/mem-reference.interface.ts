@@ -6,5 +6,6 @@ export interface MemReference {
     creationDate: number,
     category: string,
     approved: boolean,
-    approvalDate: number
+    approvalDate: number,
+    tags: string[]
 }

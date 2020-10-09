@@ -28,6 +28,7 @@ const routes: Routes = [
   { path: 'waiting-room', component: MemsSetComponent },
   { path: 'top/:time-interval', component: MemsSetComponent },
   { path: 'category/:category-name', component: MemsSetComponent },
+  { path: 'tag/:tag', component: MemsSetComponent },
   { path: 'movies', component: MoviesSetComponent },
   { path: 'mem/:uid/:nick/:id', component: MemDetailComponent },
   { path: 'add', component: MemAddFormComponent, canActivate: [AuthGuard] },

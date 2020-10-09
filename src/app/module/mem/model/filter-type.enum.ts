@@ -1,8 +1,9 @@
 export enum FilterType {
     category = 'category',
-    waitingRoom = 'waiting-room',
     movies = 'movies',
+    none = 'none',
+    tag = 'tag',
     top = 'top',
     user = 'user',
-    none = 'none'
+    waitingRoom = 'waiting-room',
 }

@@ -68,6 +68,9 @@ export class PageService {
       case FilterType.movies:
         filters = {type: FilterType.movies, value: null};
         break;
+      case FilterType.tag:
+        filters = {type: FilterType.tag, value: urlWithoutParams[1]}
+        break;
       case FilterType.top:
         filters = {type: FilterType.top, value: urlWithoutParams[1]};
         break;
@@ -93,6 +96,9 @@ export class PageService {
         break;
       case FilterType.movies:
         filteredMems = mems.filter(mem => mem.category == filters.value);
+        break;
+      case FilterType.tag:
+        filteredMems = mems.filter(mem => mem.tags.some(tag => filters.value == tag));
         break;
       case FilterType.top:
         filteredMems = mems.filter(mem => mem.approvalDate > new Date().getTime());

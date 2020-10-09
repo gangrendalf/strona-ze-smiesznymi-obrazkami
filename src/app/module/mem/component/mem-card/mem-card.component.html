@@ -18,7 +18,7 @@
                 <a [routerLink]="['/category', mem.category]">{{ mem.category }}</a>
             </span>
             <span class="subtitle-tag" *ngFor="let tag of mem.tags">
-                <a [routerLink]="['/' + tag]">{{ tag }}</a>
+                <a [routerLink]="['/tag', tag]">{{ tag }}</a>
             </span>
         </div>
         <div class="card-img">

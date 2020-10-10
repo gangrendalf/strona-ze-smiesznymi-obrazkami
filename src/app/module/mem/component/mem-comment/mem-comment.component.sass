@@ -1,10 +1,13 @@
 @import 'src/_variables.sass'
 
 .comment
+    padding-left: 12px
     background-color: $commment-backgrounf-color
     color: white
-    border: 1px solid #333
     width: 100%
+
+.comment .comment
+    padding-left: 24px
 
 .comment-header
     width: 100%
@@ -15,13 +18,19 @@
     display: inline-block
     padding: 4px
 
+.comment-header .timestamp
+    font-size: .7rem
+    color: #999
+
 .comment-header--details
 
 .comment-header--actions
     margin-left: auto
+    min-width: 180px
 
 .comment-body
-    padding: 12px 0 12px 24px
+    padding: 6px 0 6px 0px
 
-.response-box
-    
+.comment-text
+    white-space: pre
+    text-indent: -4px

@@ -4,6 +4,7 @@ import { Comment } from 'src/app/module/shared/model/comment.interface';
 import { IconDefinition, faUser, faFlag, faPlus, faMinus, faReply } from '@fortawesome/free-solid-svg-icons';
 import { VotingCore } from 'src/app/module/shared/functions';
 import { User } from 'src/app/module/shared/model/user.interface';
+import { StylesCompileDependency } from '@angular/compiler';
 
 @Component({
   selector: 'mem-comment',
@@ -23,10 +24,9 @@ export class MemCommentComponent implements OnInit {
   private _iconReply: IconDefinition = faReply;
 
   private _voter: VotingCore;
-
   private _showResponseInput: boolean = false;
-
   private _responses: Comment[];
+  private _timestamp: string;
 
   constructor(private dbs: DatabaseService) { }
   
@@ -38,6 +38,8 @@ export class MemCommentComponent implements OnInit {
 
     if(this.childComments)
       this._responses = this.childComments.filter(response => response.parentCommentID == this.comment.id);
+
+    this._timestamp = this.formatTimestamp(this.comment.date);
   }
 
   voteUp(){
@@ -56,5 +58,43 @@ export class MemCommentComponent implements OnInit {
 
   addComment(e: Comment){
     this.dbs.comment.set(e, this.memID)
+  }
+
+  formatTimestamp(creationDate: number): string{
+    const now = new Date().getTime();
+    const secondInMilis: number = 1000;
+    const minuteInMilis: number = secondInMilis * 60;
+    const hourInMilis: number = minuteInMilis * 60;
+    const dayInMilis: number = hourInMilis * 24;
+    const monthInMilis: number = dayInMilis * 30;
+    const yearInMilis: number = monthInMilis * 12;
+    
+    const timeDelta = now - creationDate;
+    let count: number;
+    let plural: string;
+
+    if(timeDelta < minuteInMilis){
+      count = Math.round(timeDelta / secondInMilis);
+      plural = count < 2 ? 'sekundę' : count < 5 ? 'sekundy' : 'sekund';
+    }else if (timeDelta < hourInMilis){
+      count = Math.round(timeDelta / minuteInMilis);
+      plural = count < 2 ? 'minutę' : count < 5 ? 'minuty' : 'minut';
+    }else if (timeDelta < dayInMilis){
+      count = Math.round(timeDelta / hourInMilis);
+      plural = count < 2 ? 'godzinę' : count < 5 ? 'godziny' : 'godzin';
+    }else if (timeDelta < monthInMilis){
+      count = Math.round(timeDelta / dayInMilis);
+      plural = count < 2 ? 'dzień' : 'dni';
+    }else if (timeDelta < yearInMilis){
+      count = Math.round(timeDelta / monthInMilis);
+      plural = count < 2 ? 'miesiąc' : count < 5 ? 'miesiące' : 'miesięcy';
+    }else{
+      count = Math.round(timeDelta / yearInMilis);
+      plural = count < 2 ? 'rok' : count < 5 ? 'lata' : 'lat';
+    }
+
+    const displayString = `${count} ${plural} temu`;
+
+    return displayString;    
   }
 }

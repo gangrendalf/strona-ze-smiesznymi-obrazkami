@@ -5,10 +5,10 @@
                 <fa-icon [icon]="_iconUser"></fa-icon>
             </span>
             <span class="user-name">
-                {{comment.author.nick }}
+                {{ comment.author.nick }}
             </span>
             <span class="timestamp">
-                {{comment.date | date}}
+                {{ _timestamp }}
             </span>
         </div>
         <div class="comment-header--actions">
@@ -48,16 +48,17 @@
         </div>
     </div>
     <div class="comment-body">
-        <div class="comment-text">
-            {{comment.text }}
-        </div>
+        <p class="comment-text">
+            {{ comment.text }}
+        </p>
+        <hr style="border: 1px solid #333; margin: 4px 0 4px -12px;">
         <mem-comment-input
             *ngIf="_showResponseInput"
             [user]="user"
             [parentCommentID]="comment.id"
             (submitComment)="addComment($event)">
         </mem-comment-input>
-        <div class="responses" *ngFor="let response of _responses">
+        <div *ngFor="let response of _responses">
             <mem-comment
                 [memID]="memID" 
                 [comment]="response"
@@ -66,5 +67,4 @@
             </mem-comment>
         </div>
     </div>
-    <hr>
 </div>

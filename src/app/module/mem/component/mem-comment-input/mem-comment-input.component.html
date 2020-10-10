@@ -1,20 +1,24 @@
-<form #f="ngForm" (ngSubmit)="submitComment(f)">
-    <div class="form-group form-inline">
+<form #f>
+    <div class="form-group form-inline no-wrap">
         <div class="input-group">
             <div class="input-group-prepend">
-                <fa-icon class="input-group-text" [icon]="_iconUser"></fa-icon>
+                <fa-icon class="input-group-text" [icon]="faUser"></fa-icon>
             </div>
             <textarea
+                (keyup.enter)="submitComment(model)"
+                #model="ngModel"
                 ngModel
-                placeholder="Wpisz sowj komentarz tutaj"
+                required
+                placeholder="Wpisz swój komentarz tutaj"
                 class="form-control" 
                 name="text" 
                 id="text"
-                rows="4">
+                rows="2">
             </textarea>
         </div>
         <button 
-            type="submit"
+            (click)="submitComment(model)"
+            type="button"
             class="btn btn-secondary"
             >Dodaj
         </button>

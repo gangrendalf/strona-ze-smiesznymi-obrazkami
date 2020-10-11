@@ -1,50 +1,52 @@
-<button
-    #userMenuToggler 
-    class="btn btn-outline-secondary">
-    <fa-icon [icon]="_userIcon"></fa-icon>
-</button>
-
-<div #wrapper class="wrapper hidden">
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item list-group-item-action">
-            <button
-                [routerLink]="['/user', _userID]"
-                type="button" 
-                class="btn btn-block"
-                >Profil
-            </button>
-        </li>
-        <li class="list-group-item list-group-item-action">
-            <button
-                [routerLink]="['/user', _userID, 'watched-users']"
-                type="button" 
-                class="btn btn-block"
-                >Obserwowani
-            </button>   
-        </li>
-        <li class="list-group-item list-group-item-action">
-            <button
-                [routerLink]="['/user', _userID, 'watched-tags']"
-                type="button"
-                class="btn btn-block"
-                >Tagi
-            </button>
-        </li>
-        <li class="list-group-item list-group-item-action">
-            <button
-                [routerLink]="['/user', _userID, 'watched-mems']"
-                type="button" 
-                class="btn btn-block"
-                >Memy
-            </button>
-        </li>
-        <li class="list-group-item list-group-item-action">
-            <button 
-                #logoutBtn
-                type="button"
-                class="btn btn-block"
-                >logout
-            </button>
-        </li>
-    </ul>
+<div style="position: relative;">
+    <button
+        #userMenuToggler 
+        class="btn btn-outline-secondary">
+        <fa-icon [icon]="_userIcon"></fa-icon>
+    </button>
+    <div #wrapper class="wrapper hidden">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item list-group-item-action">
+                <button
+                    [routerLink]="['/user', _userID]"
+                    type="button" 
+                    class="btn btn-block"
+                    >Profil
+                </button>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <button
+                    [routerLink]="['/user', _userID, 'watched-users']"
+                    type="button" 
+                    class="btn btn-block"
+                    >Obserwowani
+                </button>   
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <button
+                    [routerLink]="['/user', _userID, 'watched-tags']"
+                    type="button"
+                    class="btn btn-block"
+                    >Tagi
+                </button>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <button
+                    [routerLink]="['/user', _userID, 'watched-mems']"
+                    type="button" 
+                    class="btn btn-block"
+                    >Memy
+                </button>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <button 
+                    #logoutBtn
+                    type="button"
+                    class="btn btn-block"
+                    >logout
+                </button>
+            </li>
+        </ul>
+    </div>    
 </div>
+

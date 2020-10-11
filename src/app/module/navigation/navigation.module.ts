@@ -3,11 +3,12 @@ import { NavigationComponent } from 'src/app/module/navigation/component/navigat
 import { UserNotificationComponent } from 'src/app/module/navigation/component/user-notification/user-notification.component';
 import { UserMenuComponent } from 'src/app/module/navigation/component/user-menu/user-menu.component';
 import { SharedModule } from '../shared/shared.module';
-import { CategoryComponent } from './component/buttons-category/buttons-category.component';
-import { ButtonsAddComponent } from './component/buttons-add/buttons-add.component';
-import { ButtonsLinksComponent } from 'src/app/module/navigation/component/buttons-links/buttons-links.component';
-import { ButtonsUserComponent } from './component/buttons-user/buttons-user.component';
+import { CategoryComponent } from './component/categories/categories.component';
+import { ButtonsAddComponent } from './component/add-mem/add-mem.component';
+import { ButtonsLinksComponent } from 'src/app/module/navigation/component/rooms/rooms.component';
+import { ButtonsUserComponent } from './component/user-specific/user-specific.component';
 import { SearchBarComponent } from './component/search-bar/search-bar.component';
+import { LogoComponent } from './component/logo/logo.component';
 
 
 
@@ -20,7 +21,8 @@ import { SearchBarComponent } from './component/search-bar/search-bar.component'
     ButtonsAddComponent,
     ButtonsLinksComponent,
     ButtonsUserComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    LogoComponent
   ],
   imports: [
     SharedModule,

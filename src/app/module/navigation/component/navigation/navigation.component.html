@@ -1,12 +1,10 @@
 <nav class="navigation-bar" #navigationBar>
     <div class="row no-gutters align-items-center">
-        <div 
-            routerLink="/"
-            class="col-2 col-md-1">
-            SzŚo!
+        <div class="col-2 col-md-1">
+            <logo></logo>
         </div>
         <div class="col-2 col-md-1 d-none d-md-flex">
-            <buttons-add></buttons-add>
+            <add-mem></add-mem>
         </div>
         <div class="col-2 col-md-1 d-md-none d-flex">
             <button
@@ -20,13 +18,13 @@
         <!-- SWAP -->
         <div class="col-1 col-md-12" #bottomOnDesktop>
             <div #menuContainer class="menu-container">
-                <buttons-add class="d-md-none"></buttons-add>
-                <buttons-category></buttons-category>
+                <add-mem class="d-md-none"></add-mem>
+                <categories></categories>
                 <search-bar></search-bar>
             </div>
         </div>
         <div class="col-7 col-md-4">
-            <buttons-user></buttons-user>
+            <user-specific></user-specific>
         </div>
         <!-- second row on mobile, first on desktop -->
         <!-- swap with SWAP -->

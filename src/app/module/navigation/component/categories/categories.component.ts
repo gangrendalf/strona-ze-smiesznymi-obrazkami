@@ -5,9 +5,9 @@ import { disableScroll, enableScroll } from 'src/app/module/shared/functions';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 
 @Component({
-  selector: 'buttons-category',
-  templateUrl: './buttons-category.component.html',
-  styleUrls: ['./buttons-category.component.sass']
+  selector: 'categories',
+  templateUrl: './categories.component.html',
+  styleUrls: ['./categories.component.sass']
 })
 export class CategoryComponent implements OnInit, AfterViewInit {
   @ViewChild('categoryContainerToggler', {static: true}) categoryContainerToggler: ElementRef<HTMLButtonElement>;

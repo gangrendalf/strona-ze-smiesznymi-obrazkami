@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 
 @Component({
-  selector: 'buttons-user',
-  templateUrl: './buttons-user.component.html',
-  styleUrls: ['./buttons-user.component.sass']
+  selector: 'user-specific',
+  templateUrl: './user-specific.component.html',
+  styleUrls: ['./user-specific.component.sass']
 })
 export class ButtonsUserComponent {
   private _userLogged: boolean = false;

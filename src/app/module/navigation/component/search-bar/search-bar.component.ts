@@ -15,7 +15,6 @@ export class SearchBarComponent implements AfterViewInit {
   @ViewChild('searchContainerToggler', {static: true}) searchContainerToggler: ElementRef<HTMLButtonElement>;
   @ViewChild('searchContainer', {static: true}) searchContainer: ElementRef<HTMLDivElement>;
 
-
   constructor() { }
 
   ngAfterViewInit(){

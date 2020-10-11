@@ -1,6 +1,7 @@
-<div style="position: relative;">
+<div class="position-relative">
     <button
         #userMenuToggler 
+        (focusout)="hideMenuContainer()"
         class="btn btn-outline-secondary">
         <fa-icon [icon]="_userIcon"></fa-icon>
     </button>

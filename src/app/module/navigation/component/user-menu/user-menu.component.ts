@@ -34,4 +34,9 @@ export class UserMenuComponent implements OnInit ,AfterViewInit {
     })  
   }
 
+  private hideMenuContainer(){
+    setTimeout(() => {
+      this.wrapper.nativeElement.classList.add('hidden');
+    }, 200);
+  }
 }

@@ -1,4 +1,4 @@
-<ng-container *ngIf="!_userLogged">
+<div *ngIf="!_userLogged" class="d-flex">
     <button
         routerLink="/register"
         routerLinkActive="active"
@@ -13,8 +13,8 @@
         type="button"
         >Logowanie
     </button>
-</ng-container>
-<ng-container *ngIf="_userLogged">
+</div>
+<div *ngIf="_userLogged" class="d-flex">
     <user-notification></user-notification>
     <user-menu></user-menu>
-</ng-container>
+</div>

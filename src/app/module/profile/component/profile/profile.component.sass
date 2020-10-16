@@ -11,7 +11,16 @@ $user-avatar-height: 150px
     position: relative
     justify-content: flex-end
 
-.background
+.actions
+    position: absolute
+    z-index: 100
+    top: 12px
+    left: 50px
+
+.actions :first-child
+    margin-right: 6px
+
+.background-image
     position: absolute
     top: 0
     left: 0
@@ -19,29 +28,31 @@ $user-avatar-height: 150px
     height: $background-image-height
     background-color: #111
 
-.background .image-selector
-    position: relative
+.background-image .image-selector
+    position: absolute
     top: 0
     left: 0
     width: $background-image-selector-square
     height: $background-image-selector-square
-    background-color: #111
-    border-radius: 50%
+    background: none
+    
 
-.background .image-selector fa-icon
+.background-image .image-selector .btn
     position: absolute
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
     font-size: 1.2rem
+    border-radius: 50%
+    opacity: .3
 
-.user
+.profile
     height: $user-section-height
     width: 100%
     position: relative
 
 
-.user-info
+.profile-info
     height: 150px
     width: 100%
     position: absolute
@@ -50,46 +61,55 @@ $user-avatar-height: 150px
     display: flex
     align-items: center
 
-.user-info .image
+.profile-image
     background-color: #111
     border-radius: 50%
     height: $user-avatar-height
     width: $user-avatar-height
     margin-left: 10px
     position: relative
+    overflow: hidden
 
-.user-info .image .image-selector
+.profile-image .image-selector
     position: absolute
     bottom: 10%
     left: 50%
     transform: translate(-50%, -50%)
     font-size: 1.2rem
+    opacity: .3
 
-.user-info .text
+.profile-image .image-selector .btn
+    border-radius: 50%
+
+.profile-info .text
     margin-left: 10px
 
-.user-info .text .nick
+.profile-info .text .nick
     font-size: 1.6rem
     color: green
 
-.user-info .text .visits
+.profile-info .text .visits
     font-size: .7rem
 
-.user-links
+.profile-links
     display: flex
     justify-content: flex-start
     flex-direction: column-reverse
     height: $user-section-height
 
-.user-links li
+.profile-links li
     padding: 6px 6px
 
-.user-links .points
+.profile-links .points
     margin-left: auto
     padding-right: 10px
 
+.error-box
+    font-size: .8rem
+    color: red
+
 @media ( min-width: 492px )
-    .user-links li
+    .profile-links li
         padding: 12px 6px
 
 @media ( min-width: 768px )
@@ -100,10 +120,10 @@ $user-avatar-height: 150px
     .top
         height: $top-section-height
 
-    .user
+    .profile
         height: $user-section-height
     
-    .user-links
+    .profile-links
         margin-left: 140px
         height: $user-section-height
         align-items: center

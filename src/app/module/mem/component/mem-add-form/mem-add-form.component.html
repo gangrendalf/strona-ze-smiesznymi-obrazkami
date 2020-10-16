@@ -166,8 +166,10 @@
     <div class="form-group form-row" *ngIf="_itemType == 'image' || _itemType == 'movie'">
         <div class="col">
             <label for="image" id="imageContainer">
-                <fa-icon [icon]="iconImage"></fa-icon>
-                Dodaj swoj obrazek
+                <span>
+                    <fa-icon [icon]="iconImage"></fa-icon>
+                    Dodaj swoj obrazek
+                </span>
                 <input 
                     (change)="loadFile($event)"
                     ngModel

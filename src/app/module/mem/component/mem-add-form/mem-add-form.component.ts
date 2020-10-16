@@ -7,9 +7,10 @@ import { User } from 'src/app/module/shared/model/user.interface';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { take, map } from 'rxjs/operators';
 import { Category } from 'src/app/module/shared/model/category.interface';
-import { Image } from 'src/app/module/shared/model/image.interface';
+import { ImageMetadata } from 'src/app/module/shared/model/image-metadata.interface';
 import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
 import { Router } from '@angular/router';
+import { ImageProcesor } from 'src/app/module/shared/temp/image.procesor';
 
 @Component({
   selector: 'mem-add-form',
@@ -30,8 +31,7 @@ export class MemAddFormComponent implements OnInit {
   private iconMem: IconDefinition = faSmile;
   private iconTimes: IconDefinition = faTimes;
 
-  private _file: File = null;
-  private _fileUrl: string = null;
+  private imageProcessor: ImageProcesor;
 
   private _categories: Category[];
   private _tags: string[] = [];
@@ -50,6 +50,8 @@ export class MemAddFormComponent implements OnInit {
       .subscribe(authState => this._user = authState.user );
 
     this._categories = await this.dbs.category.getAll().pipe(take(1)).toPromise();
+
+    this.imageProcessor = new ImageProcesor(ImageProcesor.typeOfImage.mem);
   }
 
   private addTag(tagRef: NgModel){
@@ -67,14 +69,26 @@ export class MemAddFormComponent implements OnInit {
     this._tags.splice(index, 1)
   }
 
+  async loadFile(event){
+    const file: File = event.target.files[0];
+   
+    await this.imageProcessor.createImageFromFile(file, this._user.uid);
+
+    const imgRef = document.getElementById('imageContainer');
+    imgRef.appendChild(this.imageProcessor.getImageHTMLElement());
+  }
+
   async submit(f: NgForm){
-    const image: Image = ((await this.dbs.image.set({uid: this._user.uid, file: this._file})) as Image);
-    
+    const imageMetadata: ImageMetadata = this.imageProcessor.getMetadata() 
+
+    const uploadedImage = (await this.dbs.image.set(imageMetadata)) as ImageMetadata;
+    this.imageProcessor.updateMetadata(uploadedImage);
+
     const mem: Mem = {
       title: f.value.title,
       category: f.value.category,
       tags: this._tags,
-      image: image,
+      imageMetadata: uploadedImage,
       author: this._user,
       votes: null,
       creationDate: new Date().getTime(),
@@ -88,7 +102,7 @@ export class MemAddFormComponent implements OnInit {
         const memRef: MemReference = {
           itemID: res.id,
           authorID: res.author.uid,
-          imageID: res.image.id,
+          imageID: res.imageMetadata.id,
           category: res.category,
           creationDate: res.creationDate,
           approved: res.approved,
@@ -103,23 +117,6 @@ export class MemAddFormComponent implements OnInit {
       ).catch(
         (fail) => this.router.navigate(['/something-goes-wrong'])
       );
-  }
-
-  loadFile(event){
-    this._file = event.target.files[0];
-    this._fileUrl = URL.createObjectURL(this._file);
-
-    const img = document.createElement('img');
-    img.setAttribute('src', this._fileUrl);
-    img.style.position = 'absolute';
-    img.style.top = '0';
-    img.style.left = '0';
-    img.style.padding = '20px';
-    img.style.width = '100%';
-    img.style.maxHeight = '300px'
-
-    const imgRef = document.getElementById('imageContainer');
-    imgRef.appendChild(img);
   }
 }
 

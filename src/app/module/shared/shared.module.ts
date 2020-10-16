@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'
 import { environment } from 'src/environments/environment.prod';
 
 import { AngularFireModule } from '@angular/fire';
@@ -23,6 +24,7 @@ import { PageNotFoundComponent } from './component/page-not-found/page-not-found
     CommonModule,
     FormsModule,
     AppRoutingModule,
+    HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
     AngularFireAuthModule,

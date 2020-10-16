@@ -1,28 +1,68 @@
 <div class="row">
     <div class="col">
-        <div class="top" *ngIf="(_user$ | async) as user">
-            <section class="background">
+        <div class="top" *ngIf="_user">
+            <section class="actions d-none">
+                <button
+                    (click)="saveChanges()"
+                    class="btn btn-sm btn-outline-info"
+                    type="button"
+                    >Zapisz
+                </button>
+                <button
+                    (click)="cancelChanges()"
+                    class="btn btn-sm btn-outline-info"
+                    type="button"
+                    >Anuluj
+                </button>
+            </section>
+            <section class="background-image">
                 <div class="image-selector">
-                    <fa-icon [icon]="_cameraIcon"></fa-icon>
+                    <input 
+                        (change)="loadFile($event)"
+                        #backgroundImageInput 
+                        type="file"
+                        accept="image/*" 
+                        name="backgroundImage" 
+                        id="background-image" 
+                        style="display: none;">
+                    <button
+                        (click)="triggerSelectDialog(backgroundImageInput)"
+                        class="btn"
+                        type="button">
+                        <fa-icon [icon]="_cameraIcon"></fa-icon>
+                    </button>
                 </div>
             </section>
-            <section class="user">
-                <div class="user-info">
-                    <div class="image">
+            <section class="profile">
+                <div class="profile-info">
+                    <div class="profile-image">
                         <div class="image-selector">
-                            <fa-icon [icon]="_cameraIcon"></fa-icon>
+                            <input 
+                                (change)="loadFile($event)"
+                                #profileImageInput 
+                                type="file"
+                                accept="image/*" 
+                                name="profileImage" 
+                                id="profile-image" 
+                                style="display: none;">
+                            <button
+                                (click)="triggerSelectDialog(profileImageInput)"
+                                class="btn"
+                                type="button">
+                                <fa-icon [icon]="_cameraIcon"></fa-icon>
+                            </button>
                         </div>
                     </div>
-                    <div class="text">
+                    <div class="profile-text">
                         <div class="nick">
-                            {{ user.nick }}
+                            {{ _user.nick }}
                         </div>
                         <div class="visits">
                             0 wyświetleń
                         </div>
                     </div>
                 </div>
-                <div class="user-links">
+                <div class="profile-links">
                     <ul class="list-group list-group-horizontal list-group-flush d-flex flex-wrap flex-md-nowrap">
                         <li class="list-group-item">
                             <button
@@ -72,6 +112,9 @@
             </section>
         </div>
     </div>
+</div>
+<div class="error-box">
+
 </div>
 <div class="row">
     <div class="col">

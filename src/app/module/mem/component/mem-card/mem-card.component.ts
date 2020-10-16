@@ -6,7 +6,7 @@ import { faPlus, faMinus, IconDefinition, faStar, faCommentAlt } from '@fortawes
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { combineLatest, Subscription } from 'rxjs';
 import { VotingCore } from 'src/app/module/shared/functions';
-import { Image } from 'src/app/module/shared/model/image.interface';
+import { ImageMetadata } from 'src/app/module/shared/model/image-metadata.interface';
 import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
 import { Router } from '@angular/router';
 import { User } from 'src/app/module/shared/model/user.interface';
@@ -26,7 +26,6 @@ export class MemCardComponent implements OnInit, OnDestroy {
 
   private _user: User;
   private _memData: Mem | null;
-  private _imageData: Image;
   private _voter: VotingCore;
   
   private _authSubscription: Subscription;
@@ -39,14 +38,11 @@ export class MemCardComponent implements OnInit, OnDestroy {
       this.auth.authState.subscribe(authState => this._user = authState.user)
 
       this._memSubscription = 
-      combineLatest(this.dbs.mem.getSingle(this.memReference.itemID), this.dbs.image.getSingle(this.memReference.imageID, this.memReference.authorID))
+      this.dbs.mem.getSingle(this.memReference.itemID)
         .subscribe(data => {
-          this._memData = data[0];
-          this._imageData = data[1];
-
+          this._memData = data;
           this.initializeVotingSystem();
       })
-
   }
   
   private initializeVotingSystem(){

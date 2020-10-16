@@ -8,8 +8,9 @@ import { CategoryDatabaseModel } from '../model/category.database-model';
 import { UserDatabaseModel } from '../model/user.database-model';
 import { MemDatabaseModel } from '../model/mem.database-model';
 import { MemReferenceDatabaseModel } from '../model/mem-reference.database-model';
-import { Image } from '../model/image.interface';
+import { ImageMetadata } from '../model/image-metadata.interface';
 import { ImageDatabaseModel } from '../model/image.database-model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +23,12 @@ export class DatabaseService {
   public memReference: MemReferenceDatabaseModel;
   public image: ImageDatabaseModel;
 
-  constructor(private af: AngularFirestore, private afStorage: AngularFireStorage) { 
+  constructor(private af: AngularFirestore, private afStorage: AngularFireStorage, private http: HttpClient) { 
     this.comment = new CommentDatabaseModel(af);
     this.category = new CategoryDatabaseModel(af);
     this.user = new UserDatabaseModel(af);
     this.memReference = new MemReferenceDatabaseModel(af);
     this.mem = new MemDatabaseModel(af);
-    this.image = new ImageDatabaseModel(af, afStorage);
+    this.image = new ImageDatabaseModel(af, afStorage, http);
   }
 }

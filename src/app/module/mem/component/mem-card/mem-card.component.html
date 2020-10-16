@@ -22,8 +22,8 @@
             </span>
         </div>
         <div class="card-img">
-            <a (click)="openDetailView()" *ngIf='_imageData'>
-                <img src="{{ _imageData.URL }}" alt="random image">
+            <a (click)="openDetailView()">
+                <img src="{{ mem.imageMetadata.URL }}" alt="random image">
             </a>
         </div>
     </div>

@@ -10,7 +10,9 @@ export interface UserDetail {
     watchedUsers: number,
     watchedTags: string[],
     isModerator: boolean,
-    isAdmin: boolean
+    isAdmin: boolean,
+    hasProfileImage: boolean,
+    hasProfileBackgrundImage: boolean
 }
 
 export interface User{
@@ -32,5 +34,7 @@ export const testUser: UserDetail = {
         watchedTags: [''],
         watchedUsers: 0,
         isModerator: false,
-        isAdmin: false
+        isAdmin: false,
+        hasProfileImage: false,
+        hasProfileBackgrundImage: false
 }

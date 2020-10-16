@@ -48,7 +48,6 @@ export class AuthService {
             }
         }))
         .toPromise()
-        
 
     this._authState = {
       isLogged: isLogged, 
@@ -89,7 +88,9 @@ export class AuthService {
           watchedTags: null,
           watchedUsers: 0,
           isModerator: false,
-          isAdmin: false
+          isAdmin: false,
+          hasProfileImage: false,
+          hasProfileBackgrundImage: false
         }
         return userData
       }).then(userData => {

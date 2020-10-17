@@ -1,3 +1,5 @@
+import { ImageMetadata } from './image-metadata.interface';
+
 export interface UserDetail {
     uid: string,
     nick: string,
@@ -11,8 +13,8 @@ export interface UserDetail {
     watchedTags: string[],
     isModerator: boolean,
     isAdmin: boolean,
-    hasProfileImage: boolean,
-    hasProfileBackgrundImage: boolean
+    profileImageMetadata: ImageMetadata,
+    backgroundImageMetadata: ImageMetadata
 }
 
 export interface User{
@@ -35,6 +37,6 @@ export const testUser: UserDetail = {
         watchedUsers: 0,
         isModerator: false,
         isAdmin: false,
-        hasProfileImage: false,
-        hasProfileBackgrundImage: false
+        profileImageMetadata: null,
+        backgroundImageMetadata: null
 }

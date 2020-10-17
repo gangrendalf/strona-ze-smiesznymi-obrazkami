@@ -89,8 +89,8 @@ export class AuthService {
           watchedUsers: 0,
           isModerator: false,
           isAdmin: false,
-          hasProfileImage: false,
-          hasProfileBackgrundImage: false
+          profileImageMetadata: null,
+          backgroundImageMetadata: null          
         }
         return userData
       }).then(userData => {

@@ -38,17 +38,15 @@ const routes: Routes = [
 
   { path: 'user/:uid', component: ProfileComponent, runGuardsAndResolvers: 'always', 
     children: [
-      { path: '', redirectTo: 'wall', pathMatch: 'full'},
+      { path: '', redirectTo: 'wall', pathMatch: 'full', runGuardsAndResolvers: 'always'},
       { path: 'wall', component: WallComponent, runGuardsAndResolvers: 'always' },
-      { path: 'watched-users', component: WatchedUsersComponent },
-      { path: 'watched-tags', component: WatchedTagsComponent },
-      { path: 'watched-mems', component: WatchedMemsComponent },
+      { path: 'watched-users', component: WatchedUsersComponent, runGuardsAndResolvers: 'always' },
+      { path: 'watched-tags', component: WatchedTagsComponent, runGuardsAndResolvers: 'always' },
+      { path: 'watched-mems', component: WatchedMemsComponent, runGuardsAndResolvers: 'always' },
       { path: 'history', component: HistoryComponent }
     ] 
   },
-
-
-  // { path: '**', redirectTo: ''}
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

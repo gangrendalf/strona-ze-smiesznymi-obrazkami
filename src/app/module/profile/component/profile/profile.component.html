@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col">
-        <div class="top" *ngIf="_user">
+        <div class="top" >
             <section class="actions d-none">
                 <button
                     (click)="saveChanges()"
@@ -16,9 +16,9 @@
                 </button>
             </section>
             <section class="background-image">
-                <div class="image-selector">
+                <div class="image-selector" *ngIf="(_authState$ | async) as auth">
                     <input 
-                        (change)="loadFile($event)"
+                        (change)="loadBackgroundFile($event)"
                         #backgroundImageInput 
                         type="file"
                         accept="image/*" 
@@ -26,6 +26,7 @@
                         id="background-image" 
                         style="display: none;">
                     <button
+                        *ngIf="auth.user.uid == _userID"
                         (click)="triggerSelectDialog(backgroundImageInput)"
                         class="btn"
                         type="button">
@@ -36,9 +37,9 @@
             <section class="profile">
                 <div class="profile-info">
                     <div class="profile-image">
-                        <div class="image-selector">
+                        <div class="image-selector" *ngIf="(_authState$ | async) as auth">
                             <input 
-                                (change)="loadFile($event)"
+                                (change)="loadProfileFile($event)"
                                 #profileImageInput 
                                 type="file"
                                 accept="image/*" 
@@ -46,6 +47,7 @@
                                 id="profile-image" 
                                 style="display: none;">
                             <button
+                                *ngIf="auth.user.uid == _userID"
                                 (click)="triggerSelectDialog(profileImageInput)"
                                 class="btn"
                                 type="button">
@@ -55,7 +57,7 @@
                     </div>
                     <div class="profile-text">
                         <div class="nick">
-                            {{ _user.nick }}
+                            {{ _user ? _user.nick : null }}
                         </div>
                         <div class="visits">
                             0 wyświetleń

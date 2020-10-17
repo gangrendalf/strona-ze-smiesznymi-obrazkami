@@ -27,6 +27,7 @@ $user-avatar-height: 150px
     width: 100%
     height: $background-image-height
     background-color: #111
+    overflow: hidden
 
 .background-image .image-selector
     position: absolute
@@ -81,14 +82,15 @@ $user-avatar-height: 150px
 .profile-image .image-selector .btn
     border-radius: 50%
 
-.profile-info .text
-    margin-left: 10px
+.profile-text
+    padding-left: 10px
+    background-color: rgba(0, 0, 0, .1)
 
-.profile-info .text .nick
+.profile-text .nick
     font-size: 1.6rem
     color: green
 
-.profile-info .text .visits
+.profile-text .visits
     font-size: .7rem
 
 .profile-links

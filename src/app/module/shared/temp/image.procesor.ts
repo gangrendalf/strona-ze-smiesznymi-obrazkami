@@ -93,6 +93,10 @@ export class ImageProcesor {
         return this._imageMetadata
     }
 
+    get typeOf(){
+        return this._SELECTED_TYPE;
+    }
+
     updateMetadata(newMetadata: ImageMetadata){
         this._imageMetadata = newMetadata;
     }

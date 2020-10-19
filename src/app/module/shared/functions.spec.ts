@@ -1,7 +1,4 @@
-import { Functions } from './functions';
+import { disableScroll, enableScroll, VotingCore } from './functions';
 
 describe('Functions', () => {
-  it('should create an instance', () => {
-    expect(new Functions()).toBeTruthy();
-  });
 });

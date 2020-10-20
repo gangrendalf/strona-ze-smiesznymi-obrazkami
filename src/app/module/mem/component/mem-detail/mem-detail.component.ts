@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
 import { User } from 'src/app/module/shared/model/user.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'mem-detail',
@@ -23,14 +24,15 @@ export class MemDetailComponent implements OnInit, OnDestroy {
   private _commentsSubscription: Subscription;
   private _authSubscription: Subscription;
   
-  constructor(private dbs: DatabaseService, private auth: AuthService) { 
-
-
-
-  }
+  constructor(private dbs: DatabaseService, private auth: AuthService, private router: Router) { }
 
   ngOnInit(){
-    this.loadMemFromLocalStorage();
+    try{
+      this.loadMemFromLocalStorage();
+    } catch (error) {
+      // this.router.navigate(['/something-goes-wrong']);
+      // return;
+    }
     
     this._authSubscription = 
       this.auth.authState
@@ -43,8 +45,11 @@ export class MemDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this._commentsSubscription.unsubscribe();
-    this._authSubscription.unsubscribe();
+    if(this._commentsSubscription)
+      this._commentsSubscription.unsubscribe();
+    
+    if(this._authSubscription)
+      this._authSubscription.unsubscribe();
   }
 
   addComment(comment: Comment){
@@ -60,5 +65,8 @@ export class MemDetailComponent implements OnInit, OnDestroy {
     const localStorageString = localStorage.getItem('memReference');
     const localStorageObject = JSON.parse(localStorageString);
     this._memReference = localStorageObject;
+
+    if(this._memReference == null)
+      throw new Error('no mem to display');
   }
 }

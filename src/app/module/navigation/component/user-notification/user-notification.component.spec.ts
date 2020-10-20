@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { UserNotificationComponent } from './user-notification.component';
 
@@ -8,6 +9,7 @@ describe('UserNotificationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ FontAwesomeModule ],
       declarations: [ UserNotificationComponent ]
     })
     .compileComponents();

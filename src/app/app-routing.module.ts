@@ -20,7 +20,7 @@ import { WatchedTagsComponent } from './module/profile/component/watched-tags/wa
 import { WatchedMemsComponent } from './module/profile/component/watched-mems/watched-mems.component';
 import { HistoryComponent } from './module/profile/component/history/history.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', component: MemsSetComponent},
   { path: 'something-goes-wrong', component: SomethingGoesWrongComponent },
   { path: 'page-not-found', component: PageNotFoundComponent },

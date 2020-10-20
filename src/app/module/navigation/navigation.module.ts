@@ -5,7 +5,7 @@ import { UserMenuComponent } from 'src/app/module/navigation/component/user-menu
 import { SharedModule } from '../shared/shared.module';
 import { CategoryComponent } from './component/categories/categories.component';
 import { ButtonsAddComponent } from './component/add-mem/add-mem.component';
-import { ButtonsLinksComponent } from 'src/app/module/navigation/component/rooms/rooms.component';
+import { RoomsComponent } from 'src/app/module/navigation/component/rooms/rooms.component';
 import { ButtonsUserComponent } from './component/user-specific/user-specific.component';
 import { SearchBarComponent } from './component/search-bar/search-bar.component';
 import { LogoComponent } from './component/logo/logo.component';
@@ -19,7 +19,7 @@ import { LogoComponent } from './component/logo/logo.component';
     UserMenuComponent,
     CategoryComponent,
     ButtonsAddComponent,
-    ButtonsLinksComponent,
+    RoomsComponent,
     ButtonsUserComponent,
     SearchBarComponent,
     LogoComponent

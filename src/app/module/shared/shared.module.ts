@@ -18,7 +18,10 @@ import { PageNotFoundComponent } from './component/page-not-found/page-not-found
 
 
 @NgModule({
-  declarations: [SomethingGoesWrongComponent, PageNotFoundComponent],
+  declarations: [
+    SomethingGoesWrongComponent, 
+    PageNotFoundComponent
+  ],
   imports: [
     BrowserModule,
     CommonModule,
@@ -40,7 +43,9 @@ import { PageNotFoundComponent } from './component/page-not-found/page-not-found
     AppRoutingModule,
     AngularFireModule,
     AngularFireAuthModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    SomethingGoesWrongComponent,
+    PageNotFoundComponent
   ]
 })
 export class SharedModule { }

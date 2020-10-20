@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MemCommentInputComponent } from './mem-comment-input.component';
 
@@ -8,6 +10,10 @@ describe('MemCommentInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        FontAwesomeModule
+      ],
       declarations: [ MemCommentInputComponent ]
     })
     .compileComponents();

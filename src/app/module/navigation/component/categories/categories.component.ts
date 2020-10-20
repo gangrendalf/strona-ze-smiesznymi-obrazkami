@@ -22,6 +22,10 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   
   async ngOnInit(){
     await this.getAllCategories();
+
+    if(!this._allCategories)
+      return;
+      
     this.selectFourRandomCategoriesForDesktopView();
     this.selectVisibleCategories();
   }

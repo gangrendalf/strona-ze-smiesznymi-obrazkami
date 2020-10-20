@@ -1,6 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AuthService } from '../../service/auth.service';
+import { routes } from 'src/app/app-routing.module';
 
 import { RemindPasswordComponent } from './remind-password.component';
+
+class AuthServiceStub {
+  resetPassword(email: string){
+    return Promise.resolve();
+  }
+}
 
 describe('RemindPasswordComponent', () => {
   let component: RemindPasswordComponent;
@@ -8,7 +18,14 @@ describe('RemindPasswordComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RemindPasswordComponent ]
+      imports: [ 
+        RouterTestingModule,
+        FormsModule
+       ],
+      declarations: [ RemindPasswordComponent ],
+      providers: [
+        { provide: AuthService, useClass: AuthServiceStub}
+      ]
     })
     .compileComponents();
   }));

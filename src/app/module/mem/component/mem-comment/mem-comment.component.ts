@@ -13,7 +13,7 @@ import { StylesCompileDependency } from '@angular/compiler';
 })
 export class MemCommentComponent implements OnInit {
   @Input('memID') memID: string;
-  @Input('comment') comment: Comment;
+  @Input('comment') comment: Comment = null;
   @Input('user') user: User;
   @Input('childComments') childComments: Comment[];
 
@@ -31,6 +31,9 @@ export class MemCommentComponent implements OnInit {
   constructor(private dbs: DatabaseService) { }
   
   ngOnInit(){
+    if(!this.comment)
+      return;
+
     if(!this.comment.votes)
       this.comment.votes = [];
 

@@ -34,6 +34,9 @@ export class MemCardComponent implements OnInit, OnDestroy {
   constructor(private dbs: DatabaseService, private auth: AuthService, private router: Router) { }
 
   ngOnInit() {
+    if(this.memReference == null)
+      return;
+
     this._authSubscription = 
       this.auth.authState.subscribe(authState => this._user = authState.user)
 
@@ -88,7 +91,10 @@ export class MemCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this._authSubscription.unsubscribe();
-    this._memSubscription.unsubscribe();
+    if(this._authSubscription)
+      this._authSubscription.unsubscribe();
+    
+    if(this._memSubscription)
+      this._memSubscription.unsubscribe();
   }
 }

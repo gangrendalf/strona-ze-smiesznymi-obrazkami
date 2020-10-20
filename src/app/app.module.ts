@@ -7,7 +7,6 @@ import { AuthenticationModule } from './module/authentication/authentication.mod
 import { MemModule } from './module/mem/mem.module';
 import { ProfileModule } from './module/profile/profile.module';
 
-
 @NgModule({
   declarations: [
     AppComponent

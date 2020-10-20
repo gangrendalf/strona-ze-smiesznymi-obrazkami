@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { SearchBarComponent } from './search-bar.component';
 
@@ -8,6 +10,10 @@ describe('SearchBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ 
+        FontAwesomeModule,
+        FormsModule
+       ],
       declarations: [ SearchBarComponent ]
     })
     .compileComponents();

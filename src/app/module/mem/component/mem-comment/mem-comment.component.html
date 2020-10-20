@@ -5,7 +5,7 @@
                 <fa-icon [icon]="_iconUser"></fa-icon>
             </span>
             <span class="user-name">
-                {{ comment.author.nick }}
+                {{ comment ? comment.author.nick : null }}
             </span>
             <span class="timestamp">
                 {{ _timestamp }}
@@ -31,7 +31,7 @@
                     ><fa-icon [icon]="_iconPlus"></fa-icon>
                 </button>
             </span>
-            <span class="display--plus">
+            <span class="display--plus" *ngIf=" _voter ">
                 {{ _voter.upVotesCount | async }}
             </span>
             <span class="btn--minus">
@@ -42,14 +42,14 @@
                     ><fa-icon [icon]="_iconMinus"></fa-icon>
                 </button>
             </span>
-            <span class="display--minus">
+            <span class="display--minus" *ngIf=" _voter ">
                 {{ _voter.downVotesCount | async }}
             </span>
         </div>
     </div>
     <div class="comment-body">
         <p class="comment-text">
-            {{ comment.text }}
+            {{ comment ? comment.text : null }}
         </p>
         <hr style="border: 1px solid #333; margin: 4px 0 4px -12px;">
         <mem-comment-input

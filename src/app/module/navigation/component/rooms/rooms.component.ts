@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'buttons-links',
+  selector: 'rooms',
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.sass']
 })
-export class ButtonsLinksComponent {
+export class RoomsComponent {
 }

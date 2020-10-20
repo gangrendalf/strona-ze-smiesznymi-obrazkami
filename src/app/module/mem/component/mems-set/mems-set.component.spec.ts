@@ -1,6 +1,14 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Observable, EMPTY } from 'rxjs';
+import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
+import { PageService } from '../../service/page.service';
 
 import { MemsSetComponent } from './mems-set.component';
+
+class PageServiceStub {
+  activePageMemCollection$: Observable<MemReference[]> = EMPTY;
+}
 
 describe('MemsSetComponent', () => {
   let component: MemsSetComponent;
@@ -8,7 +16,11 @@ describe('MemsSetComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MemsSetComponent ]
+      declarations: [ MemsSetComponent ],
+      providers: [
+        { provide: PageService, useClass: PageServiceStub }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

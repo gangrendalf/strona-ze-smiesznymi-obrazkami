@@ -1,6 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { EMPTY, Observable } from 'rxjs';
+import { AuthState } from 'src/app/module/authentication/model/auth-state';
+import { AuthService } from 'src/app/module/authentication/service/auth.service';
 
 import { UserMenuComponent } from './user-menu.component';
+
+class AuthServiceStub {
+  authState: Observable<AuthState> = EMPTY;
+
+  logout(): Promise<boolean>{
+    return Promise.resolve(false);
+  }
+}
 
 describe('UserMenuComponent', () => {
   let component: UserMenuComponent;
@@ -8,7 +21,14 @@ describe('UserMenuComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserMenuComponent ]
+      imports: [ 
+        RouterTestingModule,
+        FontAwesomeModule
+       ],
+      declarations: [ UserMenuComponent ],
+      providers: [
+        { provide: AuthService, useClass: AuthServiceStub }
+      ]
     })
     .compileComponents();
   }));

@@ -13,8 +13,8 @@ import { MemCommentInputComponent } from './component/mem-comment-input/mem-comm
 
 @NgModule({
   declarations: [
-    MemCardComponent,
     MemsSetComponent,
+    MemCardComponent,
     MemAddFormComponent,
     PaginatorComponent,
     MoviesSetComponent,
@@ -25,8 +25,13 @@ import { MemCommentInputComponent } from './component/mem-comment-input/mem-comm
   imports: [
     SharedModule
   ],
+  entryComponents: [
+    PaginatorComponent,
+    MemCardComponent,
+    MemsSetComponent
+  ],
   exports: [
-    MemsSetComponent,
+    MemsSetComponent
   ]
 })
 export class MemModule { }

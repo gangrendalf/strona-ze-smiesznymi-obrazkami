@@ -7,11 +7,11 @@ import { environment } from 'src/environments/environment.prod';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AngularFirestore } from '@angular/fire/firestore';
 import { SomethingGoesWrongComponent } from './component/something-goes-wrong/something-goes-wrong.component';
 import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
 

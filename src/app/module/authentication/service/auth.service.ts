@@ -3,7 +3,6 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { UserRegisterData } from '../model/user-register-data';
 import { UserDetail } from '../../shared/model/user.interface';
 import { DatabaseService } from '../../shared/service/database.service';
-import { UserLoginData } from '../model/user-login-data';
 import { ReplaySubject, Observable } from 'rxjs';
 import { AuthState } from '../model/auth-state';
 import { map, take } from 'rxjs/operators';
@@ -108,12 +107,12 @@ export class AuthService {
     return this.auth.auth.sendPasswordResetEmail(email);
   }
 
-  public login(data: UserLoginData): Promise<boolean>{
+  public login(email: string, password: string): Promise<void>{
     return new Promise((resolve, reject) => {
       this.auth.auth
-        .signInWithEmailAndPassword(data.email, data.password)
+        .signInWithEmailAndPassword(email, password)
         .then(
-          success => resolve(true)
+          success => resolve()
         ).catch(
           fail => reject('zle dane kolego')
         )

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col">
-        <form #f="ngForm" (ngSubmit)="login(f)">
+        <form #f="ngForm" (ngSubmit)="login(email.value, password.value)">
             <div class="form-group form-row">
                 <input 
                     ngModel

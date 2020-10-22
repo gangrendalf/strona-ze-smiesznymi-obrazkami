@@ -127,8 +127,10 @@ describe('LoginComponent', () => {
     emailEl.dispatchEvent(new Event('focus'));
     fixture.detectChanges();
 
+    errorBoxEl = emailEl.nextElementSibling as HTMLDivElement;
+    expect(errorBoxEl).toBeNull();
+
     emailEl.dispatchEvent(new Event('blur'));
-    fixture.detectChanges();
     fixture.detectChanges();
 
     errorBoxEl = emailEl.nextElementSibling as HTMLDivElement;
@@ -152,8 +154,10 @@ describe('LoginComponent', () => {
     passwordEl.dispatchEvent(new Event('focus'));
     fixture.detectChanges();
 
+    errorBoxEl = passwordEl.nextElementSibling as HTMLDivElement;
+    expect(errorBoxEl).toBeNull();
+
     passwordEl.dispatchEvent(new Event('blur'));
-    fixture.detectChanges();
     fixture.detectChanges();
 
     errorBoxEl = passwordEl.nextElementSibling as HTMLDivElement;

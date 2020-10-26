@@ -3,29 +3,29 @@
         <p>
             Załóż konto wypełniając poniższy formularz
         </p>
-        <form #f="ngForm" (ngSubmit)="register(f)">
+        <form #f="ngForm" (ngSubmit)="register(nick.value, birthdate.value, email.value, password.value)">
             <div class="form-group form-row">
                 <input
                     ngModel
                     required
                     minlength="3"
                     pattern="^([a-zA-Z0-9]+)(([a-zA-Z0-9]*)(_*)(-*))*$"
-                    #login="ngModel"
-                    id="login"
-                    name="login"
+                    #nick="ngModel"
+                    id="nick"
+                    name="nick"
                     autocomplete="off"
-                    placeholder="Login"
+                    placeholder="Nick"
                     type="text"
                     class="form-control">
-                <div class="text-danger" *ngIf="login.invalid && login.touched">
-                    <div *ngIf="login.errors.required">
-                        Pole login jest wymagane
+                <div class="text-danger" *ngIf="nick.invalid && nick.touched">
+                    <div *ngIf="nick.errors.required">
+                        Pole nick jest wymagane
                     </div>
-                    <div *ngIf="login.errors.minlength">
-                        Login musi posiadać minimum {{ login.errors.minlength.requiredLength }} znaki
+                    <div *ngIf="nick.errors.minlength">
+                        Nick musi posiadać minimum {{ nick.errors.minlength.requiredLength }} znaki
                     </div>
-                    <div *ngIf="login.errors.pattern">
-                        Login musi zaczynać się literą bądź liczbą oraz może zawierać znaki - _
+                    <div *ngIf="nick.errors.pattern">
+                        Nick musi zaczynać się literą bądź liczbą oraz może zawierać znaki - _
                     </div>
                 </div>
             </div>

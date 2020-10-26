@@ -12,12 +12,12 @@ import { Router } from '@angular/router';
 export class RegistrationComponent {
   constructor(private auth: AuthService, private router: Router) { }
 
-  register(form: NgForm){
+  register(nick: string, birthdate: number, email: string, password: string){
     const data: UserRegisterData = {
-      nick: form.value.login,
-      birthdate: form.value.birthdate,
-      email: form.value.email,
-      password: form.value.password
+      nick: nick,
+      birthdate: birthdate,
+      email: email,
+      password: password
     };
 
     this.auth.registerUser(data)

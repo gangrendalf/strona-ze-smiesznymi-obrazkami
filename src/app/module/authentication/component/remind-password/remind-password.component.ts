@@ -12,16 +12,13 @@ export class RemindPasswordComponent {
 
   constructor(private auth: AuthService, private router: Router) { }
 
-  private remindPassword(form: NgForm){
-    const email: string = form.value.email;
-
+  remindPassword(email: string){
     this.auth.resetPassword(email)
       .then(
-        () => this.router.navigateByUrl('/'),
-        (error) => this.router.navigateByUrl('/something-goes-wrong', {queryParams: {message: error}})
+        success => this.router.navigateByUrl('/')
       )
       .catch(
-        (error) => this.router.navigateByUrl('/something-goes-wrong', {queryParams: {message: error}})
+        fail => this.router.navigateByUrl('/something-goes-wrong', {queryParams: {message: fail}})
       );
   }
 }

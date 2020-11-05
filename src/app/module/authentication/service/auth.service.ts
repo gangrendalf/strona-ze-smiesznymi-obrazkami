@@ -14,16 +14,19 @@ export class AuthService {
   private _authState$: ReplaySubject<AuthState> = new ReplaySubject(1);
   private _authState: AuthState
 
-  constructor(private auth: AngularFireAuth, private dbs: DatabaseService) { 
-    this.auth.authState.subscribe
-      (async firebaseUser =>{
-        if(this.userLoggedIn(firebaseUser))
-          await this.loadUserLoggedInData(firebaseUser);
-        else
-          this.loadUserLoggedOutData();
+  constructor(private fireAuth: AngularFireAuth, private dbs: DatabaseService) { 
+    this.fireAuth.authState.subscribe(firebaseUser =>
+      this.updateAuthState(firebaseUser)
+    );
+  }
 
-        this.updateAuthState();
-      });
+  private async updateAuthState(firebaseUser: firebase.User){
+    if(this.userLoggedIn(firebaseUser))
+      await this.loadUserLoggedInData(firebaseUser);
+    else
+      this.loadUserLoggedOutData();
+
+    this._authState$.next(this._authState);
   }
 
   private userLoggedIn(firebaseUser: firebase.User){
@@ -59,11 +62,10 @@ export class AuthService {
   }
 
   private loadUserLoggedOutData(): void{
-    this._authState = {isLogged: false};
-  }
-
-  private updateAuthState(){
-    this._authState$.next(this._authState);
+    this._authState = {
+      isLogged: false,
+      user: undefined
+    };
   }
 
   public get authState(): Observable<AuthState>{
@@ -71,62 +73,77 @@ export class AuthService {
   }
 
   public registerUser(data: UserRegisterData): Promise<void>{
-    return new Promise<void>((resolve, reject) => {
-      this.auth.auth
-      .createUserWithEmailAndPassword(data.email, data.password)
-      .then(res => {
-        const userData: UserDetail = {
-          uid: res.user.uid,
-          nick: data.nick,
-          email: data.email,
-          birthdate: data.birthdate,
-          addedMems: 0,
-          addedComments: 0,
-          summaryDownvotes: 0,
-          summaryUpvotes: 0,
-          watchedTags: null,
-          watchedUsers: 0,
-          isModerator: false,
-          isAdmin: false,
-          profileImageMetadata: null,
-          backgroundImageMetadata: null          
-        }
-        return userData
-      }).then(userData => {
-        return this.dbs.user.set(userData);
-      }).then(success => {
-        resolve();
-      }).catch(fail => {
-        console.error('tworzenie konta nie powiodlo sie');
-        reject();
-      })
+    return new Promise((resolve, reject) => {
+      try {
+        this.fireAuth.auth
+          .createUserWithEmailAndPassword(data.email, data.password)
+          .then(res => {
+            const userData: UserDetail = {
+              uid: res.user.uid,
+              nick: data.nick,
+              email: data.email,
+              birthdate: data.birthdate,
+              addedMems: 0,
+              addedComments: 0,
+              summaryDownvotes: 0,
+              summaryUpvotes: 0,
+              watchedTags: null,
+              watchedUsers: 0,
+              isModerator: false,
+              isAdmin: false,
+              profileImageMetadata: null,
+              backgroundImageMetadata: null          
+            }
+            return userData
+          })
+          .then(userData => this.dbs.user.set(userData))
+          .then(success => resolve())
+          .catch(fail => {
+            fail instanceof Error ?
+              reject('AuthService Error: registerUser() - general error') :
+              reject('AuthService Error: registerUser() - firebase rejection');
+          });
+      } catch (error) {
+        reject('AuthService Error: registerUser() - general error');
+      }
     })
   }
 
   public resetPassword(email: string): Promise<void>{
-    return this.auth.auth.sendPasswordResetEmail(email);
+    return new Promise<void>((resolve, reject) => {
+      try {
+        this.fireAuth.auth
+        .sendPasswordResetEmail(email)
+        .then(success => resolve())
+        .catch(fail => reject('AuthService Error: resetPassword() - fireAuth rejection'));
+      } catch (error) {
+        reject('AuthService Error: resetPassword() - general error'); 
+      }
+    })
   }
 
   public login(email: string, password: string): Promise<void>{
     return new Promise((resolve, reject) => {
-      this.auth.auth
-        .signInWithEmailAndPassword(email, password)
-        .then(
-          success => resolve()
-        ).catch(
-          fail => reject('zle dane kolego')
-        )
+        try {
+          this.fireAuth.auth
+          .signInWithEmailAndPassword(email, password)
+          .then(success => resolve())
+          .catch(fail => reject('AuthService Error: login() - fireAuth rejection'));
+        } catch (error) {
+          reject('AuthService Error: login() - general error');          
+        }
       })
   }
 
-  public logout(): Promise<boolean>{
+  public logout(): Promise<void>{
     return new Promise((resolve, reject) => {
-      this.auth.auth.signOut()
-        .then(
-          success => resolve(true)
-        ).catch(
-          fail => reject('nie udalo sie wylogowac')
-        )
+      try {
+        this.fireAuth.auth.signOut()
+        .then(success => resolve())
+        .catch(fail => reject('AuthService Error: logout() - fireAuth rejection'));
+      } catch (error) {
+        reject('AuthService Error: logout() - general error');        
+      }
     })
   }
 }

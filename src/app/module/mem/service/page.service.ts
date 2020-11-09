@@ -16,7 +16,6 @@ export class PageService {
   private _maxPageNumber: number;
   private _activePageNumber: number;
 
-
   private _activePageMemCollection$: Subject<MemReference[]> = new ReplaySubject(1);
   private _paginatorLinks$: Subject<PaginatorLink[]> = new ReplaySubject(1);
 
@@ -58,6 +57,7 @@ export class PageService {
   }
 
   private extractFiltersFromNavigationEvent(e: NavigationEnd) {
+    console.log(e);
     let urlWithoutParams: string[] = e.url.slice(1).split('?')[0].split('/')
     let filters: Filter;
     

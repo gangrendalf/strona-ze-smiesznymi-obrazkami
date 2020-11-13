@@ -8,11 +8,9 @@ import { take, map } from 'rxjs/operators';
 })
 export class AuthGuard implements CanActivate {
   
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private auth: AuthService) { }
 
-  async canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Promise<boolean> {
+  async canActivate(): Promise<boolean> {
     
     return (await this.auth.authState.pipe(take(1)).toPromise()).isLogged;
   }

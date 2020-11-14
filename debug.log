@@ -39,3 +39,4 @@
 [1110/112607.657:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Gangren\AppData\Local\Temp\karma-71578811\Crashpad\attachments\b4168e06-6d6e-477c-94e0-b0453a645671: System nie mo¿e odnaleŸæ okreœlonej œcie¿ki. (0x3)
 [1110/113621.496:ERROR:directory_reader_win.cc(43)] FindFirstFile: System nie mo¿e odnaleŸæ okreœlonej œcie¿ki. (0x3)
 [1113/120533.308:ERROR:directory_reader_win.cc(43)] FindFirstFile: System nie mo¿e odnaleŸæ okreœlonej œcie¿ki. (0x3)
+[1114/104646.967:ERROR:directory_reader_win.cc(43)] FindFirstFile: System nie mo¿e odnaleŸæ okreœlonej œcie¿ki. (0x3)

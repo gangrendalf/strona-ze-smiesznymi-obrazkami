@@ -1,14 +1,8 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, NavigationEnd, ParamMap, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { faChessKing } from '@fortawesome/free-solid-svg-icons';
-import { doesNotThrow } from 'assert';
-import { url } from 'inspector';
-import { EMPTY, Observable, of, Subject, Subscription } from 'rxjs';
-import { MemReferenceDatabaseModel } from '../../shared/model/mem-reference.database-model';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { MemReference } from '../../shared/model/mem-reference.interface';
 import { DatabaseService } from '../../shared/service/database.service';
-import { PaginatorLink } from '../model/paginator-link';
 
 import { PageService } from './page.service';
 

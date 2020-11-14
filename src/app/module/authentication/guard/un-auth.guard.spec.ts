@@ -3,9 +3,9 @@ import { EMPTY, of } from 'rxjs';
 import { AuthService } from '../service/auth.service';
 import { UnAuthGuard } from './un-auth.guard';
 
-class AuthServiceMock {
+class AuthServiceFake {
   get authState() {
-    return EMPTY;
+    return null;
   }
 };
 
@@ -17,7 +17,7 @@ describe('UnAuthGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         UnAuthGuard,
-        { provide: AuthService, useClass: AuthServiceMock}
+        { provide: AuthService, useClass: AuthServiceFake}
       ]
     });
 

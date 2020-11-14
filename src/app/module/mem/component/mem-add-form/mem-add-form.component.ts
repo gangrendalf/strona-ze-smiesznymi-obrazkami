@@ -10,7 +10,7 @@ import { Category } from 'src/app/module/shared/model/category.interface';
 import { ImageMetadata } from 'src/app/module/shared/model/image-metadata.interface';
 import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
 import { Router } from '@angular/router';
-import { ImageProcesor } from 'src/app/module/shared/temp/image.procesor';
+import { ImageProcesor } from 'src/app/module/shared/utilities/image.procesor';
 
 @Component({
   selector: 'mem-add-form',

@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { Category } from 'src/app/module/shared/model/category.interface';
-import { disableScroll, enableScroll } from 'src/app/module/shared/functions';
+import { disableScroll, enableScroll } from 'src/app/module/shared/utilities/functions';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 
 @Component({

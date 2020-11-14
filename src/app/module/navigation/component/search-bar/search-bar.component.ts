@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { faSearch, IconDefinition, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { disableScroll, enableScroll } from 'src/app/module/shared/functions'
+import { disableScroll, enableScroll } from 'src/app/module/shared/utilities/functions'
 
 
 @Component({

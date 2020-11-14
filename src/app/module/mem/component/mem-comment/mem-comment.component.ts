@@ -2,9 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { Comment } from 'src/app/module/shared/model/comment.interface';
 import { IconDefinition, faUser, faFlag, faPlus, faMinus, faReply } from '@fortawesome/free-solid-svg-icons';
-import { VotingCore } from 'src/app/module/shared/functions';
+import { VotingCore } from 'src/app/module/shared/utilities/functions';
 import { User } from 'src/app/module/shared/model/user.interface';
-import { StylesCompileDependency } from '@angular/compiler';
 
 @Component({
   selector: 'mem-comment',

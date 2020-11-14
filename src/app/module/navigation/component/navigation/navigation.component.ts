@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { faBars, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { disableScroll, enableScroll } from 'src/app/module/shared/functions'
+import { disableScroll, enableScroll } from 'src/app/module/shared/utilities/functions'
 
 @Component({
   selector: 'navigation',

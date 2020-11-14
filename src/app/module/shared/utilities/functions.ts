@@ -2,7 +2,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { Vote, Note } from 'src/app/module/shared/model/vote.interface';
 import { Comment } from 'src/app/module/shared/model/comment.interface';
 import { Mem } from 'src/app/module/shared/model/mem.interface';
-import { User } from './model/user.interface';
+import { User } from '../model/user.interface';
 
 export function disableScroll(){
     document.addEventListener('touchmove', preventDefault, { passive: false });

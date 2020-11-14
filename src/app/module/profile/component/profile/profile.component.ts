@@ -4,7 +4,7 @@ import { DatabaseService } from 'src/app/module/shared/service/database.service'
 
 import { faCamera, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { UserDetail } from 'src/app/module/shared/model/user.interface';
-import { ImageProcesor } from 'src/app/module/shared/temp/image.procesor';
+import { ImageProcesor } from 'src/app/module/shared/utilities/image.procesor';
 import { ImageMetadata } from 'src/app/module/shared/model/image-metadata.interface';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 

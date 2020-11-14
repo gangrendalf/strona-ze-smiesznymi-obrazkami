@@ -1,12 +1,10 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { Mem } from 'src/app/module/shared/model/mem.interface';
-
 import { faPlus, faMinus, IconDefinition, faStar, faCommentAlt } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
-import { combineLatest, Subscription } from 'rxjs';
-import { VotingCore } from 'src/app/module/shared/functions';
-import { ImageMetadata } from 'src/app/module/shared/model/image-metadata.interface';
+import { Subscription } from 'rxjs';
+import { VotingCore } from 'src/app/module/shared/utilities/functions';
 import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
 import { Router } from '@angular/router';
 import { User } from 'src/app/module/shared/model/user.interface';

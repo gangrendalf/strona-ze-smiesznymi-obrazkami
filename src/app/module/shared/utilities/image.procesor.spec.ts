@@ -7,7 +7,7 @@ function getTestFile(fileName: string){
     .then(blob => new File([blob], `${fileName}.png`, { type: 'image/png' }));
 }
 
-fdescribe('ImageProcessor', () => {
+describe('ImageProcessor', () => {
   const _MiB = 1048576;
   let imageProcessor: ImageProcesor;
 

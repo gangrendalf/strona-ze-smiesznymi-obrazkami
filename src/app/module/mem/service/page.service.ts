@@ -57,7 +57,6 @@ export class PageService {
   }
 
   private extractFiltersFromNavigationEvent(e: NavigationEnd) {
-    console.log(e);
     let urlWithoutParams: string[] = e.url.slice(1).split('?')[0].split('/')
     let filters: Filter;
     
@@ -132,7 +131,6 @@ export class PageService {
     let delta: number = 3;
 
     if(this._activePageNumber < 1){
-      // console.error('PageService: calculatePaginatorLinks() no pages to display');
       this._paginatorLinks$.next(null);
       return;
     }
@@ -180,7 +178,6 @@ export class PageService {
       startLocation = endLocation - offset;
   
       if(startLocation < 0 || endLocation < 0 || offset < 0){
-        // console.error('PageService: function calculateMemSet() got at least one negative location parameter (probably no mems to display).');
         this._activePageMemCollection$.next(null);
         return;
       }

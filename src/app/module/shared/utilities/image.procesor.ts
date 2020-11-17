@@ -1,11 +1,12 @@
+import { resolve } from 'url';
 import { ImageMetadata } from '../model/image-metadata.interface';
 
-interface ImageResolution{
+interface ImageResolution {
     width: number,
     height: number
 }
 
-enum TypeOfImage{
+enum TypeOfImage {
     mem,
     profile,
     background,
@@ -19,21 +20,26 @@ export class ImageProcesor {
         background: TypeOfImage.background,
         notSpecified: TypeOfImage.notSpecified
     };
-    
-    private readonly _MAX_BACKGROUND_IMAGE_SIZE: number = 1048576;
+
+    private readonly _MiB = 1048576;
+
+    private readonly _MAX_BACKGROUND_IMAGE_SIZE: number = 1 * this._MiB;
     private readonly _MAX_BACKGROUND_IMAGE_RESOLUTION: ImageResolution = {
-        width: 800, 
-        height: 300 };
-    private readonly _MAX_PROFILE_IMAGE_SIZE = 307200;
+        width: 800,
+        height: 300
+    };
+    private readonly _MAX_PROFILE_IMAGE_SIZE = .33 * this._MiB;
     private readonly _MAX_PROFILE_IMAGE_RESOLUTION: ImageResolution = {
-        width: 300, 
-        height: 300 };
-    private readonly _MAX_MEM_IMAGE_SIZE = 1048576 * 2;
+        width: 300,
+        height: 300
+    };
+    private readonly _MAX_MEM_IMAGE_SIZE = 2 * this._MiB;
     private readonly _MAX_MEM_IMAGE_RESOLUTION: ImageResolution = {
-        width: 1000, 
-        height: 1000 };
+        width: 1000,
+        height: 1000
+    };
     private readonly _SELECTED_TYPE;
-    
+
     private _imageMetadata: ImageMetadata;
     private _imageFile: File;
 
@@ -41,33 +47,38 @@ export class ImageProcesor {
     private _imageHostURL: string;
     private _imageBlobURL: string;
 
-    constructor(typeOfImage: TypeOfImage = TypeOfImage.notSpecified){
+    constructor(typeOfImage: TypeOfImage = TypeOfImage.notSpecified) {
         this._SELECTED_TYPE = typeOfImage;
     }
 
-    async createImageFromFile(file: File, authorID: string){
-        this._imageBlobURL = URL.createObjectURL(file);
-        this._imageHostURL = null;
-        
-        this._imageMetadata = {
-            URL: this._imageBlobURL,
-            uid: authorID,
-            id: ''
-        }
+    createImageFromFile(file: File, authorID: string): Promise<void> {
         this._imageFile = file;
 
-        try{
-            await this.verifyImage();
-        }
-        catch(error){
-            throw error
-        }
+        return this.verifyImage()
+            .then(
+                resolve => {
+                    this._imageBlobURL = URL.createObjectURL(this._imageFile);
+                    this._imageHostURL = null;
+            
+                    this._imageMetadata = {
+                        URL: this._imageBlobURL,
+                        uid: authorID,
+                        id: ''
+                    }
+            
+                    this._imageHTMLElement = document.createElement('img');
+                    this._imageHTMLElement.setAttribute('src', this._imageBlobURL);
 
-        this._imageHTMLElement = document.createElement('img');
-        this._imageHTMLElement.setAttribute('src', this._imageBlobURL);
+                    return;
+                },
+                error => {
+                    this._imageFile = null;
+                    return Promise.reject(error);
+                }
+            );
     }
 
-    createImageFromMetadata(metadata: ImageMetadata){
+    createImageFromMetadata(metadata: ImageMetadata) {
         this._imageBlobURL = null;
         this._imageHostURL = metadata.URL;
 
@@ -78,75 +89,118 @@ export class ImageProcesor {
         this._imageHTMLElement.setAttribute('src', this._imageHostURL);
     }
 
-    getImageURL(): string{
-        if(this._imageHostURL)
+    getImageURL(): string {
+        if (this._imageHostURL)
             return this._imageHostURL
 
         return this._imageBlobURL;
     }
 
-    getImageHTMLElement(): HTMLImageElement{
+    getImageHTMLElement(): HTMLImageElement {
         return this._imageHTMLElement;
     }
 
-    getMetadata(){
+    getMetadata() {
         return this._imageMetadata
     }
 
-    get typeOf(){
+    get typeOf() {
         return this._SELECTED_TYPE;
     }
 
-    updateMetadata(newMetadata: ImageMetadata){
+    get maxSize() {
+        let maxSize: number;
+
+        if (this._SELECTED_TYPE == TypeOfImage.mem)
+            maxSize = this._MAX_MEM_IMAGE_SIZE;
+        else if (this._SELECTED_TYPE == TypeOfImage.profile)
+            maxSize = this._MAX_PROFILE_IMAGE_SIZE;
+        else if (this._SELECTED_TYPE == TypeOfImage.background)
+            maxSize = this._MAX_BACKGROUND_IMAGE_SIZE;
+        else
+            return -1;
+
+        return maxSize;
+    }
+
+    get maxResolution(): ImageResolution {
+        let maxResolution: ImageResolution;
+
+        if (this._SELECTED_TYPE == TypeOfImage.mem)
+            maxResolution = this._MAX_MEM_IMAGE_RESOLUTION;
+        else if (this._SELECTED_TYPE == TypeOfImage.profile)
+            maxResolution = this._MAX_PROFILE_IMAGE_RESOLUTION;
+        else if (this._SELECTED_TYPE == TypeOfImage.background)
+            maxResolution = this._MAX_BACKGROUND_IMAGE_RESOLUTION;
+        else
+            return {
+                width: -1,
+                height: -1
+            };
+
+        return maxResolution;
+    }
+
+    updateMetadata(newMetadata: ImageMetadata) {
         this._imageMetadata = newMetadata;
     }
 
-    private getImageResolution(): Promise<ImageResolution>{
-        const fileURL: string = URL.createObjectURL(this._imageFile);
-    
-        return new Promise<ImageResolution>((resolve, reject) => {
-          const reader: FileReader = new FileReader();
-          const image: HTMLImageElement = document.createElement('img');
-      
-          reader.onload = function() {
-            image.onload = function(){
-                resolve({
-                  width: (this as HTMLImageElement).width,
-                  height: (this as HTMLImageElement).height
-                });
-            }
-            image.setAttribute('src', fileURL);
-          }
-          reader.readAsDataURL(this._imageFile);
-        })
-    }
-
-    private async verifyImage(){
-        const resolution = await this.getImageResolution();
+    private verifyImage(): Promise<void> {
         const size = this._imageFile.size;
 
-        let maxResolution: ImageResolution;
-        let maxSize: number;
+        const maxResolution = this.maxResolution;
+        const maxSize = this.maxSize;
 
-        if(this._SELECTED_TYPE == TypeOfImage.mem){
-            maxResolution = this._MAX_MEM_IMAGE_RESOLUTION;
-            maxSize = this._MAX_MEM_IMAGE_SIZE;
-        }else if(this._SELECTED_TYPE == TypeOfImage.profile){
-            maxResolution = this._MAX_PROFILE_IMAGE_RESOLUTION;
-            maxSize = this._MAX_PROFILE_IMAGE_SIZE;
-        }else if(this._SELECTED_TYPE == TypeOfImage.background){
-            maxResolution = this._MAX_BACKGROUND_IMAGE_RESOLUTION;
-            maxSize = this._MAX_BACKGROUND_IMAGE_SIZE;
-        }else
-            return true;
-        
-        if(size > maxSize)
-            throw new Error('Image size too high');
+        return this.getImageResolution()
+            .then(
+                (resolution) => {
+                    if (size > maxSize)
+                        return Promise.reject('ImageProcessor: Image size too high!');
 
-        if(resolution.width > maxResolution.width ||
-            resolution.height > maxResolution.height)
-            throw new Error('Image resolution too high');
-      }
+                    if (resolution.width > maxResolution.width || resolution.height > maxResolution.height)
+                        return Promise.reject('ImageProcessor: Image resolution too high!');
+
+                    return;
+                },
+                (error) => Promise.reject(error)
+            );
+    }
+
+    private getImageResolution(): Promise<ImageResolution> {
+        const fileURL: string = URL.createObjectURL(this._imageFile);
+
+        return new Promise<ImageResolution>((resolve, reject) => {
+            const reader: FileReader = new FileReader();
+            const image: HTMLImageElement = document.createElement('img');
+
+            image.onerror = function (e) {
+                reject(`ImageProcessor: Can't parse image file into HTML Element` + e);
+            };
+
+            reader.onerror = function (e) {
+                reject(`ImageProcessor: Can't read file`);
+            };
+
+
+            image.onload = function () {
+                const loadedImage = (this as HTMLImageElement);
+
+                if (typeof loadedImage.height != 'undefined' && typeof loadedImage.width != 'undefined')
+                    resolve({
+                        width: loadedImage.width,
+                        height: loadedImage.height
+                    });
+                else
+                    reject(`ImageProcessor: Can't read width/height property of loaded image`)
+            }
+
+            reader.onload = function () {
+                image.setAttribute('src', fileURL);
+            }
+
+            reader.readAsDataURL(this._imageFile);
+        })
+    }
 }
 
 

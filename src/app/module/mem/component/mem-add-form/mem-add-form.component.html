@@ -187,12 +187,15 @@
                     <fa-icon [icon]="iconImage"></fa-icon>
                     Pole obraz jest wymagane!
                 </div>
-            </div>  
+            </div> 
+            <div *ngIf="imageProcessorError" class="text--error">
+                {{ imageProcessorError }}
+            </div>
             <!-- <div class="progress"> -->
                 <!-- <div  -->
                     <!-- class="progress-bar bg-success"  -->
                     <!-- role="progressbar"  -->
-                    <!-- [style.width]="(_fileUploadProgress$ | async) + '%'" aria-valuenow="(_fileUploadProgress$ | async) + '%'" --> -->
+                    <!-- [style.width]="(_fileUploadProgress$ | async) + '%'" aria-valuenow="(_fileUploadProgress$ | async) + '%'" -->
                     <!-- aria-valuemin="0"  -->
                     <!-- aria-valuemax="100"> -->
                 <!-- </div> -->
@@ -200,7 +203,7 @@
         </div>
     </div>
     <button 
-        [disabled]="f.pristine || f.invalid"
+        [disabled]="f.pristine || f.invalid || _tags.length == 0"
         type="submit" 
         class="btn btn-outline-secondary">Add</button>
 </form>

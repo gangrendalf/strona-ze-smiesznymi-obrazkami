@@ -32,9 +32,10 @@ export class MemAddFormComponent implements OnInit {
   private iconTimes: IconDefinition = faTimes;
 
   private imageProcessor: ImageProcesor;
+  private imageProcessorError: string;
 
   private _categories: Category[];
-  private _tags: string[] = [];
+  private _tags: string[] = ['obrazek'];
 
   // private _fileUploadProgress$: Observable<number>;
 
@@ -52,6 +53,7 @@ export class MemAddFormComponent implements OnInit {
     this._categories = await this.dbs.category.getAll().pipe(take(1)).toPromise();
 
     this.imageProcessor = new ImageProcesor(ImageProcesor.typeOfImage.mem);
+    this.imageProcessorError = null;
   }
 
   private addTag(tagRef: NgModel){
@@ -71,11 +73,23 @@ export class MemAddFormComponent implements OnInit {
 
   async loadFile(event){
     const file: File = event.target.files[0];
-   
-    await this.imageProcessor.createImageFromFile(file, this._user.uid);
+    this.imageProcessorError = null;
+    
+    try {
+      await this.imageProcessor.createImageFromFile(file, this._user.uid);
+    } catch (error) {
+      this.imageProcessorError = error;
+      return;
+   }
 
-    const imgRef = document.getElementById('imageContainer');
-    imgRef.appendChild(this.imageProcessor.getImageHTMLElement());
+    const imgContainerRef = document.getElementById('imageContainer');
+    const oldImg = imgContainerRef.querySelector('img');
+    const newImg = this.imageProcessor.getImageHTMLElement();
+
+    if(oldImg)
+      imgContainerRef.replaceChild(newImg, oldImg)
+    else
+      imgContainerRef.appendChild(newImg);
   }
 
   async submit(f: NgForm){

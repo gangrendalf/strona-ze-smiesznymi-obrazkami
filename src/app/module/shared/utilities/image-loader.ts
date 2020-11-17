@@ -13,7 +13,7 @@ enum TypeOfImage {
     notSpecified
 }
 
-export class ImageProcesor {
+export class ImageLoader {
     public static readonly typeOfImage = {
         mem: TypeOfImage.mem,
         profile: TypeOfImage.profile,
@@ -155,10 +155,10 @@ export class ImageProcesor {
             .then(
                 (resolution) => {
                     if (size > maxSize)
-                        return Promise.reject('ImageProcessor: Image size too high!');
+                        return Promise.reject('ImageLoader: Image size too high!');
 
                     if (resolution.width > maxResolution.width || resolution.height > maxResolution.height)
-                        return Promise.reject('ImageProcessor: Image resolution too high!');
+                        return Promise.reject('ImageLoader: Image resolution too high!');
 
                     return;
                 },
@@ -174,11 +174,11 @@ export class ImageProcesor {
             const image: HTMLImageElement = document.createElement('img');
 
             image.onerror = function (e) {
-                reject(`ImageProcessor: Can't parse image file into HTML Element` + e);
+                reject(`ImageLoader: Can't parse image file into HTML Element` + e);
             };
 
             reader.onerror = function (e) {
-                reject(`ImageProcessor: Can't read file`);
+                reject(`ImageLoader: Can't read file`);
             };
 
 
@@ -191,7 +191,7 @@ export class ImageProcesor {
                         height: loadedImage.height
                     });
                 else
-                    reject(`ImageProcessor: Can't read width/height property of loaded image`)
+                    reject(`ImageLoader: Can't read width/height property of loaded image`)
             }
 
             reader.onload = function () {

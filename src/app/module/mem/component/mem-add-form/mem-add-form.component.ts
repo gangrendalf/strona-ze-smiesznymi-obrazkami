@@ -10,7 +10,7 @@ import { Category } from 'src/app/module/shared/model/category.interface';
 import { ImageMetadata } from 'src/app/module/shared/model/image-metadata.interface';
 import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
 import { Router } from '@angular/router';
-import { ImageProcesor } from 'src/app/module/shared/utilities/image.procesor';
+import { ImageLoader } from 'src/app/module/shared/utilities/image-loader';
 
 @Component({
   selector: 'mem-add-form',
@@ -31,8 +31,8 @@ export class MemAddFormComponent implements OnInit {
   private iconMem: IconDefinition = faSmile;
   private iconTimes: IconDefinition = faTimes;
 
-  private imageProcessor: ImageProcesor;
-  private imageProcessorError: string;
+  private imageLoader: ImageLoader;
+  private imageLoaderError: string;
 
   private _categories: Category[];
   private _tags: string[] = ['obrazek'];
@@ -52,8 +52,8 @@ export class MemAddFormComponent implements OnInit {
 
     this._categories = await this.dbs.category.getAll().pipe(take(1)).toPromise();
 
-    this.imageProcessor = new ImageProcesor(ImageProcesor.typeOfImage.mem);
-    this.imageProcessorError = null;
+    this.imageLoader = new ImageLoader(ImageLoader.typeOfImage.mem);
+    this.imageLoaderError = null;
   }
 
   private addTag(tagRef: NgModel){
@@ -73,18 +73,18 @@ export class MemAddFormComponent implements OnInit {
 
   async loadFile(event){
     const file: File = event.target.files[0];
-    this.imageProcessorError = null;
+    this.imageLoaderError = null;
     
     try {
-      await this.imageProcessor.createImageFromFile(file, this._user.uid);
+      await this.imageLoader.createImageFromFile(file, this._user.uid);
     } catch (error) {
-      this.imageProcessorError = error;
+      this.imageLoaderError = error;
       return;
    }
 
     const imgContainerRef = document.getElementById('imageContainer');
     const oldImg = imgContainerRef.querySelector('img');
-    const newImg = this.imageProcessor.getImageHTMLElement();
+    const newImg = this.imageLoader.getImageHTMLElement();
 
     if(oldImg)
       imgContainerRef.replaceChild(newImg, oldImg)
@@ -93,10 +93,10 @@ export class MemAddFormComponent implements OnInit {
   }
 
   async submit(f: NgForm){
-    const imageMetadata: ImageMetadata = this.imageProcessor.getMetadata() 
+    const imageMetadata: ImageMetadata = this.imageLoader.getMetadata() 
 
     const uploadedImage = (await this.dbs.image.set(imageMetadata)) as ImageMetadata;
-    this.imageProcessor.updateMetadata(uploadedImage);
+    this.imageLoader.updateMetadata(uploadedImage);
 
     const mem: Mem = {
       title: f.value.title,

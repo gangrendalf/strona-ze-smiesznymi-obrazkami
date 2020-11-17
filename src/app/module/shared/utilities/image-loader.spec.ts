@@ -1,5 +1,5 @@
 import { ImageMetadata } from '../model/image-metadata.interface';
-import { ImageProcesor } from './image.procesor';
+import { ImageLoader } from './image-loader';
 
 function getTestFile(fileName: string){
   return fetch(`./test-assets/${fileName}.png`)
@@ -7,49 +7,49 @@ function getTestFile(fileName: string){
     .then(blob => new File([blob], `${fileName}.png`, { type: 'image/png' }));
 }
 
-describe('ImageProcessor', () => {
+describe('ImageLoader', () => {
   const _MiB = 1048576;
-  let imageProcessor: ImageProcesor;
+  let imageLoader: ImageLoader;
 
   afterEach(() => {
-    imageProcessor = null;
+    imageLoader = null;
   })
 
   it('should create an instance', () => {
-    imageProcessor = new ImageProcesor();
+    imageLoader = new ImageLoader();
 
-    expect(imageProcessor).toBeTruthy();
+    expect(imageLoader).toBeTruthy();
   });
 
   describe(`types of images and restrictions`, () => {
     it(`should create mem image with specific size (2MiB) and resolution (1000px/1000px) restrictions`, () => {
-      const typeOfImage = ImageProcesor.typeOfImage.mem;
-      imageProcessor = new ImageProcesor(typeOfImage);
+      const typeOfImage = ImageLoader.typeOfImage.mem;
+      imageLoader = new ImageLoader(typeOfImage);
 
-      expect(imageProcessor.typeOf).toEqual(typeOfImage)
-      expect(imageProcessor.maxSize).toEqual(2 * _MiB);
-      expect(imageProcessor.maxResolution.width).toEqual(1000);
-      expect(imageProcessor.maxResolution.height).toEqual(1000);
+      expect(imageLoader.typeOf).toEqual(typeOfImage)
+      expect(imageLoader.maxSize).toEqual(2 * _MiB);
+      expect(imageLoader.maxResolution.width).toEqual(1000);
+      expect(imageLoader.maxResolution.height).toEqual(1000);
     });
 
     it(`should create profile image with specific size (.33MiB) and resolution (300px/300px) restrictions`, () => {
-      const typeOfImage = ImageProcesor.typeOfImage.profile;
-      imageProcessor = new ImageProcesor(typeOfImage);
+      const typeOfImage = ImageLoader.typeOfImage.profile;
+      imageLoader = new ImageLoader(typeOfImage);
 
-      expect(imageProcessor.typeOf).toEqual(typeOfImage)
-      expect(imageProcessor.maxSize).toEqual(.33 * _MiB);
-      expect(imageProcessor.maxResolution.width).toEqual(300);
-      expect(imageProcessor.maxResolution.height).toEqual(300);
+      expect(imageLoader.typeOf).toEqual(typeOfImage)
+      expect(imageLoader.maxSize).toEqual(.33 * _MiB);
+      expect(imageLoader.maxResolution.width).toEqual(300);
+      expect(imageLoader.maxResolution.height).toEqual(300);
     });
     
     it(`should create background image with specific size (1MiB) and resolution (800px/300px) restrictions`, () => {
-      const typeOfImage = ImageProcesor.typeOfImage.background;
-      imageProcessor = new ImageProcesor(typeOfImage);
+      const typeOfImage = ImageLoader.typeOfImage.background;
+      imageLoader = new ImageLoader(typeOfImage);
 
-      expect(imageProcessor.typeOf).toEqual(typeOfImage)
-      expect(imageProcessor.maxSize).toEqual(1 * _MiB);
-      expect(imageProcessor.maxResolution.width).toEqual(800);
-      expect(imageProcessor.maxResolution.height).toEqual(300);
+      expect(imageLoader.typeOf).toEqual(typeOfImage)
+      expect(imageLoader.maxSize).toEqual(1 * _MiB);
+      expect(imageLoader.maxResolution.width).toEqual(800);
+      expect(imageLoader.maxResolution.height).toEqual(300);
     });
   });
 
@@ -58,22 +58,22 @@ describe('ImageProcessor', () => {
       getTestFile('profile-correct')
         .then(
           file => {
-            imageProcessor = new ImageProcesor(ImageProcesor. typeOfImage.profile);
-            return imageProcessor.createImageFromFile(file,   'testAuthor');
+            imageLoader = new ImageLoader(ImageLoader. typeOfImage.profile);
+            return imageLoader.createImageFromFile(file,   'testAuthor');
           },
           error => {
             fail('Image loading failed - check if correct image is chosen and available')
           })
         .then(
           success => { 
-            const url = imageProcessor.getImageURL();
+            const url = imageLoader.getImageURL();
             const expectedHTML = document.createElement('img');
             expectedHTML.setAttribute('src', url);
 
-            expect(imageProcessor.getMetadata().URL).toContain('blob:http://');
-            expect(imageProcessor.getMetadata().uid).toEqual('testAuthor');
-            expect(imageProcessor.getMetadata().id).toEqual('');
-            expect(imageProcessor.getImageHTMLElement()).toEqual(expectedHTML);
+            expect(imageLoader.getMetadata().URL).toContain('blob:http://');
+            expect(imageLoader.getMetadata().uid).toEqual('testAuthor');
+            expect(imageLoader.getMetadata().id).toEqual('');
+            expect(imageLoader.getImageHTMLElement()).toEqual(expectedHTML);
 
           },
           reject => {
@@ -86,12 +86,12 @@ describe('ImageProcessor', () => {
 
     });
 
-    it(`should reject with message 'ImageProcessor: Image resolution too high!'`, (done) => {
+    it(`should reject with message 'ImageLoader: Image resolution too high!'`, (done) => {
       getTestFile('profile-incorrect-resolution')
         .then(
           file => {
-            imageProcessor = new ImageProcesor(ImageProcesor.typeOfImage.profile);
-            return imageProcessor.createImageFromFile(file, 'testAuthor');
+            imageLoader = new ImageLoader(ImageLoader.typeOfImage.profile);
+            return imageLoader.createImageFromFile(file, 'testAuthor');
           },
           error => {
             fail('Image loading failed - check if correct image is chosen and available')
@@ -101,19 +101,19 @@ describe('ImageProcessor', () => {
             fail('Image loading succeed while should not')
           },
           reject => {
-            expect(reject).toEqual('ImageProcessor: Image resolution too high!');
+            expect(reject).toEqual('ImageLoader: Image resolution too high!');
           }
           ).finally( () => {
             done();
         });
     });
 
-    it(`should reject with message 'ImageProcessor: Image size too high!'`, (done) => {
+    it(`should reject with message 'ImageLoader: Image size too high!'`, (done) => {
       getTestFile('profile-incorrect-size-resolution')
         .then(
           file => {
-            imageProcessor = new ImageProcesor(ImageProcesor.typeOfImage.profile);
-            return imageProcessor.createImageFromFile(file, 'testAuthor');
+            imageLoader = new ImageLoader(ImageLoader.typeOfImage.profile);
+            return imageLoader.createImageFromFile(file, 'testAuthor');
           },
           error => {
             fail('Image loading failed - check if correct image is chosen and available')
@@ -123,7 +123,7 @@ describe('ImageProcessor', () => {
             fail('Image loading succeed while should not')
           },
           reject => {
-            expect(reject).toEqual('ImageProcessor: Image size too high!');
+            expect(reject).toEqual('ImageLoader: Image size too high!');
           }
           ).finally( () => {
             done();
@@ -141,13 +141,13 @@ describe('ImageProcessor', () => {
       const expectedHTML = document.createElement('img');
       expectedHTML.setAttribute('src', imageMetadata.URL);
 
-      imageProcessor = new ImageProcesor(ImageProcesor.typeOfImage.profile);
+      imageLoader = new ImageLoader(ImageLoader.typeOfImage.profile);
 
-      imageProcessor.createImageFromMetadata(imageMetadata);
+      imageLoader.createImageFromMetadata(imageMetadata);
 
-      expect(imageProcessor.getMetadata()).toEqual(imageMetadata)
-      expect(imageProcessor.getImageURL()).toEqual(imageMetadata.URL);
-      expect(imageProcessor.getImageHTMLElement()).toEqual(expectedHTML);
+      expect(imageLoader.getMetadata()).toEqual(imageMetadata)
+      expect(imageLoader.getImageURL()).toEqual(imageMetadata.URL);
+      expect(imageLoader.getImageHTMLElement()).toEqual(expectedHTML);
     });
   });
 
@@ -165,14 +165,14 @@ describe('ImageProcessor', () => {
         id: 'otherID123'
       };
 
-      imageProcessor = new ImageProcesor(ImageProcesor.typeOfImage.profile);
-      imageProcessor.createImageFromMetadata(oldMeta);
+      imageLoader = new ImageLoader(ImageLoader.typeOfImage.profile);
+      imageLoader.createImageFromMetadata(oldMeta);
       
-      expect(imageProcessor.getMetadata()).toEqual(oldMeta);
+      expect(imageLoader.getMetadata()).toEqual(oldMeta);
 
-      imageProcessor.updateMetadata(newMeta);
+      imageLoader.updateMetadata(newMeta);
 
-      expect(imageProcessor.getMetadata()).toEqual(newMeta);
+      expect(imageLoader.getMetadata()).toEqual(newMeta);
     });
   });
 });

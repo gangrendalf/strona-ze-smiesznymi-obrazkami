@@ -4,7 +4,7 @@ import { DatabaseService } from 'src/app/module/shared/service/database.service'
 
 import { faCamera, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { UserDetail } from 'src/app/module/shared/model/user.interface';
-import { ImageProcesor } from 'src/app/module/shared/utilities/image.procesor';
+import { ImageLoader } from 'src/app/module/shared/utilities/image-loader';
 import { ImageMetadata } from 'src/app/module/shared/model/image-metadata.interface';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 
@@ -19,8 +19,8 @@ export class ProfileComponent implements OnDestroy {
   private _userID: string = null;
   private _user: UserDetail;
   private _authState$;
-  private _profileImageProcessor: ImageProcesor;
-  private _backgroundImageProcessor: ImageProcesor;
+  private _profileImageLoader: ImageLoader;
+  private _backgroundImageLoader: ImageLoader;
   private _profileImageChanged: boolean;
   private _backgroundImageChanged: boolean;
 
@@ -36,8 +36,8 @@ export class ProfileComponent implements OnDestroy {
   private initialize(){
     this._authState$ = this.auth.authState;
 
-    this._profileImageProcessor = new ImageProcesor(ImageProcesor.typeOfImage.profile);
-    this._backgroundImageProcessor = new ImageProcesor(ImageProcesor.typeOfImage.background);
+    this._profileImageLoader = new ImageLoader(ImageLoader.typeOfImage.profile);
+    this._backgroundImageLoader = new ImageLoader(ImageLoader.typeOfImage.background);
 
     this._userID = this.route.snapshot.paramMap.get('uid');
 
@@ -49,13 +49,13 @@ export class ProfileComponent implements OnDestroy {
     this._user = user;
 
     if(this._user.profileImageMetadata){
-      this._profileImageProcessor.createImageFromMetadata(this._user.profileImageMetadata);
-      this.appendImage(this._profileImageProcessor);
+      this._profileImageLoader.createImageFromMetadata(this._user.profileImageMetadata);
+      this.appendImage(this._profileImageLoader);
     }
 
     if(this._user.backgroundImageMetadata){
-      this._backgroundImageProcessor.createImageFromMetadata(this._user.backgroundImageMetadata);
-      this.appendImage(this._backgroundImageProcessor);
+      this._backgroundImageLoader.createImageFromMetadata(this._user.backgroundImageMetadata);
+      this.appendImage(this._backgroundImageLoader);
     }
   }
 
@@ -72,13 +72,13 @@ export class ProfileComponent implements OnDestroy {
     const file: File = event.target.files[0];
 
     try{
-      await this._profileImageProcessor.createImageFromFile(file, this._userID);
+      await this._profileImageLoader.createImageFromFile(file, this._userID);
     } catch (error){
       this.appendError(error);
       return;
     }
 
-    this.appendImage(this._profileImageProcessor);
+    this.appendImage(this._profileImageLoader);
     this.showActionsButtons();
   }
 
@@ -86,13 +86,13 @@ export class ProfileComponent implements OnDestroy {
     const file: File = event.target.files[0];
 
     try{
-      await this._backgroundImageProcessor.createImageFromFile(file, this._userID);
+      await this._backgroundImageLoader.createImageFromFile(file, this._userID);
     } catch (error){
       this.appendError(error);
       return;
     }
 
-    this.appendImage(this._backgroundImageProcessor);
+    this.appendImage(this._backgroundImageLoader);
     this.showActionsButtons();
   }
 
@@ -106,22 +106,22 @@ export class ProfileComponent implements OnDestroy {
     }, 5000)
   }
 
-  private appendImage(imgProc: ImageProcesor){
+  private appendImage(imgLoader: ImageLoader){
     let nodeName: string;
 
-    if(imgProc.typeOf == ImageProcesor.typeOfImage.profile){
+    if(imgLoader.typeOf == ImageLoader.typeOfImage.profile){
       nodeName = '.profile-image'
       this._profileImageChanged = true;
     }
 
-    if(imgProc.typeOf == ImageProcesor.typeOfImage.background){
+    if(imgLoader.typeOf == ImageLoader.typeOfImage.background){
       nodeName = '.background-image'
       this._backgroundImageChanged = true;
     }
 
     const imgContainerRef = document.querySelector(nodeName);
 
-    const imgEl = imgProc.getImageHTMLElement();
+    const imgEl = imgLoader.getImageHTMLElement();
     imgEl.classList.add('w-100')
 
     if(!imgContainerRef.children.item(1))
@@ -142,15 +142,15 @@ export class ProfileComponent implements OnDestroy {
 
   private async saveChanges(){
     if(this._profileImageChanged){
-      const uploadedImage = (await this.dbs.image.set(this._profileImageProcessor.getMetadata())) as ImageMetadata;
-      this._profileImageProcessor.updateMetadata(uploadedImage);
-      this._user.profileImageMetadata = this._profileImageProcessor.getMetadata();
+      const uploadedImage = (await this.dbs.image.set(this._profileImageLoader.getMetadata())) as ImageMetadata;
+      this._profileImageLoader.updateMetadata(uploadedImage);
+      this._user.profileImageMetadata = this._profileImageLoader.getMetadata();
     }
 
     if(this._backgroundImageChanged){
-      const uploadedImage = (await this.dbs.image.set(this._backgroundImageProcessor.getMetadata())) as ImageMetadata;
-      this._backgroundImageProcessor.updateMetadata(uploadedImage);
-      this._user.backgroundImageMetadata = this._backgroundImageProcessor.getMetadata();
+      const uploadedImage = (await this.dbs.image.set(this._backgroundImageLoader.getMetadata())) as ImageMetadata;
+      this._backgroundImageLoader.updateMetadata(uploadedImage);
+      this._user.backgroundImageMetadata = this._backgroundImageLoader.getMetadata();
     }
 
     this.dbs.user.update(this._user).then(
@@ -171,8 +171,8 @@ export class ProfileComponent implements OnDestroy {
     this._backgroundImageChanged = false;
 
     if(this._user.profileImageMetadata){
-      this._profileImageProcessor.createImageFromMetadata(this._user.profileImageMetadata);
-      this.appendImage(this._profileImageProcessor);
+      this._profileImageLoader.createImageFromMetadata(this._user.profileImageMetadata);
+      this.appendImage(this._profileImageLoader);
     }else{
       const imgContainerRef = document.querySelector('.profile-image');
       const imgRef = imgContainerRef.querySelector('img');
@@ -180,8 +180,8 @@ export class ProfileComponent implements OnDestroy {
     }
 
     if(this._user.backgroundImageMetadata){
-      this._backgroundImageProcessor.createImageFromMetadata(this._user.backgroundImageMetadata);
-      this.appendImage(this._backgroundImageProcessor);
+      this._backgroundImageLoader.createImageFromMetadata(this._user.backgroundImageMetadata);
+      this.appendImage(this._backgroundImageLoader);
     }else{
       const imgContainerRef = document.querySelector('.background-image');
       const imgRef = imgContainerRef.querySelector('img');

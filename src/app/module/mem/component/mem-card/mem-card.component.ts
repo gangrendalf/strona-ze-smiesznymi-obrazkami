@@ -4,7 +4,7 @@ import { Mem } from 'src/app/module/shared/model/mem.interface';
 import { faPlus, faMinus, IconDefinition, faStar, faCommentAlt } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { Subscription } from 'rxjs';
-import { VotingCore } from 'src/app/module/shared/utilities/functions';
+import { VotingSystem } from "src/app/module/shared/utilities/voting-system";
 import { MemReference } from 'src/app/module/shared/model/mem-reference.interface';
 import { Router } from '@angular/router';
 import { User } from 'src/app/module/shared/model/user.interface';
@@ -24,7 +24,7 @@ export class MemCardComponent implements OnInit, OnDestroy {
 
   private _user: User;
   private _memData: Mem | null;
-  private _voter: VotingCore;
+  private _voter: VotingSystem;
   
   private _authSubscription: Subscription;
   private _memSubscription: Subscription;
@@ -47,7 +47,7 @@ export class MemCardComponent implements OnInit, OnDestroy {
   }
   
   private initializeVotingSystem(){
-    this._voter = new VotingCore(this._user, this._memData);
+    this._voter = new VotingSystem(this._user, this._memData);
   }
   
   private openDetailView(){

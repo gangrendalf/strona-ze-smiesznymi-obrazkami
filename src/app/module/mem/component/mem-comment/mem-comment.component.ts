@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 import { Comment } from 'src/app/module/shared/model/comment.interface';
 import { IconDefinition, faUser, faFlag, faPlus, faMinus, faReply } from '@fortawesome/free-solid-svg-icons';
-import { VotingCore } from 'src/app/module/shared/utilities/functions';
+import { VotingSystem } from "src/app/module/shared/utilities/voting-system";
 import { User } from 'src/app/module/shared/model/user.interface';
 
 @Component({
@@ -22,7 +22,7 @@ export class MemCommentComponent implements OnInit {
   private _iconMinus: IconDefinition = faMinus;
   private _iconReply: IconDefinition = faReply;
 
-  private _voter: VotingCore;
+  private _voter: VotingSystem;
   private _showResponseInput: boolean = false;
   private _responses: Comment[];
   private _timestamp: string;
@@ -36,7 +36,7 @@ export class MemCommentComponent implements OnInit {
     if(!this.comment.votes)
       this.comment.votes = [];
 
-    this._voter = new VotingCore(this.user, this.comment);    
+    this._voter = new VotingSystem(this.user, this.comment);    
 
     if(this.childComments)
       this._responses = this.childComments.filter(response => response.parentCommentID == this.comment.id);

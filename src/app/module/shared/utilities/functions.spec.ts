@@ -1,4 +1,4 @@
-import { disableScroll, enableScroll, VotingCore } from './functions';
+import { disableScroll, enableScroll } from './functions';
 
 describe('Functions', () => {
 });

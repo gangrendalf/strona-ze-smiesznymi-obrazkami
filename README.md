@@ -1,27 +1,37 @@
 # SmieszneObrazki
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.25.
+Simple service to share funny content. 
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+* User Acconunt
+* Moderator Account
+* Voting system
+* Comments
+* Waiting room
+* Categories
+* Tags
 
-## Code scaffolding
+## To-do
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+* Admin accont
+* Possibility to update movies
+* Top mems (with 3 time ranges - 6, 12, 24 hours)
+* Profile section - watched tags
+* Profile section - watched mems
+* Profile section - users
+* Voting system - display comment with highest number of pluses
 
-## Build
+## Used features
+* Angular 8
+* RxJS
+* Firebase
+* Fontawesome
+* Bootstrap 
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Test Report
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+63.27% Statements 
+47.74% Branches 
+60.51% Functions 
+61.24% Lines

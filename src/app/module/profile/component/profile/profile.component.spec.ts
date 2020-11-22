@@ -46,7 +46,7 @@ function getTestFile(fileName: string){
   
 }
 
-fdescribe('ProfileComponent', () => {
+describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
 

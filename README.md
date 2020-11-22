@@ -1,6 +1,6 @@
 # SmieszneObrazki
 
-Simple service to share funny content. 
+Simple service to share funny content. Fully responsive and partially covered with tests. Still in progress
 
 ## Features
 

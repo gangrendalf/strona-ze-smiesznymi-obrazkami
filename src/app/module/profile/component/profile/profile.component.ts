@@ -15,46 +15,49 @@ import { AuthService } from 'src/app/module/authentication/service/auth.service'
 })
 export class ProfileComponent implements OnDestroy {
 
-  private _cameraIcon: IconDefinition = faCamera;
-  private _userID: string = null;
-  private _user: UserDetail;
-  private _authState$;
   private _profileImageLoader: ImageLoader;
   private _backgroundImageLoader: ImageLoader;
   private _profileImageChanged: boolean;
   private _backgroundImageChanged: boolean;
-
+  
   private _navigationSubscription;
+  
+  public authState$;
+  public user: UserDetail;
+  public userID: string = null;
+  public imageLoadingFail: string = null;
+  public actionButtonsHidden: boolean = true;
+  public cameraIcon: IconDefinition = faCamera;
 
   constructor(private route: ActivatedRoute, private router: Router, private dbs: DatabaseService, private auth: AuthService) { 
     this._navigationSubscription = router.events.subscribe(e => {
       if(e instanceof NavigationEnd)
-        this.initialize()
-    })
+        this.initialize();
+    });
   }
 
   private initialize(){
-    this._authState$ = this.auth.authState;
+    this.authState$ = this.auth.authState;
 
     this._profileImageLoader = new ImageLoader(ImageLoader.typeOfImage.profile);
     this._backgroundImageLoader = new ImageLoader(ImageLoader.typeOfImage.background);
 
-    this._userID = this.route.snapshot.paramMap.get('uid');
+    this.userID = this.route.snapshot.paramMap.get('uid');
 
-    this.dbs.user.getSingle(this._userID)
+    this.dbs.user.getSingle(this.userID)
       .subscribe(user => this.initializeUser(user));
   }
 
   private initializeUser(user: UserDetail){
-    this._user = user;
+    this.user = user;
 
-    if(this._user.profileImageMetadata){
-      this._profileImageLoader.createImageFromMetadata(this._user.profileImageMetadata);
+    if(this.user.profileImageMetadata){
+      this._profileImageLoader.createImageFromMetadata(this.user.profileImageMetadata);
       this.appendImage(this._profileImageLoader);
     }
 
-    if(this._user.backgroundImageMetadata){
-      this._backgroundImageLoader.createImageFromMetadata(this._user.backgroundImageMetadata);
+    if(this.user.backgroundImageMetadata){
+      this._backgroundImageLoader.createImageFromMetadata(this.user.backgroundImageMetadata);
       this.appendImage(this._backgroundImageLoader);
     }
   }
@@ -62,48 +65,6 @@ export class ProfileComponent implements OnDestroy {
   ngOnDestroy(){
     if (this._navigationSubscription)   
       this._navigationSubscription.unsubscribe();
-  }
-
-  private triggerSelectDialog(inputRef: HTMLInputElement){
-    inputRef.click();
-  }
-
-  private async loadProfileFile(event){
-    const file: File = event.target.files[0];
-
-    try{
-      await this._profileImageLoader.createImageFromFile(file, this._userID);
-    } catch (error){
-      this.appendError(error);
-      return;
-    }
-
-    this.appendImage(this._profileImageLoader);
-    this.showActionsButtons();
-  }
-
-  private async loadBackgroundFile(event){
-    const file: File = event.target.files[0];
-
-    try{
-      await this._backgroundImageLoader.createImageFromFile(file, this._userID);
-    } catch (error){
-      this.appendError(error);
-      return;
-    }
-
-    this.appendImage(this._backgroundImageLoader);
-    this.showActionsButtons();
-  }
-
-  private appendError(message: string){
-    const spanRef = document.createElement('span');
-    spanRef.textContent = message;
-
-    document.querySelector('.error-box').append(spanRef);
-    setTimeout(() => {
-      spanRef.remove()
-    }, 5000)
   }
 
   private appendImage(imgLoader: ImageLoader){
@@ -131,29 +92,61 @@ export class ProfileComponent implements OnDestroy {
   }
 
   private showActionsButtons(){
-    document.querySelector('.actions').classList.remove('d-none')
-    document.querySelector('.actions').classList.add('d-block');
+    this.actionButtonsHidden = false;
   }
 
   private hideActionsButtons(){
-    document.querySelector('.actions').classList.remove('d-block');
-    document.querySelector('.actions').classList.add('d-none')
+    this.actionButtonsHidden = true;
   }
 
-  private async saveChanges(){
+  public triggerSelectDialog(inputRef: HTMLInputElement){
+    inputRef.click();
+  }
+
+  public async loadProfileFile(event){
+    const file: File = event.target.files[0];
+    this.imageLoadingFail = null;
+
+    try{
+      await this._profileImageLoader.createImageFromFile(file, this.userID);
+    } catch (error){
+      this.imageLoadingFail = error;
+      return;
+    }
+
+    this.appendImage(this._profileImageLoader);
+    this.showActionsButtons();
+  }
+
+  public async loadBackgroundFile(event){
+    const file: File = event.target.files[0];
+    this.imageLoadingFail = null;
+
+    try{
+      await this._backgroundImageLoader.createImageFromFile(file, this.userID);
+    } catch (error){
+      this.imageLoadingFail = error;
+      return;
+    }
+
+    this.appendImage(this._backgroundImageLoader);
+    this.showActionsButtons();
+  }
+
+  public async saveChanges(){
     if(this._profileImageChanged){
       const uploadedImage = (await this.dbs.image.set(this._profileImageLoader.getMetadata())) as ImageMetadata;
       this._profileImageLoader.updateMetadata(uploadedImage);
-      this._user.profileImageMetadata = this._profileImageLoader.getMetadata();
+      this.user.profileImageMetadata = this._profileImageLoader.getMetadata();
     }
 
     if(this._backgroundImageChanged){
       const uploadedImage = (await this.dbs.image.set(this._backgroundImageLoader.getMetadata())) as ImageMetadata;
       this._backgroundImageLoader.updateMetadata(uploadedImage);
-      this._user.backgroundImageMetadata = this._backgroundImageLoader.getMetadata();
+      this.user.backgroundImageMetadata = this._backgroundImageLoader.getMetadata();
     }
 
-    this.dbs.user.update(this._user).then(
+    this.dbs.user.update(this.user).then(
       success => {
         this._profileImageChanged = false;
         this._backgroundImageChanged = false;
@@ -166,12 +159,12 @@ export class ProfileComponent implements OnDestroy {
     )
   }
 
-  private cancelChanges(){
+  public cancelChanges(){
     this._profileImageChanged = false;
     this._backgroundImageChanged = false;
 
-    if(this._user.profileImageMetadata){
-      this._profileImageLoader.createImageFromMetadata(this._user.profileImageMetadata);
+    if(this.user.profileImageMetadata){
+      this._profileImageLoader.createImageFromMetadata(this.user.profileImageMetadata);
       this.appendImage(this._profileImageLoader);
     }else{
       const imgContainerRef = document.querySelector('.profile-image');
@@ -179,8 +172,8 @@ export class ProfileComponent implements OnDestroy {
       imgRef ? imgRef.remove() : null;
     }
 
-    if(this._user.backgroundImageMetadata){
-      this._backgroundImageLoader.createImageFromMetadata(this._user.backgroundImageMetadata);
+    if(this.user.backgroundImageMetadata){
+      this._backgroundImageLoader.createImageFromMetadata(this.user.backgroundImageMetadata);
       this.appendImage(this._backgroundImageLoader);
     }else{
       const imgContainerRef = document.querySelector('.background-image');

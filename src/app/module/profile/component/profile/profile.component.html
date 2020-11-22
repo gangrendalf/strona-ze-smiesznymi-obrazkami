@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col">
         <div class="top" >
-            <section class="actions d-none">
+            <section class="actions" [hidden]="actionButtonsHidden">
                 <button
                     (click)="saveChanges()"
                     class="btn btn-sm btn-outline-info"
@@ -16,48 +16,46 @@
                 </button>
             </section>
             <section class="background-image">
-                <div class="image-selector" *ngIf="(_authState$ | async) as auth">
+                <div class="image-selector" *ngIf="(authState$ | async) as auth">
                     <input 
                         (change)="loadBackgroundFile($event)"
                         #backgroundImageInput 
                         type="file"
                         accept="image/*" 
                         name="backgroundImage" 
-                        id="background-image" 
-                        style="display: none;">
+                        id="background-image">
                     <button
-                        *ngIf="auth.user.uid == _userID"
+                        *ngIf="auth.user.uid == userID"
                         (click)="triggerSelectDialog(backgroundImageInput)"
                         class="btn"
                         type="button">
-                        <fa-icon [icon]="_cameraIcon"></fa-icon>
+                        <fa-icon [icon]="cameraIcon"></fa-icon>
                     </button>
                 </div>
             </section>
             <section class="profile">
                 <div class="profile-info">
-                    <div class="profile-image">
-                        <div class="image-selector" *ngIf="(_authState$ | async) as auth">
+                    <div class="profile-image" id="test">
+                        <div class="image-selector" *ngIf="(authState$ | async) as auth">
                             <input 
                                 (change)="loadProfileFile($event)"
                                 #profileImageInput 
                                 type="file"
                                 accept="image/*" 
                                 name="profileImage" 
-                                id="profile-image" 
-                                style="display: none;">
+                                id="profile-image">
                             <button
-                                *ngIf="auth.user.uid == _userID"
+                                *ngIf="auth.user.uid == userID"
                                 (click)="triggerSelectDialog(profileImageInput)"
                                 class="btn"
                                 type="button">
-                                <fa-icon [icon]="_cameraIcon"></fa-icon>
+                                <fa-icon [icon]="cameraIcon"></fa-icon>
                             </button>
                         </div>
                     </div>
                     <div class="profile-text">
                         <div class="nick">
-                            {{ _user ? _user.nick : null }}
+                            {{ user ? user.nick : null }}
                         </div>
                         <div class="visits">
                             0 wyświetleń
@@ -68,7 +66,7 @@
                     <ul class="list-group list-group-horizontal list-group-flush d-flex flex-wrap flex-md-nowrap">
                         <li class="list-group-item">
                             <button
-                                [routerLink]="['/user', _userID, 'wall']"
+                                [routerLink]="['/user', userID, 'wall']"
                                 type="button" 
                                 class="btn btn-outline-secondary"
                                 >Tablica
@@ -76,7 +74,7 @@
                         </li>
                         <li class="list-group-item">
                             <button
-                                [routerLink]="['/user', _userID, 'watched-users']"
+                                [routerLink]="['/user', userID, 'watched-users']"
                                 type="button" 
                                 class="btn btn-outline-secondary"
                                 >Obserwowani
@@ -84,7 +82,7 @@
                         </li>
                         <li class="list-group-item">
                             <button
-                                [routerLink]="['/user', _userID, 'watched-tags']"
+                                [routerLink]="['/user', userID, 'watched-tags']"
                                 type="button" 
                                 class="btn btn-outline-secondary"
                                 >Tagi
@@ -92,7 +90,7 @@
                         </li>
                         <li class="list-group-item">
                             <button
-                                [routerLink]="['/user', _userID, 'watched-mems']"
+                                [routerLink]="['/user', userID, 'watched-mems']"
                                 type="button" 
                                 class="btn btn-outline-secondary"
                                 >Memy
@@ -100,7 +98,7 @@
                         </li>
                         <!-- <li class="list-group-item">
                             <button
-                                [routerLink]="['/user', _userID, 'history']"
+                                [routerLink]="['/user', userID, 'history']"
                                 type="button" 
                                 class="btn btn-outline-secondary"
                                 >Historia
@@ -115,8 +113,8 @@
         </div>
     </div>
 </div>
-<div class="error-box">
-
+<div class="error-box" *ngIf="imageLoadingFail">
+    {{ imageLoadingFail }}
 </div>
 <div class="row">
     <div class="col">

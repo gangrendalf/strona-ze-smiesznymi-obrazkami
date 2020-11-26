@@ -88,7 +88,7 @@ export class AuthService {
               summaryDownvotes: 0,
               summaryUpvotes: 0,
               watchedTags: null,
-              watchedUsers: 0,
+              watchedUsers: null,
               isModerator: false,
               isAdmin: false,
               profileImageMetadata: null,

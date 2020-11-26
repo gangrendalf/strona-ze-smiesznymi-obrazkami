@@ -1,12 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Component, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 
-import { faCamera, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faEnvelope, faEye, faEyeSlash, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { UserDetail } from 'src/app/module/shared/model/user.interface';
 import { ImageLoader } from 'src/app/module/shared/utilities/image-loader';
 import { ImageMetadata } from 'src/app/module/shared/model/image-metadata.interface';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
+import { map, switchMap } from 'rxjs/operators';
+import { combineLatest, of } from 'rxjs';
 
 @Component({
   selector: 'profile',
@@ -19,76 +21,90 @@ export class ProfileComponent implements OnDestroy {
   private _backgroundImageLoader: ImageLoader;
   private _profileImageChanged: boolean;
   private _backgroundImageChanged: boolean;
+  private _subscription;
   
-  private _navigationSubscription;
-  
-  public authState$;
-  public user: UserDetail;
-  public userID: string = null;
+  public authUser: UserDetail = null;
+  public user: UserDetail = null;
+  public userIsProfileOwner: boolean = false;
   public imageLoadingFail: string = null;
   public actionButtonsHidden: boolean = true;
+
   public cameraIcon: IconDefinition = faCamera;
+  public watchUserIcon: IconDefinition = faEye;
+  public unwatchUserIcon: IconDefinition = faEyeSlash;
+  public messageIcon: IconDefinition = faEnvelope;
 
-  constructor(private route: ActivatedRoute, private router: Router, private dbs: DatabaseService, private auth: AuthService) { 
-    this._navigationSubscription = router.events.subscribe(e => {
-      if(e instanceof NavigationEnd)
-        this.initialize();
-    });
-  }
+  private readonly _imageNodes = {
+    profile: '.profile-image',
+    background: '.background-image'
+  };
 
-  private initialize(){
-    this.authState$ = this.auth.authState;
+  constructor(private route: ActivatedRoute, private dbs: DatabaseService, private auth: AuthService) { 
 
-    this._profileImageLoader = new ImageLoader(ImageLoader.typeOfImage.profile);
-    this._backgroundImageLoader = new ImageLoader(ImageLoader.typeOfImage.background);
+    const routeSrc = route.paramMap
+      .pipe(
+        map(pm => pm.get('uid')),
+        switchMap(uid => dbs.user.getSingle(uid))
+      );
 
-    this.userID = this.route.snapshot.paramMap.get('uid');
+    const authSrc = auth.authState
+      .pipe(
+        switchMap(as => as.isLogged ? this.dbs.user.getSingle(as.user.uid) : of<UserDetail>(null)),
+      );
 
-    this.dbs.user.getSingle(this.userID)
-      .subscribe(user => this.initializeUser(user));
-  }
+    this._subscription = combineLatest(routeSrc, authSrc)
+      .subscribe(val => {
+        let reloadProfile = false;
 
-  private initializeUser(user: UserDetail){
-    this.user = user;
+        if(JSON.stringify(this.user) !== JSON.stringify(val[0]))
+          reloadProfile = true;
 
-    if(this.user.profileImageMetadata){
-      this._profileImageLoader.createImageFromMetadata(this.user.profileImageMetadata);
-      this.appendImage(this._profileImageLoader);
-    }
+        this.user = val[0];
+        this.authUser = val[1];
 
-    if(this.user.backgroundImageMetadata){
-      this._backgroundImageLoader.createImageFromMetadata(this.user.backgroundImageMetadata);
-      this.appendImage(this._backgroundImageLoader);
-    }
+        if(JSON.stringify(this.user) === JSON.stringify(this.authUser))
+          this.userIsProfileOwner = true
+        else
+          this.userIsProfileOwner = false
+
+        if(reloadProfile && this.user.profileImageMetadata){
+          this._profileImageLoader = new ImageLoader(ImageLoader.typeOfImage.profile);
+          this._profileImageLoader.createImageFromMetadata(this.user.profileImageMetadata);
+          this.appendImageAt(this._imageNodes.profile ,this._profileImageLoader);
+        } else if( !this.user.profileImageMetadata )
+          this.removeImageAt(this._imageNodes.profile);
+    
+        if(reloadProfile && this.user.backgroundImageMetadata){
+          this._backgroundImageLoader = new ImageLoader(ImageLoader.typeOfImage.background);
+          this._backgroundImageLoader.createImageFromMetadata(this.user.backgroundImageMetadata);
+          this.appendImageAt(this._imageNodes.background, this._backgroundImageLoader);
+        } else if( !this.user.backgroundImageMetadata)
+          this.removeImageAt(this._imageNodes.background);
+      })
   }
 
   ngOnDestroy(){
-    if (this._navigationSubscription)   
-      this._navigationSubscription.unsubscribe();
+    if(this._subscription)   
+      this._subscription.unsubscribe();
   }
 
-  private appendImage(imgLoader: ImageLoader){
-    let nodeName: string;
+  private appendImageAt(nodeName: string, imgLoader: ImageLoader){
+    this.removeImageAt(nodeName);
 
-    if(imgLoader.typeOf == ImageLoader.typeOfImage.profile){
-      nodeName = '.profile-image'
-      this._profileImageChanged = true;
-    }
+    const newImgEl = imgLoader.getImageHTMLElement();
+    newImgEl.classList.add('w-100')
 
-    if(imgLoader.typeOf == ImageLoader.typeOfImage.background){
-      nodeName = '.background-image'
-      this._backgroundImageChanged = true;
-    }
+    document.querySelector(nodeName).appendChild(newImgEl);
+  }
 
-    const imgContainerRef = document.querySelector(nodeName);
+  private removeImageAt(nodeSelector: string){
+    const containerRef = document.querySelector(nodeSelector);
 
-    const imgEl = imgLoader.getImageHTMLElement();
-    imgEl.classList.add('w-100')
-
-    if(!imgContainerRef.children.item(1))
-      imgContainerRef.appendChild(imgEl);
-    else
-      imgContainerRef.replaceChild(imgEl, imgContainerRef.children.item(1));
+    for(let i = 0; i < containerRef.children.length; i++){
+      const child: Element = containerRef.children.item(i);
+      if(child.tagName == "IMG")
+        child.remove();
+    };
   }
 
   private showActionsButtons(){
@@ -108,13 +124,14 @@ export class ProfileComponent implements OnDestroy {
     this.imageLoadingFail = null;
 
     try{
-      await this._profileImageLoader.createImageFromFile(file, this.userID);
+      await this._profileImageLoader.createImageFromFile(file, this.user.uid);
     } catch (error){
       this.imageLoadingFail = error;
       return;
     }
 
-    this.appendImage(this._profileImageLoader);
+    this._profileImageChanged = true;
+    this.appendImageAt(this._imageNodes.profile, this._profileImageLoader);
     this.showActionsButtons();
   }
 
@@ -123,13 +140,14 @@ export class ProfileComponent implements OnDestroy {
     this.imageLoadingFail = null;
 
     try{
-      await this._backgroundImageLoader.createImageFromFile(file, this.userID);
+      await this._backgroundImageLoader.createImageFromFile(file, this.user.uid);
     } catch (error){
       this.imageLoadingFail = error;
       return;
     }
 
-    this.appendImage(this._backgroundImageLoader);
+    this._backgroundImageChanged = true;
+    this.appendImageAt(this._imageNodes.background, this._backgroundImageLoader);
     this.showActionsButtons();
   }
 
@@ -165,22 +183,29 @@ export class ProfileComponent implements OnDestroy {
 
     if(this.user.profileImageMetadata){
       this._profileImageLoader.createImageFromMetadata(this.user.profileImageMetadata);
-      this.appendImage(this._profileImageLoader);
-    }else{
-      const imgContainerRef = document.querySelector('.profile-image');
-      const imgRef = imgContainerRef.querySelector('img');
-      imgRef ? imgRef.remove() : null;
-    }
+      this.appendImageAt(this._imageNodes.profile, this._profileImageLoader);
+    }else
+      this.removeImageAt(this._imageNodes.profile);
+    
 
     if(this.user.backgroundImageMetadata){
       this._backgroundImageLoader.createImageFromMetadata(this.user.backgroundImageMetadata);
-      this.appendImage(this._backgroundImageLoader);
-    }else{
-      const imgContainerRef = document.querySelector('.background-image');
-      const imgRef = imgContainerRef.querySelector('img');
-      imgRef ? imgRef.remove() : null;
-    }
+      this.appendImageAt(this._imageNodes.background , this._backgroundImageLoader);
+    }else
+      this.removeImageAt(this._imageNodes.background)
 
     this.hideActionsButtons();
+  }
+
+  public watchUser(){
+    // if(this.user.watchedUsers)
+  }
+
+  public unwatchUser(){
+
+  }
+
+  public sendMessageTo(){
+
   }
 }

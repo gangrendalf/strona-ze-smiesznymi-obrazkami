@@ -16,7 +16,7 @@
                 </button>
             </section>
             <section class="background-image">
-                <div class="image-selector" *ngIf="(authState$ | async) as auth">
+                <div class="image-selector" *ngIf="userIsProfileOwner">
                     <input 
                         (change)="loadBackgroundFile($event)"
                         #backgroundImageInput 
@@ -25,7 +25,6 @@
                         name="backgroundImage" 
                         id="background-image">
                     <button
-                        *ngIf="auth.user.uid == userID"
                         (click)="triggerSelectDialog(backgroundImageInput)"
                         class="btn"
                         type="button">
@@ -36,7 +35,7 @@
             <section class="profile">
                 <div class="profile-info">
                     <div class="profile-image" id="test">
-                        <div class="image-selector" *ngIf="(authState$ | async) as auth">
+                        <div class="image-selector" *ngIf="userIsProfileOwner">
                             <input 
                                 (change)="loadProfileFile($event)"
                                 #profileImageInput 
@@ -45,7 +44,6 @@
                                 name="profileImage" 
                                 id="profile-image">
                             <button
-                                *ngIf="auth.user.uid == userID"
                                 (click)="triggerSelectDialog(profileImageInput)"
                                 class="btn"
                                 type="button">
@@ -61,12 +59,32 @@
                             0 wyświetleń
                         </div>
                     </div>
+                    <div *ngIf="authUser && !userIsProfileOwner" class="profile-actions">
+                        <button
+                            (click)="watchUser()"
+                            type="button"
+                            class="btn btn-outline-primary"
+                            > <fa-icon [icon]="watchUserIcon"></fa-icon>
+                        </button>
+                        <button
+                            (click)="unwatchUser()"
+                            type="button"
+                            class="btn btn-outline-primary"
+                            > <fa-icon [icon]="unwatchUserIcon"></fa-icon>
+                        </button>
+                        <button
+                            (click)="sendMessageTo()"
+                            type="button"
+                            class="btn btn-outline-primary"
+                            > <fa-icon [icon]="messageIcon"></fa-icon>
+                        </button>
+                    </div>
                 </div>
-                <div class="profile-links">
+                <div class="profile-links" *ngIf="user">
                     <ul class="list-group list-group-horizontal list-group-flush d-flex flex-wrap flex-md-nowrap">
                         <li class="list-group-item">
                             <button
-                                [routerLink]="['/user', userID, 'wall']"
+                                [routerLink]="['/user', user.uid, 'wall']"
                                 type="button" 
                                 class="btn btn-outline-secondary"
                                 >Tablica
@@ -74,7 +92,7 @@
                         </li>
                         <li class="list-group-item">
                             <button
-                                [routerLink]="['/user', userID, 'watched-users']"
+                                [routerLink]="['/user', user.uid, 'watched-users']"
                                 type="button" 
                                 class="btn btn-outline-secondary"
                                 >Obserwowani
@@ -82,7 +100,7 @@
                         </li>
                         <li class="list-group-item">
                             <button
-                                [routerLink]="['/user', userID, 'watched-tags']"
+                                [routerLink]="['/user', user.uid, 'watched-tags']"
                                 type="button" 
                                 class="btn btn-outline-secondary"
                                 >Tagi
@@ -90,7 +108,7 @@
                         </li>
                         <li class="list-group-item">
                             <button
-                                [routerLink]="['/user', userID, 'watched-mems']"
+                                [routerLink]="['/user', user.uid, 'watched-mems']"
                                 type="button" 
                                 class="btn btn-outline-secondary"
                                 >Memy

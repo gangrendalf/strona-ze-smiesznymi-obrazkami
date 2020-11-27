@@ -1,0 +1,42 @@
+<ul class="list-group list-group-horizontal list-group-flush d-flex flex-wrap flex-md-nowrap">
+  <li class="list-group-item">
+      <button
+          [routerLink]="['/user', userID, 'wall']"
+          type="button" 
+          class="btn btn-outline-secondary"
+          >Tablica
+      </button>
+  </li>
+  <li class="list-group-item">
+      <button
+          [routerLink]="['/user', userID, 'watched-users']"
+          type="button" 
+          class="btn btn-outline-secondary"
+          >Obserwowani
+      </button>
+  </li>
+  <li class="list-group-item">
+      <button
+          [routerLink]="['/user', userID, 'watched-tags']"
+          type="button" 
+          class="btn btn-outline-secondary"
+          >Tagi
+      </button>
+  </li>
+  <li class="list-group-item">
+      <button
+          [routerLink]="['/user', userID, 'watched-mems']"
+          type="button" 
+          class="btn btn-outline-secondary"
+          >Memy
+      </button>
+  </li>
+  <!-- <li class="list-group-item">
+      <button
+          [routerLink]="['/user', userID  , 'history']"
+          type="button" 
+          class="btn btn-outline-secondary"
+          >Historia
+      </button>
+  </li> -->
+</ul>

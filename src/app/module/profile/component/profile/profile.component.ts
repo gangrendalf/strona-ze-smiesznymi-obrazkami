@@ -151,7 +151,7 @@ export class ProfileComponent implements OnDestroy {
     this.showActionsButtons();
   }
 
-  public async saveChanges(){
+  public async savePicturesChanges(){
     if(this._profileImageChanged){
       const uploadedImage = (await this.dbs.image.set(this._profileImageLoader.getMetadata())) as ImageMetadata;
       this._profileImageLoader.updateMetadata(uploadedImage);
@@ -177,7 +177,7 @@ export class ProfileComponent implements OnDestroy {
     )
   }
 
-  public cancelChanges(){
+  public cancelPicturesChanges(){
     this._profileImageChanged = false;
     this._backgroundImageChanged = false;
 
@@ -198,13 +198,8 @@ export class ProfileComponent implements OnDestroy {
   }
 
   public get isUserWatchedByAuthUser(){
-    // if(!this.authUser.watchedUsers)
-      // return false;
-    
-    if(this.authUser.watchedUsers.some(watchedUserId => watchedUserId === this.user.uid))
-      return true;
-
-    return false;
+    return this.authUser.watchedUsers
+      .some(watchedUserId => watchedUserId === this.user.uid);
   }
 
   public watchUser(){

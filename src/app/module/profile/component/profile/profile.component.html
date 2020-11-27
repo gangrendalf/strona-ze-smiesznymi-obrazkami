@@ -3,13 +3,13 @@
         <div class="top" >
             <section class="actions" [hidden]="actionButtonsHidden">
                 <button
-                    (click)="saveChanges()"
+                    (click)="savePicturesChanges()"
                     class="btn btn-sm btn-outline-info"
                     type="button"
                     >Zapisz
                 </button>
                 <button
-                    (click)="cancelChanges()"
+                    (click)="cancelPicturesChanges()"
                     class="btn btn-sm btn-outline-info"
                     type="button"
                     >Anuluj
@@ -83,49 +83,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="profile-links" *ngIf="user">
-                    <ul class="list-group list-group-horizontal list-group-flush d-flex flex-wrap flex-md-nowrap">
-                        <li class="list-group-item">
-                            <button
-                                [routerLink]="['/user', user.uid, 'wall']"
-                                type="button" 
-                                class="btn btn-outline-secondary"
-                                >Tablica
-                            </button>
-                        </li>
-                        <li class="list-group-item">
-                            <button
-                                [routerLink]="['/user', user.uid, 'watched-users']"
-                                type="button" 
-                                class="btn btn-outline-secondary"
-                                >Obserwowani
-                            </button>
-                        </li>
-                        <li class="list-group-item">
-                            <button
-                                [routerLink]="['/user', user.uid, 'watched-tags']"
-                                type="button" 
-                                class="btn btn-outline-secondary"
-                                >Tagi
-                            </button>
-                        </li>
-                        <li class="list-group-item">
-                            <button
-                                [routerLink]="['/user', user.uid, 'watched-mems']"
-                                type="button" 
-                                class="btn btn-outline-secondary"
-                                >Memy
-                            </button>
-                        </li>
-                        <!-- <li class="list-group-item">
-                            <button
-                                [routerLink]="['/user', userID, 'history']"
-                                type="button" 
-                                class="btn btn-outline-secondary"
-                                >Historia
-                            </button>
-                        </li> -->
-                    </ul>
+                <div class="profile-sections" *ngIf="user">
+                    <profile-sections [userID]="user.uid"></profile-sections>
                     <span class="points">
                         points
                     </span>

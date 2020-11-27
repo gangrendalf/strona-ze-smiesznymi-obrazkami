@@ -108,26 +108,19 @@ $user-avatar-height: 150px
     background-color: rgba(0, 0, 0, .4)
 
 
-.profile-links
+.profile-sections
     display: flex
     justify-content: flex-start
     flex-direction: column-reverse
     height: $user-section-height
 
-.profile-links li
-    padding: 6px 6px
-
-.profile-links .points
+.profile-sections .points
     margin-left: auto
     padding-right: 10px
 
 .error-box
     font-size: .8rem
     color: red
-
-@media ( min-width: 492px )
-    .profile-links li
-        padding: 12px 6px
 
 @media ( min-width: 768px )
     $top-section-height: 300px
@@ -140,7 +133,7 @@ $user-avatar-height: 150px
     .profile
         height: $user-section-height
     
-    .profile-links
+    .profile-sections
         margin-left: 140px
         height: $user-section-height
         align-items: center

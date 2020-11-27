@@ -61,18 +61,21 @@
                     </div>
                     <div *ngIf="authUser && !userIsProfileOwner" class="profile-actions">
                         <button
+                            *ngIf="!isUserWatchedByAuthUser"
                             (click)="watchUser()"
                             type="button"
                             class="btn btn-outline-primary"
                             > <fa-icon [icon]="watchUserIcon"></fa-icon>
                         </button>
                         <button
+                            *ngIf="isUserWatchedByAuthUser"
                             (click)="unwatchUser()"
                             type="button"
                             class="btn btn-outline-primary"
                             > <fa-icon [icon]="unwatchUserIcon"></fa-icon>
                         </button>
                         <button
+                            disabled
                             (click)="sendMessageTo()"
                             type="button"
                             class="btn btn-outline-primary"

@@ -197,12 +197,38 @@ export class ProfileComponent implements OnDestroy {
     this.hideActionsButtons();
   }
 
+  public get isUserWatchedByAuthUser(){
+    // if(!this.authUser.watchedUsers)
+      // return false;
+    
+    if(this.authUser.watchedUsers.some(watchedUserId => watchedUserId === this.user.uid))
+      return true;
+
+    return false;
+  }
+
   public watchUser(){
-    // if(this.user.watchedUsers)
+    if(!this.authUser.watchedUsers)
+      this.authUser.watchedUsers = [];
+
+    if(this.authUser.watchedUsers.some(watchedUserId => watchedUserId === this.user.uid))
+      return;
+
+    this.authUser.watchedUsers.push(this.user.uid);
+    this.dbs.user.update(this.authUser);
   }
 
   public unwatchUser(){
+    if(!this.authUser.watchedUsers)
+      return;
+    
+    const userIndex = this.authUser.watchedUsers.findIndex(watchedUserId => watchedUserId === this.user.uid);
+    
+    if(userIndex === -1)
+      return;
 
+    this.authUser.watchedUsers.splice(userIndex, 1);
+    this.dbs.user.update(this.authUser);
   }
 
   public sendMessageTo(){

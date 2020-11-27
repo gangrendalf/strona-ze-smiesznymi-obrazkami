@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { faEnvelope, faEye, faEyeSlash, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { UserDetail } from '../../shared/model/user.interface';
-import { DatabaseService } from '../../shared/service/database.service';
+import { UserDetail } from '../../../shared/model/user.interface';
+import { DatabaseService } from '../../../shared/service/database.service';
 
 @Component({
   selector: 'profile-actions',

@@ -1,15 +1,15 @@
 <div class="row">
     <div class="col">
         <div class="top" >
-            <section class="actions" [hidden]="actionButtonsHidden">
+            <section class="actions" [hidden]="imageActionsButtonsHidden">
                 <button
-                    (click)="savePicturesChanges()"
+                    (click)="saveImagesChanges()"
                     class="btn btn-sm btn-outline-info"
                     type="button"
                     >Zapisz
                 </button>
                 <button
-                    (click)="cancelPicturesChanges()"
+                    (click)="cancelImagesChanges()"
                     class="btn btn-sm btn-outline-info"
                     type="button"
                     >Anuluj
@@ -34,15 +34,15 @@
             </section>
             <section class="profile">
                 <div class="profile-info">
-                    <div class="profile-image" id="test">
+                    <div class="avatar-image" id="test">
                         <div class="image-selector" *ngIf="userIsProfileOwner">
                             <input 
-                                (change)="loadProfileFile($event)"
+                                (change)="loadAvatarFile($event)"
                                 #profileImageInput 
                                 type="file"
                                 accept="image/*" 
                                 name="profileImage" 
-                                id="profile-image">
+                                id="avatar-image">
                             <button
                                 (click)="triggerSelectDialog(profileImageInput)"
                                 class="btn"
@@ -59,7 +59,9 @@
                             0 wyświetleń
                         </div>
                     </div>
-                    <div *ngIf="authUser && !userIsProfileOwner" class="profile-actions">
+                    <div 
+                        *ngIf="authUser && !userIsProfileOwner"
+                        class="profile-actions">
                         <profile-actions 
                             [authUser]="authUser" 
                             [user]="user"
@@ -68,9 +70,7 @@
                 </div>
                 <div class="profile-sections" *ngIf="user">
                     <profile-sections [userID]="user.uid"></profile-sections>
-                    <span class="points">
-                        points
-                    </span>
+                    <span class="points"> points </span>
                 </div>
             </section>
         </div>

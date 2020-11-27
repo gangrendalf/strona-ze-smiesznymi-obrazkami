@@ -130,7 +130,7 @@ describe('ProfileComponent', () => {
 
       expect(event.target.files.length).toEqual(1, 'test file avaible');
 
-      await component.loadProfileFile(event); 
+      await component.loadAvatarFile(event); 
 
       const imgHolderDE = fixture.debugElement.nativeElement.querySelector('.profile-image img');
       expect(imgHolderDE).not.toBeNull();
@@ -142,7 +142,7 @@ describe('ProfileComponent', () => {
       const wrongFile = { wrongData: 'im even not a file' };
       const event = { target: { files: [wrongFile] }};
 
-      await component.loadProfileFile(event);
+      await component.loadAvatarFile(event);
       
       const error = component.imageLoadingFail;
 
@@ -157,7 +157,7 @@ describe('ProfileComponent', () => {
       expect(event.target.files.length).toEqual(1, 'test file avaible');
       expect(buttonsContainer.hidden).toEqual(true);
 
-      await component.loadProfileFile(event); 
+      await component.loadAvatarFile(event); 
       fixture.detectChanges();
 
 

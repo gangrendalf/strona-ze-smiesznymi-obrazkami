@@ -9,6 +9,7 @@ import { HistoryComponent } from './component/history/history.component';
 import { SharedModule } from '../shared/shared.module';
 import { MemModule } from '../mem/mem.module';
 import { ProfileSectionsComponent } from './profile-sections/profile-sections.component';
+import { ProfileActionsComponent } from './profile-actions/profile-actions.component';
 
 
 
@@ -19,7 +20,7 @@ import { ProfileSectionsComponent } from './profile-sections/profile-sections.co
     WatchedUsersComponent, 
     WatchedTagsComponent, 
     WatchedMemsComponent, 
-    HistoryComponent, ProfileSectionsComponent],
+    HistoryComponent, ProfileSectionsComponent, ProfileActionsComponent],
   imports: [
     CommonModule,
     SharedModule,

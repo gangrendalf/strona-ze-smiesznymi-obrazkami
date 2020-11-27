@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 
-import { faCamera, faEnvelope, faEye, faEyeSlash, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { UserDetail } from 'src/app/module/shared/model/user.interface';
 import { ImageLoader } from 'src/app/module/shared/utilities/image-loader';
 import { ImageMetadata } from 'src/app/module/shared/model/image-metadata.interface';
@@ -30,9 +30,7 @@ export class ProfileComponent implements OnDestroy {
   public actionButtonsHidden: boolean = true;
 
   public cameraIcon: IconDefinition = faCamera;
-  public watchUserIcon: IconDefinition = faEye;
-  public unwatchUserIcon: IconDefinition = faEyeSlash;
-  public messageIcon: IconDefinition = faEnvelope;
+
 
   private readonly _imageNodes = {
     profile: '.profile-image',
@@ -195,38 +193,5 @@ export class ProfileComponent implements OnDestroy {
       this.removeImageAt(this._imageNodes.background)
 
     this.hideActionsButtons();
-  }
-
-  public get isUserWatchedByAuthUser(){
-    return this.authUser.watchedUsers
-      .some(watchedUserId => watchedUserId === this.user.uid);
-  }
-
-  public watchUser(){
-    if(!this.authUser.watchedUsers)
-      this.authUser.watchedUsers = [];
-
-    if(this.authUser.watchedUsers.some(watchedUserId => watchedUserId === this.user.uid))
-      return;
-
-    this.authUser.watchedUsers.push(this.user.uid);
-    this.dbs.user.update(this.authUser);
-  }
-
-  public unwatchUser(){
-    if(!this.authUser.watchedUsers)
-      return;
-    
-    const userIndex = this.authUser.watchedUsers.findIndex(watchedUserId => watchedUserId === this.user.uid);
-    
-    if(userIndex === -1)
-      return;
-
-    this.authUser.watchedUsers.splice(userIndex, 1);
-    this.dbs.user.update(this.authUser);
-  }
-
-  public sendMessageTo(){
-
   }
 }

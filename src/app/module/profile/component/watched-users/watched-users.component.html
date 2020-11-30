@@ -1,1 +1,14 @@
-<p>watched-users works!</p>
+<div class="user-list-wrapper">
+  <ul *ngIf="watchedUsers.length > 0; else nothingToDisplay" class="list-group list-group-flush">
+    <li
+      *ngFor="let watchedUser of watchedUsers"
+      class="list-group-item text-light">
+      <button class="btn btn-block text-left" [routerLink]="['/user', watchedUser.uid]">{{ watchedUser.nick }}</button>
+      <!-- <button class="btn btn-sm"><fa-icon [icon]="unwatchUserIcon"></fa-icon></button> -->
+      <profile-actions [authUser]="user" [user]="watchedUser" style="display: flex;"></profile-actions>
+    </li>
+  </ul>
+  <ng-template #nothingToDisplay>
+    No users currently watched
+  </ng-template>
+</div>

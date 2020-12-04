@@ -5,67 +5,51 @@ import { UserDetail } from '../../shared/model/user.interface';
 import { DatabaseService } from '../../shared/service/database.service';
 import { ReplaySubject, Observable } from 'rxjs';
 import { AuthState } from '../model/auth-state';
-import { map, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private _authState$: ReplaySubject<AuthState> = new ReplaySubject(1);
-  private _authState: AuthState
 
   constructor(private fireAuth: AngularFireAuth, private dbs: DatabaseService) { 
-    this.fireAuth.authState.subscribe(firebaseUser =>
-      this.updateAuthState(firebaseUser)
-    );
-  }
-
-  private async updateAuthState(firebaseUser: firebase.User){
-    if(this.userLoggedIn(firebaseUser))
-      await this.loadUserLoggedInData(firebaseUser);
-    else
-      this.loadUserLoggedOutData();
-
-    this._authState$.next(this._authState);
+    this.fireAuth.authState
+      .pipe(
+        switchMap(firebaseUser => 
+          this.userLoggedIn(firebaseUser) 
+            ? this.loadUserLoggedInData(firebaseUser)
+            : this.loadUserLoggedOutData()
+        ))
+      .subscribe(authState => this._authState$.next(authState));
   }
 
   private userLoggedIn(firebaseUser: firebase.User){
     return firebaseUser ? true : false;
   }
 
-  private async loadUserLoggedInData(firebaseUser: firebase.User): Promise<void>{
-    const isLogged = true;
-    const uid = firebaseUser.uid;
-
-    const detail = 
-      await this.dbs.user
-        .getSingle(uid)
-        .pipe(
+  private loadUserLoggedInData(firebaseUser: firebase.User): Promise<AuthState> {
+    return this.dbs.user
+      .getSingle(firebaseUser.uid)
+      .pipe(
         take(1),
-        map( user => {
-          return {
-            nick: user.nick,
+        map( user => <AuthState>{
+          isLogged: true,
+          user: {
+            isAdmin: user.isAdmin,
             isModerator: user.isModerator,
-            isAdmin: user.isAdmin
-            }
+            nick: user.nick,
+            uid: user.uid
+          }
         }))
-        .toPromise()
-
-    this._authState = {
-      isLogged: isLogged, 
-      user: {
-        uid: uid, 
-        nick: detail.nick, 
-        isModerator: detail.isModerator, 
-        isAdmin: detail.isAdmin
-      }};
+      .toPromise()
   }
 
-  private loadUserLoggedOutData(): void{
-    this._authState = {
+  private loadUserLoggedOutData(): Promise<AuthState> {
+    return Promise.resolve(<AuthState>{
       isLogged: false,
       user: undefined
-    };
+    }) 
   }
 
   public get authState(): Observable<AuthState>{

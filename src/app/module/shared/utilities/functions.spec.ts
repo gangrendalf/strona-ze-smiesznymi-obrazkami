@@ -1,4 +1,4 @@
-import { disableScroll, enableScroll } from './functions';
+import { disablePageScroll, enablePageScroll } from './functions';
 
 describe('Functions', () => {
 });

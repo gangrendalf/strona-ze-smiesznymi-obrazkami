@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { faBars, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { disableScroll, enableScroll } from 'src/app/module/shared/utilities/functions'
+import { disablePageScroll, enablePageScroll } from 'src/app/module/shared/utilities/functions'
 
 @Component({
   selector: 'navigation',
@@ -51,7 +51,7 @@ export class NavigationComponent implements AfterViewInit {
 
   private blockBrackgroundScrollOnClick(){
     this.menuContainerTogglerRef.nativeElement.addEventListener('click', () => 
-      this.menuContainerRef.nativeElement.classList.contains('menu-container--shown') ? disableScroll() : enableScroll()
+      this.menuContainerRef.nativeElement.classList.contains('menu-container--shown') ? disablePageScroll() : enablePageScroll()
     );
   }
 }

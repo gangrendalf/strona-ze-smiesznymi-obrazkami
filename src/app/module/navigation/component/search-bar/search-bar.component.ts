@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { faSearch, IconDefinition, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { disableScroll, enableScroll } from 'src/app/module/shared/utilities/functions'
+import { disablePageScroll, enablePageScroll } from 'src/app/module/shared/utilities/functions'
 
 
 @Component({
@@ -24,11 +24,11 @@ export class SearchBarComponent implements AfterViewInit {
       if(this.searchContainer.nativeElement.classList.contains('search-container--shown')){
         this._togglerIcon = faTimes;
         this.searchContainerToggler.nativeElement.parentElement.classList.add('search-container-toggler--right-top');
-        disableScroll();
+        disablePageScroll();
       } else {
         this._togglerIcon = faSearch;
         this.searchContainerToggler.nativeElement.parentElement.classList.remove('search-container-toggler--right-top');
-        enableScroll();
+        enablePageScroll();
       }
     });
   }

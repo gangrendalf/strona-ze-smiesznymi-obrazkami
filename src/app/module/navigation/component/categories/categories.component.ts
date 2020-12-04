@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { Category } from 'src/app/module/shared/model/category.interface';
-import { disableScroll, enableScroll } from 'src/app/module/shared/utilities/functions';
+import { disablePageScroll, enablePageScroll } from 'src/app/module/shared/utilities/functions';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
 
 @Component({
@@ -75,8 +75,8 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   private disableContentScrollWhenCategoryContainerShown(){
     this.categoryContainerToggler.nativeElement.addEventListener('click', () => {
       this.categoryContainer.nativeElement.classList.contains('category-container--shown') 
-        ? disableScroll() 
-        : enableScroll();
+        ? disablePageScroll() 
+        : enablePageScroll();
     });
   }
 
@@ -84,7 +84,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     window.addEventListener('resize', (e) => {
       if(window.innerWidth > this._BREAKPOINT_MD){
         this.categoryContainer.nativeElement.classList.remove('category-container--shown');
-        enableScroll();
+        enablePageScroll();
       }
     })
   }

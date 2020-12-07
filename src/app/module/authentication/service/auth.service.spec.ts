@@ -27,11 +27,11 @@ describe(`AuthService`, () => {
     }
   };
 
-  let authState$ = new Subject();
+  let fireAuthState$ = new Subject();
 
   beforeEach(() => {
     fireAuthStub = {
-      authState: authState$.asObservable(),
+      authState: fireAuthState$.asObservable(),
       auth: {
         createUserWithEmailAndPassword: function (email, password): any { },
         signInWithEmailAndPassword: function (email, password): any { },
@@ -44,6 +44,7 @@ describe(`AuthService`, () => {
       user: {
         getSingle:  function() {
           return of({
+            uid: 'testID123',
             nick: 'testNick',
             isAdmin: false,
             isModerator: false
@@ -80,7 +81,7 @@ describe(`AuthService`, () => {
     })
 
     it(`should update for UNAUTH user`, (done) => {
-      authState$.next(null as firebase.User);
+      fireAuthState$.next(null as firebase.User);
   
       subscription = service.authState.subscribe(authState => {
         expect(authState.isLogged).toBeFalsy();
@@ -91,7 +92,7 @@ describe(`AuthService`, () => {
     });
   
     it(`should update for AUTH user`, (done) => {
-      authState$.next({uid: 'testID123'} as firebase.User);
+      fireAuthState$.next({uid: 'testID123'} as firebase.User);
   
       subscription = service.authState.subscribe(authState => {
         expect(authState.isLogged).toBeTruthy();
@@ -128,7 +129,7 @@ describe(`AuthService`, () => {
       summaryDownvotes: 0,
       summaryUpvotes: 0,
       watchedTags: null,
-      watchedUsers: 0,
+      watchedUsers: null,
       isModerator: false,
       isAdmin: false,
       profileImageMetadata: null,

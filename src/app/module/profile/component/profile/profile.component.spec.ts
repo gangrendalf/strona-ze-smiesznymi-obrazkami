@@ -5,10 +5,11 @@ import { ProfileComponent } from './profile.component';
 import { AuthService } from 'src/app/module/authentication/service/auth.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DatabaseService } from 'src/app/module/shared/service/database.service';
-import { Directive, HostListener, Input, ViewChild } from '@angular/core';
+import { Directive, HostListener, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { EMPTY, of } from 'rxjs';
 import { AuthState } from 'src/app/module/authentication/model/auth-state';
 import { UserDetail } from 'src/app/module/shared/model/user.interface';
+import { delay } from 'rxjs/operators';
 
 @Directive({ selector: "[routerLink]" })
 class RouterLinkDirectiveStub {
@@ -68,16 +69,13 @@ describe('ProfileComponent', () => {
   }
 
   let routeStub = {
-    snapshot: { paramMap: { get: function (name) { return testUser.uid } } }
-  };
-  let routerStub = {
-    events: of<NavigationEnd>(new NavigationEnd(1, '', ''))
+    paramMap: of({ get: function (name) { return testUser.uid } }).pipe(delay(1)) 
   };
   let authServiceStub = {
-    authState: of<AuthState>({isLogged: true, user: { ...testUser }})
+    authState: of<AuthState>({isLogged: true, user: { ...testUser }}).pipe(delay(1))
   };
   let databaseServiceStub = {
-    user: { getSingle: function(uid) {return of(testUser); } }
+    user: { getSingle: function(uid) {return of(testUser).pipe(delay(1)); } }
   };
 
   beforeEach(async(() => {
@@ -92,10 +90,10 @@ describe('ProfileComponent', () => {
       ],
       providers: [
         { provide: ActivatedRoute, useValue: routeStub },
-        { provide: Router, useValue: routerStub },
         { provide: DatabaseService, useValue: databaseServiceStub },
         { provide: AuthService, useValue: authServiceStub }
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -132,7 +130,7 @@ describe('ProfileComponent', () => {
 
       await component.loadAvatarFile(event); 
 
-      const imgHolderDE = fixture.debugElement.nativeElement.querySelector('.profile-image img');
+      const imgHolderDE = fixture.debugElement.nativeElement.querySelector('.avatar-image img');
       expect(imgHolderDE).not.toBeNull();
       expect(component.imageLoadingFail).toBeNull();
 

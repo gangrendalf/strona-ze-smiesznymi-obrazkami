@@ -1,6 +1,17 @@
+import { Directive, HostListener, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileSectionsComponent } from './profile-sections.component';
+
+@Directive({selector: '[routerLink]'})
+class RouterLinkStub{
+  @Input('routerLink') linkParams: any;
+  navigatedTo: any = null;
+
+  @HostListener('click') onClick() {
+    this.navigatedTo = this.linkParams;
+  }
+}
 
 describe('ProfileSectionsComponent', () => {
   let component: ProfileSectionsComponent;
@@ -8,7 +19,10 @@ describe('ProfileSectionsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProfileSectionsComponent ]
+      declarations: [ 
+        ProfileSectionsComponent,
+        RouterLinkStub
+       ]
     })
     .compileComponents();
   }));

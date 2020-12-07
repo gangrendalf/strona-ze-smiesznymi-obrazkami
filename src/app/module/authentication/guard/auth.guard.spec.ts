@@ -34,7 +34,10 @@ describe('AuthGuardGuard', () => {
       isLogged: true
     }))
     
-    expectAsync(authGuard.canActivate()).toBeResolvedTo(true);
+    // expectAsync(authGuard.canActivate()).toBeResolvedTo(true);
+    authGuard.canActivate().subscribe(isLogged => {
+      expect(isLogged).toBeTrue();
+    })
   }));
 
   it(`should resolve false if user un-authenticated`, fakeAsync(() => {
@@ -42,6 +45,10 @@ describe('AuthGuardGuard', () => {
       isLogged: false
     }))
     
-    expectAsync(authGuard.canActivate()).toBeResolvedTo(false);
+    // expectAsync(authGuard.canActivate()).toBeResolvedTo(false);
+    authGuard.canActivate().subscribe(isLogged => {
+      expect(isLogged).toBeFalse();
+    })
+
   }));
 });

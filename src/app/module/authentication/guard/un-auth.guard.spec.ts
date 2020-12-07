@@ -34,14 +34,18 @@ describe('UnAuthGuard', () => {
       isLogged: true
     }))
     
-    expectAsync(unauthGuard.canActivate()).toBeResolvedTo(false);
+    unauthGuard.canActivate().subscribe(isLogged => {
+      expect(isLogged).toBeFalse();
+    })
   }));
 
   it(`should resolve true if user un-authenticated`, fakeAsync(() => {
     spyOnProperty(authService, 'authState').and.returnValue(of({
       isLogged: false
     }))
-    
-    expectAsync(unauthGuard.canActivate()).toBeResolvedTo(true);
+
+    unauthGuard.canActivate().subscribe(isLogged => {
+      expect(isLogged).toBeTrue();
+    })
   }));
 });

@@ -98,6 +98,9 @@ export class ProfileComponent implements OnDestroy {
   private removeImageAt(nodeSelector: string){
     const containerRef = document.querySelector(nodeSelector);
 
+    if(!containerRef.children)
+      return;
+      
     for(let i = 0; i < containerRef.children.length; i++){
       const child: Element = containerRef.children.item(i);
       if(child.tagName == "IMG")
